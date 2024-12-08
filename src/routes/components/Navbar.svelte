@@ -26,7 +26,7 @@
         <div class="container navbar-container is-flex-direction-row is-flex">
             <div class="navbar-brand is-flex-grow-1">
                 <a class="navbar-item" href="/">
-                    <img src="assets/logo.png" alt="Thrive Hub" width="112" height="28">
+                    <img src="/assets/logo.png" alt="Thrive Hub" width="112" height="28">
                 </a>
 
                 <!-- Menu for Search -->
