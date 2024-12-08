@@ -9,7 +9,7 @@
             <!-- Logo Section -->
             <div class="column">
               <figure class="image footer-logo">
-                <img src="assets/logo.png" alt="Thrive Hub Logo">
+                <img src="/assets/logo.png" alt="Thrive Hub Logo">
               </figure>
             </div>
             <!-- Links Section -->
