@@ -198,7 +198,7 @@
 	<div class="heading-column">
 		<h2>Do you have a business?</h2>
 		<p>Join Thrive Hub to build trust and inspire confidence with authentic customer reviews.</p>
-		<a href="/" class="cta-button">Launch as a business</a>
+		<a href="#" class="cta-button">Launch as a business</a>
 	</div>
 
 	<!-- Reviews Column -->
@@ -412,11 +412,20 @@
 		cursor: pointer;
 	}
 
-
+	.image-content {
+		/* flex: 1; */
+		/* display: flex; */
+	}
 
 	.image-content img {
 		max-width: 100%;
 		height: 530px;
+	}
+	body {
+		font-family: 'Arial', sans-serif;
+		margin: 0;
+		padding: 0;
+		background-color: #e7f3fe;
 	}
 
 	.container {
@@ -741,6 +750,12 @@
 		border-radius: 8px;
 	}
 
+	.info-card p {
+		font-size: 14px;
+		color: #555;
+		margin-top: 10px;
+	}
+
 	.download-container {
 		background-color: #449ceb;
 		color: white;
@@ -887,6 +902,11 @@
 		align-items: center;
 	}
 
+	.review-footer span img {
+		width: 16px;
+		height: 16px;
+		margin-right: 5px;
+	}
 </style>
 
 <Footer />
