@@ -8,2146 +8,885 @@
 
 <Navbar /> 
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-body p-0 m-0 is-flex is-align-items-stretch">
-            <div class="columns is-gapless is-vcentered">
-                <!-- Left Column -->
-                <div class="column is-half p-6 is-flex is-flex-direction-column is-justify-content-center custom-gap-5">
-                    <h1 class="title is-size-1 is-size-3-mobile">
-                        Trustworthy brands at your fingertips with <span style="font-weight: bold; color: #017cf5;">Thrive Hub</span>
-                    </h1>
-                    <p class="has-text-grey-dark is-size-5 hide-mobile">
-                        Skip the guesswork! Explore top-rated companies and services, get AI-driven review summaries, and enjoy exclusive discounts.
-                    </p>
-                    <div class="field has-addons mt-5 hide-search">
-                        <div class="control has-icons-left is-expanded">
-                            <input class="input is-rounded" type="text" placeholder="Search company or category" />
-                            <span class="icon is-left">
-                                <i class="fas fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Right Column (Mobile Search) -->
-                <div class="column is-half hero-right-column" style="background-color: #118cf6;">
-                    <div class="image-container">
-                        <!-- Mobile Search Bar -->
-                        <div class="field has-addons mt-5 mobile-search">
-                            <div class="control has-icons-left is-expanded">
-                                <input class="input is-rounded" type="text" placeholder="Search company or category" />
-                                <span class="icon is-left">
-                                    <i class="fas fa-search"></i>
-                                </span>
-                            </div>
-                        </div>
+<div class="hero-section">
+	<!-- Text Content -->
+	<div class="text-content">
+		<h1>Discover a company you can rely on with <span style="color: #118BF6;">Thrive Hub</span></h1>
+		<p>
+			Shop smart. Find a company or service and try their product with an exclusive discount from
+			us.
+		</p>
+		<div class="search-box">
+			<span class="icon is-info">
+				<i class="fas fa-search"></i>
+			</span>
+			<input type="text" placeholder="Search company or category" />
+		</div>
+	</div>
 
-                        <!-- Main Image -->
-                        <img src="assets/Hoodie.png" alt="Person giving thumbs up" class="main-image">
+	<!-- Image Content -->
+	<div class="image-content">
+		<img src="/assets/userhome.png" alt="Person giving thumbs up" />
+	</div>
+</div>
 
-                        <!-- Overlayed Icons -->
-                        <img src="assets/heart-small.png" alt="Heart Small" class="icon icon-heart-small">
-                        <img src="assets/heart-big.png" alt="Heart Big" class="icon icon-heart-big">
-                        <img src="assets/chat-small.png" alt="Chat Small" class="icon icon-chat-small">
-                        <img src="assets/chat-big.png" alt="Chat Big" class="icon icon-chat-big">
-                        <img src="assets/star-big.png" alt="Star Big" class="icon icon-star-big">
-                        <img src="assets/star-small.png" alt="Star Small" class="icon icon-star-small">
-                        <img src="assets/circles.png" alt="Circles" class="icon icon-circles">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="container">
+	<!-- Title -->
+	<div class="has-text-centered">
+		<h2 class="title is-4">Category</h2>
+	</div>
 
+	<!-- Category Cards -->
+	<div class="columns is-centered is-variable is-8">
+		<div class="column is-two-thirds">
+			<div class="category-card">
+				<!-- Icon Column -->
+				<div class="category-icon-container">
+					<img src="/assets/tech.png" alt="Tech Icon" class="category-icon" />
+				</div>
+				<!-- Content Column -->
+				<div class="category-content">
+					<h4 class="category-title">Tech</h4>
+					<p class="category-description">Our goal is to help you achieve a balanced lifestyle.</p>
+				</div>
+			</div>
+		</div>
+		<div class="column is-one-third">
+			<div class="category-card">
+				<!-- Icon Column -->
+				<div class="category-icon-container">
+					<img src="/assets/wellness.png" alt="Wellness Icon" class="category-icon" />
+				</div>
+				<!-- Content Column -->
+				<div class="category-content">
+					<h4 class="category-title">Wellness</h4>
+					<p class="category-description">Our goal is to help you achieve a balanced lifestyle.</p>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- Explore Section -->
-    <section class="section category-section">
-        <div class="container">
-            <h2 class="title is-3 has-text-left">Explore</h2>
-            <div class="columns is-multiline is-mobile">
-                <div class="column is-6-mobile">
-                    <div class="category-card">
-                        <div class="category-card-content is-flex is-align-items-center">
-                            <img src="assets/tech.png" alt="Tech Icon" class="category-icon">
-                            <div class="is-flex is-flex-direction-column">
-                                <h3 class="title is-5 m-0">Tech</h3>
-                                <p class="hide-mobile" style="font-size: 12px; color:#4a4a4a;">Discover innovative solutions for digital tools, services, and software</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="column is-three-fifths-desktop is-6-mobile">
-                    <div class="category-card">
-                        <div class="category-card-content is-flex is-align-items-center">
-                            <img src="assets/wellness.png" alt="Tech Icon" class="category-icon">
-                            <div class="is-flex is-flex-direction-column">
-                                <h4 class="title is-5 m-0">Wellness</h4>
-                                <p class="hide-mobile" style="font-size: 12px; color:#4a4a4a;">Enchance your physical and mental well-being with expert solutions</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-                <div class="column is-three-fifths-desktop is-6-mobile">
-                    <div class="category-card">
-                        <div class="category-card-content is-flex is-align-items-center">
-                            <img src="assets/finance.png" alt="Tech Icon" class="category-icon">
-                            <div class="is-flex is-flex-direction-column">
-                                <h4 class="title is-5 m-0">Finance</h4>
-                                <p class="hide-mobile" style="font-size: 12px; color:#4a4a4a;">Manage and grow your wealth with comprehensive financial services</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="column is-6-mobile">
-                    <div class="category-card">
-                        <div class="category-card-content is-flex is-align-items-center">
-                            <img src="assets/electronics.png" alt="Tech Icon" class="category-icon">
-                            <div class="is-flex is-flex-direction-column">
-                                <h4 class="title is-5 m-0">Home Electronics</h4>
-                                <p class="hide-mobile" style="font-size: 12px; color:#4a4a4a;">Explore the latest gadgets and devices for everyday tech needs</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+	<div class="columns is-centered is-variable is-8">
+		<div class="column is-one-third">
+			<div class="category-card">
+				<!-- Icon Column -->
+				<div class="category-icon-container">
+					<img src="/assets/finance.png" alt="Finance Icon" class="category-icon" />
+				</div>
+				<!-- Content Column -->
+				<div class="category-content">
+					<h4 class="category-title">Finance</h4>
+					<p class="category-description">Our goal is to help you achieve a balanced lifestyle.</p>
+				</div>
+			</div>
+		</div>
+		<div class="column is-two-thirds">
+			<div class="category-card">
+				<!-- Icon Column -->
+				<div class="category-icon-container">
+					<img
+						src="/assets/home electronics.png"
+						alt="Home Electronics Icon"
+						class="category-icon"
+					/>
+				</div>
+				<!-- Content Column -->
+				<div class="category-content">
+					<h4 class="category-title">Home Electronics</h4>
+					<p class="category-description">Our goal is to help you achieve a balanced lifestyle.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-    <!-- Review Section -->
-    <section class="section review-section pt-0 pb-0">
-        <div class="container">
+<div class="container2">
+	<div class="columns">
+		<!-- Heading Column -->
+		<div class="heading-column">
+			<h2>Popular reviews</h2>
+		</div>
 
-            <div class="columns is-gapless horizontal-reviews">
-                <div class="column pt-6" style="width: 100%;">
-                    <h3 class="title is-3 has-text-left pt-6">Popular reviews</h3>
-                    <div class="horizontal-scroll-container">
-                        <!-- Add your horizontal review cards here -->
-                        <!-- Card 1 -->
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
+		<!-- Reviews Column -->
+		<div class="reviews-column">
+			<!-- Review 1 -->
+			<div class="review-card">
+				<div class="review-header">
+					<img src="/assets/Ellipse 41.png" alt="User" />
+					<div class="review-details">
+						<div class="reviewer-name">Alice Palmer</div>
+						<div class="review-rating">4.9 ⭐</div>
+						<div class="review-location">USA</div>
+					</div>
+				</div>
+				<div class="review-content">
+					<strong>GoDaddy</strong><br />
+					Good service. Been looking for a similar one for a long time.
+				</div>
+				<div class="review-footer">
+					<span>1 day ago</span>
+					<span>23 ❤️</span>
+				</div>
+			</div>
 
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
+			<!-- Review 2 -->
+			<div class="review-card">
+				<div class="review-header">
+					<img src="/assets/Ellipse_41.png" alt="User" />
+					<div class="review-details">
+						<div class="reviewer-name">John Doe</div>
+						<div class="review-rating">4.5 ⭐</div>
+						<div class="review-location">Canada</div>
+					</div>
+				</div>
+				<div class="review-content">
+					<strong>Shopify</strong><br />
+					Excellent platform for e-commerce businesses.
+				</div>
+				<div class="review-footer">
+					<span>2 days ago</span>
+					<span>19 ❤️</span>
+				</div>
+			</div>
+			<!-- Review 1 -->
+			<div class="review-card">
+				<div class="review-header">
+					<img src="/assets/Ellipse_41.png" alt="User" />
+					<div class="review-details">
+						<div class="reviewer-name">Alice Palmer</div>
+						<div class="review-rating">4.9 ⭐</div>
+						<div class="review-location">USA</div>
+					</div>
+				</div>
+				<div class="review-content">
+					<strong>GoDaddy</strong><br />
+					Good service. Been looking for a similar one for a long time.
+				</div>
+				<div class="review-footer">
+					<span>1 day ago</span>
+					<span>23 ❤️</span>
+				</div>
+			</div>
 
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
+			<!-- Review 2 -->
+			<div class="review-card">
+				<div class="review-header">
+					<img src="/assets/Ellipse_41.png" alt="User" />
+					<div class="review-details">
+						<div class="reviewer-name">John Doe</div>
+						<div class="review-rating">4.5 ⭐</div>
+						<div class="review-location">Canada</div>
+					</div>
+				</div>
+				<div class="review-content">
+					<strong>Shopify</strong><br />
+					Excellent platform for e-commerce businesses.
+				</div>
+				<div class="review-footer">
+					<span>2 days ago</span>
+					<span>19 ❤️</span>
+				</div>
+			</div>
 
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
+			<!-- Add more reviews as needed -->
+		</div>
+	</div>
+</div>
 
+<div class="container">
+	<!-- Heading Column -->
+	<div class="heading-column">
+		<h2>Do you have a business?</h2>
+		<p>Join Thrive Hub to build trust and inspire confidence with authentic customer reviews.</p>
+		<a href="/" class="cta-button">Launch as a business</a>
+	</div>
 
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
+	<!-- Reviews Column -->
+	<div class="company-column">
+		<div class="company-card">
+			<img src="/assets/Ellipse_41.png" alt="Reviewer" />
+			<p>
+				Found my dream job thanks to Your Staffing Firm. Exceptional service and support throughout.
+				Highly recommended!
+			</p>
+			<div class="owner-name">Jan S.</div>
+			<div class="owner-role">Global Applications Representative</div>
+		</div>
+		<div class="company-card large">
+			<img src="/assets/Ellipse_41.png" alt="Owner" />
+			<p>
+				Your staffing firm made launching a business easy. Great experience with personalized
+				support throughout the process.
+			</p>
+			<div class="owner-name">Eric D.</div>
+			<div class="owner-role">IT Specialist</div>
+		</div>
+	</div>
+</div>
+<div class="container-about">
+	<!-- Left Column -->
+	<div class="left-column">
+		<h2>About us</h2>
+		<p>
+			Thrive Hub is your go-to app for exploring reviews, leaving feedback, and making purchases
+			through affiliate links. Powered by AI, it simplifies review analysis, helping users make
+			informed decisions.
+		</p>
+		<div class="highlight-card">
+			Businesses can create accounts, engage with customers, and promote their services—all in one
+			place. Thrive Hub makes reviews smarter and connections stronger.
+		</div>
+	</div>
 
+	<!-- Right Column -->
+	<div class="right-column">
+		<!-- Info Card 1 -->
+		<!--  -->
+		<img src="/assets/young-person-intership_1.png" alt="User" />
+		<!-- </div> -->
 
+		<!-- Blue Widget 1 -->
+		<div class="blue-widget">
+			<div class="stat-number">10K+</div>
+			<div class="stat-text">Happy users</div>
+		</div>
 
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
+		<!-- Blue Widget 2 -->
+		<div class="blue-widget">
+			<div class="stat-number">70%</div>
+			<div class="stat-text">AI speeds up review analysis</div>
+		</div>
 
+		<!-- Info Card 2 -->
+		<div class="info-card">
+			<img src="/assets/medium-shot-woman-holding-device_1.png" alt="User" />
+		</div>
+	</div>
 
+	<div class="download-container">
+		<!-- Left Text Column -->
+		<div class="text-column">
+			<p>Join thousands of users discovering trusted reviews!</p>
+			<h2>Download the app and sign up today!</h2>
+			<div class="download-buttons">
+				<img src="/src\stories\assets\appstore.png" alt="App Store" />
+				<img src="/src\stories\assets\googleplay.png" alt="Google Play" />
+			</div>
+		</div>
 
-
-
-                        <!-- Add more review cards as needed -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="columns is-gapless hide-mobile">
-                <!-- First Column (Header Text Only) -->
-                <div class="column">
-                    <div class="columns">
-                        <div class="column pt-6">
-                            <h3 class="title is-3 has-text-left pt-6">Popular reviews</h3>
-                        </div>
-                    </div>
-                </div>
-                <!-- Second Column (Scroll Container 1) -->
-                <div class="column">
-                    <div class="scroll-container custom-padding-right">
-                        <!-- Card 1 -->
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-                        <!-- Add more cards as needed -->
-
-
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-
-
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-
-
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Third Column (Scroll Container 2) -->
-                <div class="column">
-                    <div class="scroll-container custom-padding-left">
-                        <!-- Card 1 -->
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-                        <!-- Add more cards as needed -->
-
-
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-
-    <!-- Call to Action Section -->
-    <section class="section cta-section">
-        <div class="container">
-            <div class="columns is-vcentered">
-                <!-- Left Column for Text -->
-                <div class="column is-two-fifths cta-right-padding">
-                    <h3 class="title is-3">Got a business?</h3>
-                    <p>Join Thrive Hub to gain trust and foster confidence through genuine customer reviews.</p>
-                    <button class="button is-primary cta-button">Build your brand</button>
-                </div>
-    
-                <!-- Right Column for Testimonials -->
-                <div class="column testimonials">
-                    <div class="testimonial-container">
-                        <!-- Testimonial 1 -->
-                        <div class="testimonial-box left">
-                            <figure class="image is-inline-block">
-                                <img src="assets/testimonial1.png" alt="Jan S.">
-                            </figure>
-                            <p class="quote">Found my dream job thanks to <strong>Your Staffing Firm.</strong> Exceptional service and support throughout. Highly recommended!</p>
-                            <p class="name">Jan S.</p>
-                            <p class="role">Global Applications Representative</p>
-                        </div>
-
-                        <!-- Testimonial 2 -->
-                        <div class="testimonial-box testimonial-box2 right">
-                            <figure class="image is-inline-block">
-                                <img src="assets/testimonial2.png" alt="Eric D.">
-                            </figure>
-                            <p class="quote"><strong>Your Staffing Firm</strong> made hunting a breeze! Top-notch experience and unmatched support. Will use this in my new role.</p>
-                            <p class="name">Eric D.</p>
-                            <p class="role">IT Specialist</p>
-                        </div>
-                        
-                    </div>
-                    <button class="button is-primary cta-button-mobile">Build your brand</button>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- About Us -->
-    <section class="section about-section">
-        <div class="container">
-            <div class="columns is-vcentered is-align-items-stretch is-gapless about-columns">
-                <!-- Left Column for Text -->
-                <div class="column is-half is-flex is-flex-direction-column about1">
-                    <h2 class="title is-3">About Us</h2>
-                    <p>Welcome to Thrive Hub-your one-stop platform for honest reviews, real-time feedback, and exclusive deals through trusted affiliate links. Powered by AI, we make it easier to sift through reviews and make confident, informed choices</p>
-                
-                    <div class="about-box left is-flex-grow-1 is-align-items-center">
-                        <p>For businesses, Thrive Hub is the ultimate tool for connecting, engaging, and growing. It builds trust, boosts your brand, and promotes your services-all in one powerful platform. We're here to make reviews smarter and connections stronger!</p>
-                    </div>
-                
-                </div>
-                <div class="column about2">
-                    <h2 class="title is-3 is-hidden">About Us</h2>
-                    <div class="columns is-gapless is-flex is-align-items-stretch">
-                        <!-- Center Column for Images and Stats -->
-                        <div class="column is-half is-full-mobile is-flex is-flex-direction-column">
-                            <!-- First Image -->
-                            <div class="column pl-0">
-                                <figure class="image is-5by4">
-                                    <img src="assets/young-person-intership 1.png" alt="Team working together">
-                                </figure>
-                            </div>
-                            <div class="column pl-0">
-                                <div class="stat-box is-flex-direction-row is-justify-content-space-around">
-                                    <p class="stat-label"><strong style="color:#ffffff!important">AI</strong> speeds up review analysis</p>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <!-- Center Column for Images and Stats -->
-                        <div class="column is-half is-full-mobile">
-                            <!-- Stat Box -->
-                            <div class="column pr-0">
-                                <div class="stat-box has-text-centered">
-                                    <!-- Smiley Icon -->
-                                    <h3 class="stat-value">
-                                        <img src="assets/smiley.png" alt="Smiley Icon" style="width: 25px; height: auto; margin-right: 10%; margin-left:-50%;">
-                                        10k+
-                                    </h3>
-                                    <p class="stat-label">Happy Users</p>
-                                </div>
-                            </div>
-                    
-                            <!-- First Image -->
-                            <div class="column pr-0">
-                                <figure class="image is-5by4">
-                                    <img src="assets/medium-shot-woman-holding-device 1.png" alt="Team working together">
-                                </figure>
-                            </div>
-                        </div>
-                    </div>
-                    
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- App Section -->
-    <section class="section app-section">
-        <div class="container">
-            <div class="app-box">
-                <div class="columns is-vcentered is-align-items-stretch is-gapless app-columns">
-                    <!-- Left Column for Text -->
-                    <div class="column is-three-fifths is-flex is-flex-direction-column is-justify-content-center" style="padding-left: 7%!important;">
-                        <p style="margin-bottom:2%; margin-top: 3%; color:white; font-weight: 500!important;">Join thousands of users discovering trusted reviews!</p>
-                        <h2 class="title is-3" style="color:white; padding-right: 25%;">Download the app and sign up today!</h2>
-
-                        <div class="columns is-vcentered app-box-1">
-                            <!-- First Image -->
-                            <div class="column">
-                                <figure class="image app-figure">
-                                    <img src="assets/appstore.png" alt="Apple Store">
-                                </figure>
-                            </div>
-                        
-                            <!-- Second Image -->
-                            <div class="column">
-                                <figure class="image app-figure">
-                                    <img src="assets/googleplay.png" alt="Google Playstore">
-                                </figure>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-                    <div class="column is-flex">
-                        <figure class="image-download is-flex is-align-items-center is-justify-content-center is-align-self-flex-end">
-                            <img src="assets/Hand with Phone.png" alt="Illustration" />
-                        </figure>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Reviews Section -->
-    <section class="section reviews-section">
-        <div class="container">
-            <!-- Header Text -->
-            <div class="columns is-gapless">
-                <div class="column pt-6" style="width: 100%;">
-                    <h3 class="title is-3 has-text-left pt-6">Reviews about us</h3>
-                    <div class="horizontal-scroll-container">
-                        <!-- Add your horizontal review cards here -->
-                        <!-- Card 1 -->
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-
-
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-
-
-
-                        <div class="card review-card">
-                            <div class="card-content review-card-content">
-                                <div class="review-header">
-                                    <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="assets/avatar.png" alt="User Avatar" />
-                                        <div class="user-info">
-                                            <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
-                                            <p class="rating">
-                                                4.9 <span class="star">★</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="meta-info">
-                                        <!-- Location Icon -->
-                                        <i class="fa fa-map-marker-alt location-icon"></i>
-                                        <span class="meta-location">USA</span>
-                                        <!-- Date Below -->
-                                        <p class="meta-date">1 day ago</p>
-                                    </div>
-                                </div>
-                                <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
-                                <!-- Review Text -->
-                                <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
-                                </p>
-                                <div class="review-footer">
-                                    <p class="likes">
-                                        <i class="fas fa-heart"></i>
-                                        <span>23</span>
-                                    </p>
-                                    <p class="share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </p>
-                                </div>
-                            </div>                            
-                        </div>
-
-
-
-
-
-                        <!-- Add more review cards as needed -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-
+		<!-- Right Image Column -->
+		<div class="image-column">
+			<img
+				src="/assets/person_holding_a_smartphone_1.png"
+				alt="Phone Mockup"
+				class="phone-image"
+			/>
+			<div class="stats-widget">
+				<img src="/assets/review_1.png" alt="Stats" />
+			</div>
+			<div class="chart-widget">
+				<img src="/assets/Frame_1000002452_1.png" alt="User Chart" />
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-reviews">
+	<h2>Reviews about us</h2>
+	<div class="review-cards">
+		<div class="review-card">
+			<div class="review-header">
+				<img src="/assets/Ellipse_41.png" alt="User" />
+				<div class="review-details">
+					<div class="reviewer-name">Alice Palmer</div>
+					<div class="review-rating">4.9 ⭐</div>
+					<div class="review-location">USA</div>
+				</div>
+			</div>
+			<div class="review-content">
+				<strong>GoDaddy</strong><br />
+				Good service. Been looking for a similar one for a long time.
+			</div>
+			<div class="review-footer">
+				<span>1 day ago</span>
+				<span>23 ❤️</span>
+			</div>
+		</div>
+		<div class="review-card">
+			<div class="review-header">
+				<img src="/assets/Ellipse_41.png" alt="User" />
+				<div class="review-details">
+					<div class="reviewer-name">Alice Palmer</div>
+					<div class="review-rating">4.9 ⭐</div>
+					<div class="review-location">USA</div>
+				</div>
+			</div>
+			<div class="review-content">
+				<strong>GoDaddy</strong><br />
+				Good service. Been looking for a similar one for a long time.
+			</div>
+			<div class="review-footer">
+				<span>1 day ago</span>
+				<span>23 ❤️</span>
+			</div>
+		</div>
+		<div class="review-card">
+			<div class="review-header">
+				<img src="/assets/Ellipse_41.png" alt="User" />
+				<div class="review-details">
+					<div class="reviewer-name">Alice Palmer</div>
+					<div class="review-rating">4.9 ⭐</div>
+					<div class="review-location">USA</div>
+				</div>
+			</div>
+			<div class="review-content">
+				<strong>GoDaddy</strong><br />
+				Good service. Been looking for a similar one for a long time.
+			</div>
+			<div class="review-footer">
+				<span>1 day ago</span>
+				<span>23 ❤️</span>
+			</div>
+		</div>
+	</div>
+</div>
 
 <style>
+	.hero-section {
+		display: flex;
+		background-color: #ffffff;
+		/* max-width: 1340px; */
+		/* margin: 50px auto; */
+	}
 
-.button.is-primary {
-    background-color: #118cf6;
-}
+	.text-content {
+		flex: 1;
+		padding-top: 94px;
+		padding-left: 103px;
+		padding-bottom: 95px;
+	}
 
-.button.is-primary:hover {
-    background-color: #ffffff;
-    border-color: transparent;
-    color: #118cf6;
-}
+	.text-content h1 {
+		font-size: 56px;
+		font-weight: bold;
+		margin-bottom: 20px;
+		color: #1a1a1a;
+		letter-spacing: -2px;
+		line-height: 120%;
+	}
 
+	.text-content p {
+		font-size: 18px;
+		color: #555;
+		margin-bottom: 20px;
+		line-height: 1.6;
+	}
 
-/* Search Bar Styling  Start */
-.input.is-rounded {
-    height: 4.2rem;
-    border-radius: 15px;
-    padding-left: 3rem!important;
-    font-size: 1rem;
-    background-color: #e7f3ff;
-    border-color: transparent;
-    box-shadow: unset;
-}
+	.text-content .search-box {
+		display: flex;
+		align-items: center;
+		background-color: #f0f0f0;
+		border-radius: 8px;
+		padding: 10px;
+		margin-top: 20px;
+	}
 
-.control.has-icons-left .icon.is-left {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
+	.text-content .search-box input {
+		border: none;
+		background: none;
+		flex: 1;
+		padding: 10px;
+		font-size: 16px;
+		color: #333;
+	}
 
-h1,h2,h3,h4,h5{
-    font-family: Inter!important;
-    font-weight: 700!important;
-}
+	.text-content .search-box input:focus {
+		outline: none;
+	}
 
-p{
-    font-family: Inter!important;
-    font-weight: 400!important;
-}
-
-
-
-/* ========================================
-   Hero Section Page Styling Starts Here
-======================================== */
-.hero {
-    background-color: #ffffff; /* Left column light background */
-    height: 100%;
-    padding: 0; /* Remove padding */
-    margin: 0; /* Remove margin */
-    display: flex; /* Ensure flex layout */
-    align-items: stretch; /* Stretch child elements */
-
-}
-
-.hero-right-column{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* Align the content to the bottom */
-    align-items: center; /* Center the content horizontally */
-    height: 100%; /* Ensure it occupies the full height of the parent container */
-    position: relative;
-    padding: 1rem; /* Ensure padding for mobile layout */
-}
-
-.mobile-search {
-    display: none!important; /* Hidden by default */
-    position: absolute; /* Position it at the bottom */
-    bottom: 1rem; /* Space from the bottom of the column */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Center alignment fix */
-    width: 90%; /* Make it fit within the column */
-    z-index: 10; /* Ensure it appears above other content */
-    margin: 0; /* Remove default margin */
-    margin-bottom: -10%!important;
-}
-
-.columns.is-gapless>.custom-gap-5{
-    padding: 5rem!important;
-}
-
-.image-container {
-    position: relative;
-    text-align: center;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    height: 100%;
-
-}
-.main-image {
-    z-index: 1;
-    padding-top: 12%;
-    max-width: 80% !important;
-    margin-left: -10%;
-}
-.icon {
-    position: absolute;
-}
-
-.icon-heart-small {
-    top: 6%;
-    left: 25%;
-    height: auto;
-    width: 13%;
-    z-index: 2;
-}
-
-
-.icon-heart-big {
-    top: 58%;
-    left: 85%;
-    height: auto;
-    width: 12%;
-    z-index: 2;
-}
-
-.icon-chat-small {
-    top: 10%;
-    right: 20%;
-    height: auto;
-    width: 7%;
-    z-index: 2;
-}
-
-.icon-chat-big {
-    top: 35%;
-    right: 91%;
-    height: auto;
-    width: 12%;
-    z-index: 2;
-}
-
-.icon-star-big {
-    bottom: 54%;
-    right: 10%;
-    height: auto;
-    width: 12%;
-    z-index: 2;
-}
-
-.icon-star-small {
-    bottom: 54%;
-    right: 69%;
-    height: auto;
-    width: 9%;
-    z-index: 2;
-}
-
-.icon-circles {
-    bottom: 1%;
-    right: 3%;
-    height: auto;
-    width: 89%;
-    z-index: 0;
-}
-
-
-@media screen and (max-width: 980px) {
-    .hero {
-        flex-direction: column;
-    }
-    .hide-mobile {
-        display: none!important;
-    }
-
-    .columns.is-gapless>.custom-gap-5{
-        padding: 1rem!important;
-        text-align: center!important;
-    }
-
-    .title.is-size-1.is-size-3-mobile{
-        margin:0!important;
-    }    
-
-}
-
-@media screen and (max-width: 768px) {
-    .hero {
-        flex-wrap: wrap;
-    }
-
-    .hero-right-column {
-        height: auto; /* Allow flexible height on small screens */
-    }
-
-    .mobile-search {
-        display: flex!important;
-    }
-
-    .input.is-rounded {
-        background-color: #ffffff;
-        border-color: #dbdbdb;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .main-image {
-        z-index: 1;
-        padding-top: 0%;
-        max-width: 55% !important;
-        margin-left: 0%;
-    }
-
-    .icon-chat-big {
-        top: 29%;
-        right: 75%;
-        height: auto;
-        width: 20%;
-        z-index: 2;
-    }
-
-    .icon-chat-small {
-        top: 3%;
-        right: 17%;
-        height: auto;
-        width: 13%;
-        z-index: 2;
-    }
-
-    .icon-star-big {
-        bottom: 34%;
-        right: 10%;
-        height: auto;
-        width: 15%;
-        z-index: 2;
-    }
-
-    .icon-heart-small{
-        top: 3%;
-        left: 22%;
-        height: auto;
-        width: 15%;
-        z-index: 2;
-    }
-
-    .icon-heart-big {
-        top: 58%;
-        left: 50%;
-        height: auto;
-        width: 12%;
-        z-index: 0;
-    }
-
-    .icon-star-small{
-        bottom: 28%;
-        right: 71%;
-        height: auto;
-        width: 10%;
-        z-index: 2;
-    }
-
-    .icon-circles {
-        bottom: -49%;
-        right: 14%;
-        height: auto;
-        width: 75%;
-        z-index: 0;
-    }
-
-
-    .hide-mobile {
-        display: none!important;
-    }
-    .hide-search{
-        display: none!important;    
-    }
-    .columns.is-gapless>.custom-gap-5{
-        padding: 1.5rem!important;
-        text-align: center!important;
-    }
-
-    .title.is-size-1.is-size-3-mobile{
-        margin:0!important;
-    }    
-
-    .column.is-half.hero-right-column{
-        padding-top:1%!important;
-    }
-
-}
+	.text-content .search-box .icon {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 18px;
+		color: #555;
+		cursor: pointer;
+	}
 
 
 
+	.image-content img {
+		max-width: 100%;
+		height: 530px;
+	}
 
-/* ========================================
-   Category Section Page Styling Starts Here
-======================================== */
-.category-section{
-    background-color: #e7f3ff;
-    padding-top: 5%!important;
-    padding-bottom: 5%!important;
-    z-index: 1;
-    position: relative;
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 20px;
+	}
 
-}
+	.has-text-centered {
+		text-align: center;
+	}
 
-.category-card:hover {
+	.title.is-4 {
+		font-size: 36px;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 30px;
+	}
+
+	.columns {
+		margin-bottom: 20px;
+	}
+
+	.category-card {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 30px;
+		border: 1px solid #e0e0e0;
+		border-radius: 8px;
+		background-color: white;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		transition:
+			transform 0.2s,
+			box-shadow 0.2s;
+		width: 100%;
+		min-height: 200px;
+	}
+
+	.category-card:hover {
 		transform: scale(1.03);
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.category-card {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 4em 2em;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center; /* Align icon and text vertically */
-    height: 100%;
-
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	transition:
-		transform 0.2s,
-		box-shadow 0.2s;
-	width: 100%;
-	min-height: 200px;
-
-}
-
-.category-icon {
-    width: 4.7em; /* Adjust the size as needed */
-    height: auto;
-    margin-right: 15px; /* Space between the icon and the text */
-}
-
-@media screen and (max-width: 1023px) {
-    .category-card-content{
-        flex-direction: column!important;
-        text-align: center!important;
-    }
-
-    .category-card{
-        justify-content: center!important;
-        padding: 2em 2em;
-    }
-
-    .category-icon{
-        margin-right: 0px;
-        margin-bottom: 15%;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .category-section{
-        padding-top: 15%!important;
-    }
-
-
-
-    .category-card-content{
-        flex-direction: column!important;
-        text-align: center!important;
-
-    }
-    .category-icon{
-        margin-right: 0px;
-        margin-bottom: 5%;
-    }
-
-}
-
-
-/* ========================================
-   Review Section Page Styling Starts Here
-======================================== */
-
-.review-section{
-	background-color: white;
-}
-
-    .custom-padding-left{
-        padding-left:2.5%!important;
-    }
-    .custom-padding-right{
-        padding-right:2.5%!important;
-    }
-
-    .review-card {
-        flex: 0 0 calc(33.33% - 20px);
-    }
-
-    .horizontal-scroll-container {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        overflow-y: hidden;
-        cursor: grab; /* Change cursor to indicate draggable */
-        scroll-behavior: smooth; /* Optional: smooth scrolling */
-        gap: 10px; /* Spacing between cards */
-        -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
-        scrollbar-width: none; /* Hides scrollbar in Firefox */
-    }
-
-    .horizontal-scroll-container{
-        user-select: none; /* Disable text selection while dragging */
-    }
-
-    .horizontal-scroll-container::-webkit-scrollbar {
-        display: none;
-    }
-  
-    .horizontal-scroll-container .review-card {
-        display: inline-block;
-        vertical-align: top;
-        margin-right: 20px;
-        width: calc(33.33% - 20px);
-    }
-
-
-    .horizontal-reviews{
-        display: none!important;
-    }
-
-    @media screen and (max-width: 980px) {
-        .review-card {
-            flex: 0 0 calc(70% - 20px);
-        }
-
-        .horizontal-reviews{
-            display: flex!important;
-        }
-
-    }
-
-    @media screen and (max-width: 768px) {
-        .review-card {
-            flex: 0 0 calc(70% - 20px);
-        }
-
-        .horizontal-reviews{
-            display: flex!important;
-        }
-
-    }
-
-
-
-
-
-
-/* ========================================
-   CTA Section Page Styling Starts Here
-======================================== */
-.cta-section {
-    background-color: #e7f3ff;
-    padding-top: 3%;
-    padding-bottom: 5.5%;
-  }
-
-.cta-section p {
-    color: #81858e;
-    margin-bottom: 1.5rem;
-    font-size:1em;
-}
-
-.cta-section .button {
-    background-color: #118BF6; /* Bulma primary color */
-    color: white;
-    border-radius: 7px;
-    padding: 0.75rem 1rem;
-    font-weight: 500;
-    font-family: 'Inter';
-	transition: background-color 0.3s;
-}
-
-.cta-button-mobile{
-    display: none!important;
-    width: 100%;
-    border-radius: 11px!important;
-    padding: 1.7rem 1rem!important;
-    margin-top: 10%;
-    margin-bottom: 4%;
-}
-
-/* Testimonial Container Styling */
-
-.cta-right-padding{
-    padding-right: 10%;
-    margin-top: 4%;
-}
-
-.testimonials{
-    padding: 0rem 0.7rem;
-}
-
-.testimonial-container {
-    position: relative; /* Enable absolute positioning for child elements */
-    display: flex;
-    justify-content: flex-start; 
-    align-items: center; /* Align items vertically */
-    gap: 0; /* No gap as we position cards manually */
-    margin-top: 2rem;
-}
-
-/* Left Testimonial Box */
-.testimonial-box.left {
-    position: relative;
-    background: #f5f8fd;
-    border-radius: 25px;
-    box-shadow: 10px 6px 10px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    width: 50%;
-    z-index: 2;
-    text-align: center;
-    padding-bottom: 4%;
-}
-
-/* Right Testimonial Box (Appears Behind) */
-.testimonial-box.right {
-    position: absolute;
-    top: 8%;
-    left: 48%;
-    background: #f5f8fd;
-    border-radius: 25px;
-    box-shadow: 10px 6px 10px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    width: 45%;
-    height: 84%;
-    z-index: 1;
-    text-align: center;
-    opacity: 0.95;
-    padding-bottom: 4%;
-}
-
-.testimonial-box .image {
-    width: 55%;
-    height: auto;
-}
-
-.testimonial-box2 .image {
-    width: 50%;
-    height: auto;
-}
-
-.testimonial-box img, .testimonial-box2 img {
-    margin-bottom: 0.5rem;
-    width: 100%;
-    height: auto;
-}
-
-.testimonial-box .quote, .testimonial-box2 .quote {
-    font-size: 16px;
-    color: #555;
-    line-height: 1.4;
-    margin-bottom: 1rem;
-}
-.testimonial-box2 .quote {
-    font-size: 13px!important;
-}
-
-.testimonial-box .name, .testimonial-box2 .name {
-    font-size: 18px;
-    font-weight: 700!important;
-    color: #333;
-    margin-top: 1rem;
-    margin-bottom: 0.1rem;
-}
-
-.testimonial-box2 .name {
-    font-size: 16px!important;
-}
-
-.testimonial-box .role {
-    font-size: 14px;
-    color: #afb2b9;
-}
-
-
-@media screen and (max-width: 1407px) {
-
-}
-
-@media screen and (max-width: 769px) {
-
-
-    .cta-button-mobile{
-        display: flex!important;
-    }
-
-    .testimonial-box .image {
-        width: 42%;
-        height: auto;
-    }
-
-    .testimonial-box2 .image {
-        width: 45%;
-        height: auto;
-    }
-
-    .testimonial-container {
-        justify-content: center; 
-        margin-top: 0%;
-    }
-
-    .cta-section p {
-        margin-bottom: 1rem;
-    }
-
-    .testimonial-box .name, .testimonial-box2 .name {
-        font-size: 15px;
-        margin-top: 5%;
-        margin-bottom: 0;
-    }
-
-    .testimonial-box2 .name {
-        font-size: 13px !important;
-    }
-    .testimonial-box .quote, .testimonial-box2 .quote {
-        font-size: 12px;
-        color: #555;
-        line-height: 1.4;
-        margin-bottom: 0;
-    }
-
-    .testimonial-box2 .quote {
-        font-size: 10px !important;
-    }
-
-
-    .testimonial-box.left {
-        width: 58%;
-        padding: 1rem;
-        left: -20%;
-    }
-
-
-    .testimonial-box.right {
-        left: 55%;
-        width: 43%;
-        top: 9%;
-    }
-
-    .cta-button {
-        display: none!important;
-    }
-
-}
-
-
-/* CTA Section Page Styling End */
-
-
-/* About Section Page Styling Start */
-.about-section{
-	background-color: #ffffff;
-}
-
-.about1{
-    margin-right:1%!important;
-}
-
-.about2{
-    margin-left:1%!important;
-}
-
-.about-section p {
-    color: #81858e;
-    font-size: 1em;
-    line-height: 1.5;
-}
-
-.about-box {
-    display: flex;
-    background: #e8f5fe;
-    border-radius: 10px;
-    padding: 2rem;
-    padding-top: 3%;
-    padding-bottom: 3%;
-    margin-bottom: 2%;
-    margin-top: 3%;
-    text-align: center;
-    color: #555;
-}
-
-.stat-box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    background: #118cf6;
-    border-radius: 15px;
-    color: #ffffff;
-    height: 100%; /* Make the box fill its parent height */
-}
-
-
-
-.stat-box p, .stat-box h3 {
-    margin: 0;
-    color: #ffffff;
-}
-
-@media (max-width: 768px) {
-    .about2{
-        margin-left:0%!important;
-    }
-    .about-section{
-        padding-bottom: 0%;
-    }
-    .about2 > h2{
-        margin: 0;
-        display: block!important;
-    }
-    .about2 > div{
-        flex-direction: column;
-    }
-    .about2 > div > div.column.is-half.is-full-mobile.is-flex.is-flex-direction-column > div:nth-child(1){
-        padding-right: 0% !important;
-    }
-    .about2 > div > div.column.is-half.is-full-mobile.is-flex.is-flex-direction-column > div:nth-child(2){
-        padding-right: 0% !important;
-    }
-    .about2 > div > div:nth-child(2) > div:nth-child(1){
-        padding-left: 0% !important;
-    }
-    .about2 > div > div:nth-child(2) > div:nth-child(2){
-        display: none!important;
-        padding-left: 0% !important;
-    }
-	.about-columns{
-        display: flex!important;
-        flex-direction: column-reverse;
-    }
-    .about1 > h2{
-        display: none;
-    }
-    .about1{
-        margin-right: 0% !important;
-    }
-
-}
-
-.stat-value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-}
-
-.stat-label {
-    font-size: 1rem;
-    color: #555;
-}
-
-
-
-/* About Section Page Styling End */
-
-/* App Download Section Page Styling Start */
-.app-section {
-    padding-bottom: 5%!important;
-	background-color: #ffffff;
-}
-
-.app-box{
-    background-color: #469dec;
-    border-radius: 30px;
-}
-
-.app-figure{
-    width: 190px !important;
-    margin-top: 3% !important;
-    margin-bottom: 10%;
-}
-
-.app-box-1{
-    width: 60%;
-}
-
-.image-download img {
-    border-radius: 15px;
-    object-fit: cover;
-    width: 80%;
-    height: auto;
-    margin-top: 8%;
-    margin-right: 2%;
-}
-
-@media (max-width: 768px) {
-    .app-columns {
-        display: flex;
-        flex-direction: column-reverse; /* Stack elements on smaller screens */
-    }
-    .image-download img {
-        margin-right: 0%;
-    }
-
-    .app-box-1{
-        width: 100%;
-    }
-    
-    .app-section > div > div > div > div.column.is-three-fifths.is-flex.is-flex-direction-column.is-justify-content-center > div > div:nth-child(1),.app-section > div > div > div > div.column.is-three-fifths.is-flex.is-flex-direction-column.is-justify-content-center > div > div:nth-child(2){
-        display:flex;
-        justify-content: center;
-    }
-
-    .app-section > div > div > div > div.column.is-three-fifths.is-flex.is-flex-direction-column.is-justify-content-center{
-        padding-right: 5%!important;
-        padding-left: 5%!important;
-    }
-
-    .app-figure {
-        width: 85% !important;
-        margin-bottom: 0%!important;
-        margin-top: 0% !important;
-    }
-    .app-section > div > div > div > div.column.is-three-fifths.is-flex.is-flex-direction-column.is-justify-content-center > div > div:nth-child(2){
-        margin-bottom: 8%;
-    }
-
-}
-
-
-/* App Download Section Page Styling End */
-
-
-/* Reviews about us Section Start */
-
-.reviews-section {
-    background-color: #e7f3ff;
-}
-
-  /* Reviews about us Section End */
-
-
-
-
-/* Scroll Container */
-.scroll-container {
-    max-height: 700px; /* Adjust as needed */
-    overflow-y: scroll; /* Enable vertical scrolling */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-    cursor: grab; /* Change cursor to indicate draggable */
-}
-
-.scroll-container{
-    user-select: none; /* Disable text selection while dragging */
-}
-
-.scroll-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
-
-/* Card Styles for Reviews Start */
-.review-card {
-    border: 1px solid #e5e5e5;
-    border-radius: 12px;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.03);
-    padding: 1rem;
-    margin-bottom: 5%;
-    background-color: #ffffff;
-}
-
-.review-card-content{
-    padding:2%!important;
-}
-
-/* Header Section */
-.review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.review-user {
-    display: flex;
-    align-items: center;
-}
-
-.avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 0.8rem;
-}
-
-.user-info .name {
-    font-size: 1rem;
-    margin: 0;
-}
-
-.user-info .rating {
-    font-size: 0.9rem;
-    color: #ffd342;
-    margin: 0;
-}
-
-.meta-info {
-    text-align: right;
-}
-
-.location-icon {
-    font-size: 0.9rem;
-    color: #949494;
-    margin-right: 5px;
-}
-
-.meta-location {
-    font-size: 0.9rem;
-    font-weight: normal;
-    color: #949494;
-}
-
-.meta-date {
-    font-size: 0.8rem;
-    color: #999;
-    margin-top: 2px;
-}
-
-
-.is-divider{
-    margin:1rem 0!important;
-}
-
-.review-title {
-    font-size: 1.2rem;
-    margin: 0.5rem 0;
-    font-weight: 500!important;
-    text-decoration: underline;
-}
-
-.review-text {
-    font-size: 0.9rem;
-    line-height: 1.4;
-    color: #8b8a8f;
-    margin-bottom: 1rem;
-}
-
-.review-footer {
-    display: flex;
-    align-items: center; /* Vertically center the icons and text */
-    font-size: 0.9rem;
-    color: #555;
-}
-
-.likes, .share {
-    display: flex;
-    align-items: center;
-    margin-right: 1rem; /* Space between the like and share sections */
-}
-
-.likes i, .share i {
-    margin-right: 8px; /* Add space between the icon and text */
-}
-
-.likes span {
-    margin-left: 5px; /* Add space between the icon and the number 23 */
-}
-
-.likes {
-    color: #ff6b6b; /* Heart color */
-}
-
-.share {
-    color: #4a90e2; /* Share icon color */
-}
-/* Card Styles for Reviews End */
-
-
-
+	}
+
+	.category-icon-container {
+		flex: 0 0 100px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.category-icon {
+		width: 60px;
+		height: 60px;
+	}
+
+	.category-content {
+		flex: 1;
+		padding-left: 20px;
+	}
+
+	.category-title {
+		font-size: 20px;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 10px;
+	}
+
+	.category-description {
+		font-size: 16px;
+		color: #666;
+		line-height: 1.5;
+	}
+	.columns {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 20px;
+	}
+	.container2 {
+		background-color: white;
+		padding: 3%;
+	}
+	.heading-column {
+		flex: 1;
+		margin-top: 90px;
+	}
+
+	.heading-column h2 {
+		font-size: 24px;
+		font-weight: bold;
+		color: #333;
+	}
+
+	.reviews-column {
+		flex: 2;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 20px;
+	}
+
+	.review-card {
+		background: white;
+		border-radius: 8px;
+		box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+		padding: 20px;
+	}
+
+	.review-card .review-header {
+		display: flex;
+		align-items: center;
+		margin-bottom: 10px;
+	}
+
+	.review-card .review-header img {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		margin-right: 10px;
+	}
+
+	.review-card .review-header .review-details {
+		font-size: 14px;
+		color: #333;
+	}
+
+	.review-card .review-header .review-details .reviewer-name {
+		font-weight: bold;
+		color: #333;
+	}
+
+	.review-card .review-header .review-details .review-rating {
+		color: #fbc02d;
+	}
+
+	.review-card .review-content {
+		font-size: 14px;
+		color: #555;
+		margin-top: 10px;
+	}
+
+	.review-card .review-footer {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 10px;
+		font-size: 12px;
+		color: #777;
+	}
+
+	.heading-column {
+		flex: 1;
+		padding: 20px;
+		width: 50%;
+	}
+
+	.heading-column h2 {
+		font-size: 28px;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 10px;
+	}
+
+	.heading-column p {
+		font-size: 16px;
+		color: #555;
+		margin-bottom: 20px;
+	}
+
+	.cta-button {
+		display: inline-block;
+		background-color: #118bf6;
+		color: #fff;
+		padding: 10px 20px;
+		border-radius: 8px;
+		text-decoration: none;
+		font-size: 16px;
+		font-weight: bold;
+		transition: background-color 0.3s;
+	}
+
+	.cta-button:hover {
+		background-color: #0a6ec1;
+	}
+
+	.company-column {
+		flex: 1.5;
+		display: flex;
+		position: relative;
+	}
+
+	.company-card {
+		background: white;
+		border-radius: 10px;
+		box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+		padding: 20px;
+		text-align: center;
+		width: 250px;
+		position: absolute;
+		z-index: 1;
+	}
+
+	.company-card.large {
+		width: 300px;
+		padding: 25px;
+		z-index: 2;
+		top: 20px;
+	}
+
+	.company-card img {
+		width: 80px;
+		height: 80px;
+		border-radius: 50%;
+		margin-bottom: 10px;
+	}
+
+	.company-card p {
+		font-size: 14px;
+		color: #555;
+		margin: 10px 0;
+	}
+
+	.company-card .owner-name {
+		font-weight: bold;
+		color: #333;
+		margin-top: 10px;
+	}
+
+	.company-card .owner-role {
+		font-size: 12px;
+		color: #777;
+	}
+
+	.company-card:nth-child(1) {
+		left: 639px;
+		top: -265px;
+	}
+
+	.company-card:nth-child(2) {
+		left: 870px;
+		top: -307px;
+	}
+	.container-about {
+		margin: 50px auto;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		gap: 20px;
+		background-color: white;
+		padding: 6%;
+	}
+
+	.left-column {
+		flex: 1;
+		max-width: 50%;
+	}
+
+	.left-column h2 {
+		font-size: 28px;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 15px;
+	}
+
+	.left-column p {
+		font-size: 16px;
+		color: #555;
+		line-height: 1.6;
+		margin-bottom: 20px;
+	}
+
+	.left-column .highlight-card {
+		background-color: #d9ecff;
+		padding: 35px;
+		border-radius: 8px;
+		font-size: 16px;
+		color: #333;
+		line-height: 1.5;
+	}
+
+	.right-column {
+		/* flex: 1.5; */
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20px;
+	}
+
+	.info-card {
+		width: 100%;
+		border-radius: 8px;
+		height: 100px;
+		object-fit: cover;
+		margin-bottom: 106px;
+		margin-top: -115px;
+	}
+
+	.blue-widget {
+		background-color: #118bf6;
+		color: white;
+		border-radius: 8px;
+		padding: 55px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 50%;
+		width: 90%;
+	}
+
+	.blue-widget .stat-number {
+		font-size: 36px;
+		font-weight: bold;
+	}
+
+	.blue-widget .stat-text {
+		font-size: 16px;
+		margin-top: 5px;
+	}
+
+	.info-card img {
+		width: 83%;
+		border-radius: 8px;
+	}
+
+	.download-container {
+		background-color: #449ceb;
+		color: white;
+		border-radius: 15px;
+		padding: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		/* max-width: 1200px; */
+		width: 96%;
+		/* margin: 50px auto; */
+		position: relative;
+		overflow: hidden;
+	}
+	.text-column {
+		flex: 1;
+		padding-right: 30px;
+	}
+
+	.text-column h2 {
+		font-size: 28px;
+		font-weight: bold;
+		width: 75%;
+		margin-bottom: 33px;
+	}
+
+	.text-column p {
+		font-size: 16px;
+		margin-bottom: 20px;
+	}
+
+	.download-buttons {
+		display: flex;
+		gap: 10px;
+	}
+
+	.download-buttons img {
+		width: 150px;
+		cursor: pointer;
+	}
+
+	.image-column {
+		flex: 1;
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.phone-image {
+		position: relative;
+		z-index: 3;
+		/* width: 269px; */
+		/* height: auto; */
+		right: 12%;
+	}
+	.stats-widget {
+		position: absolute;
+		top: 32%;
+		left: 320px;
+
+		z-index: 29;
+	}
+	.chart-widget {
+		position: absolute;
+		z-index: 29;
+		top: 50%;
+		left: 320px;
+	}
+	.chart-widget img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.container-reviews {
+		padding: 30px;
+	}
+	.container-reviews h2 {
+		font-size: 36px;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 20px;
+	}
+
+	.review-cards {
+		display: flex;
+		justify-content: space-between;
+		gap: 20px;
+	}
+
+	.review-card {
+		flex: 1;
+		background: white;
+		border-radius: 8px;
+		box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+		padding: 20px;
+	}
+
+	.review-card .review-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 10px;
+	}
+
+	.review-header img {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		margin-right: 10px;
+	}
+
+	.review-details {
+		flex: 1;
+	}
+
+	.review-details .reviewer-name {
+		font-size: 14px;
+		font-weight: bold;
+		color: #333;
+	}
+
+	.review-details .review-location {
+		font-size: 12px;
+		color: #777;
+	}
+
+	.review-content {
+		margin-top: 10px;
+		font-size: 14px;
+		color: #555;
+	}
+
+	.review-footer {
+		margin-top: 10px;
+		display: flex;
+		justify-content: space-between;
+		font-size: 12px;
+		color: #777;
+	}
+
+	.review-footer span {
+		display: flex;
+		align-items: center;
+	}
 
 </style>
-
-
-
 
 <Footer />
