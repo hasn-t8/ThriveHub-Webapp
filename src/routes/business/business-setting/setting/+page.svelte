@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
-	import Sidemenu from '/src/routes/components/Sidemenu.svelte';
+	import Sidemenu from '../../../admin-area/components/Sidemenu.svelte';
 	let searchQuery = '';
 	// import { getProfiles, saveProfile } from '$lib/stores/profile';
 

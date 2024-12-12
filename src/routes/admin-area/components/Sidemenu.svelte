@@ -6,7 +6,7 @@
 
     .side-menu {
       width: 250px;
-      height: 100vh;
+      height: auto;
       background-color: #007bff;
       position: fixed;
       top: 0;
@@ -130,9 +130,6 @@
       color: #0056b3;
     }
   
-    .logo {
-      margin-top: 20px;
-    }
   
     .logo img {
       max-width: 200px;
@@ -154,7 +151,7 @@
         <a href="#company1">Company 1</a>
         <a href="#company2">Company 2</a>
         <a href="#company3">Company 3</a>
-        <a href="#company4">Company 4</a>
+        <a href="/admin-area/addbusiness" >Add business</a>
       </div>
     </div>
   
@@ -166,7 +163,7 @@
       <a href="#reviews" class="menu-item">
         <i class="fas fa-star"></i> Reviews
       </a>
-      <a href="#analytics" class="menu-item">
+      <a href="/admin-area/analytics" class="menu-item">
         <i class="fas fa-chart-bar"></i> Analytics
       </a>
       <a href="#notifications" class="menu-item">
@@ -175,7 +172,10 @@
       <a href="#support" class="menu-item">
         <i class="fas fa-life-ring"></i> Support Center
       </a>
-      <a href="#settings" class="menu-item">
+      <a href="/admin-area/business-list" class="menu-item">
+        <i class="fas fa-briefcase"></i> Business List
+      </a>      
+      <a href="/business/business-setting/setting" class="menu-item">
         <i class="fas fa-cog"></i> Settings
       </a>
     </ul>
