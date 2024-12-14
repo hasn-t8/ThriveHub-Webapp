@@ -174,9 +174,9 @@
       </a>
       <a href="/admin-area/business-list" class="menu-item">
         <i class="fas fa-briefcase"></i> Business List
-      </a>      
+      <!-- </a>      
       <a href="/business/business-setting/setting" class="menu-item">
-        <i class="fas fa-cog"></i> Settings
+        <i class="fas fa-cog"></i> Settings -->
       </a>
     </ul>
   
