@@ -26,6 +26,7 @@ font-size: 2rem;
 font-weight: bold;
 color: #333;
 margin: 0;
+padding-left: 38px;
 }
 .divider {
 border: none;
@@ -34,10 +35,13 @@ background-color: #dfe6ed;
 margin: 20px 0;
 }
 .heading {
-font-size: x-large;
-font-weight: 700;
-text-align: center;
-margin-bottom: 15px;
+    font-size: x-large;
+    font-weight: 700;
+    text-align: center;
+    color: black;
+    margin-bottom: 15px;
+    letter-spacing: normal;
+
 }
 
 .toggle-wrapper {
@@ -84,8 +88,7 @@ align-items: center;
 justify-content: center;
 gap: 0.5rem;
 width: fit-content;
-margin: au
-to;
+margin: auto;
 padding-bottom: 100px;
 }
 
@@ -117,6 +120,11 @@ padding-bottom: -3px;
 }
 .card-content {
 padding: 10px;
+}
+.card1-content {
+padding: 10px;
+padding-top: 9%;
+width: 95%;
 }
 button.button.active {
 background-color: grey;
@@ -164,9 +172,11 @@ display: flex;
 }
 
 .h2 {
-font-size: 28px;
-text-align: center;
-font-weight: 600;
+    font-size: 28px;
+    text-align: center;
+    /* font-weight: 600; */
+    padding-top: 5px;
+
 }
 
 .package-name {
@@ -311,7 +321,7 @@ font-weight: bold;
 			<div class="column is-4">
 			<div class="card1">
 				<!-- <div class="recommended-badge">Recommended</div> -->
-				<div class="card-content">
+				<div class="card1-content">
 				<div class="package-name">Basic</div>
 				<div class="price">$19<span>/m</span></div>
 				<div class="description">Let's open up more opportunities for your business</div>
@@ -365,7 +375,7 @@ font-weight: bold;
 					<div class="icon-item">
 					<span class="icon"><i class="fas fa-bell"></i></span>
 					<strong>Notifications</strong>
-					<div class="info">Receive priority notifications about new reviews and mentions of the company.</div>
+					<div class="info">Receive notifications about new reviews and mentions of the company.</div>
 					</div>
 					<div class="icon-item">
 					<span class="icon"><i class="fas fa-chart-line"></i></span>
@@ -425,7 +435,7 @@ font-weight: bold;
 		<div class="column is-4">
 			<div class="card1">
 			<!-- <div class="recommended-badge">Recommended</div> -->
-			<div class="card-content">
+			<div class="card1-content">
 				<div class="package-name">Basic</div>
 				<div class="price">$190<span>/y</span></div>
 				<div class="description">Let's open up more opportunities for your business</div>
@@ -478,7 +488,7 @@ font-weight: bold;
 				<div class="icon-item">
 					<span class="icon"><i class="fas fa-bell"></i></span>
 					<strong>Notifications</strong>
-					<div class="info">Receive priority notifications about new reviews and mentions of the company.</div>
+					<div class="info">Receive notifications about new reviews and mentions of the company.</div>
 				</div>
 				<div class="icon-item">
 					<span class="icon"><i class="fas fa-chart-line"></i></span>
