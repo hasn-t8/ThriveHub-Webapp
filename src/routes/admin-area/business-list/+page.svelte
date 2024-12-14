@@ -32,17 +32,8 @@
       },
     ];
   
-    function editBusiness(id) {
-      alert(`Edit business with ID: ${id}`);
-    }
-  
-    function deleteBusiness(id) {
-      if (confirm('Are you sure you want to delete this business?')) {
-        businesses = businesses.filter((business) => business.id !== id);
-      }
-    }
     function addBusiness() {
-  window.location.href = '/admin-area/addbusiness';
+  window.location.href = '/admin-area/add-company';
 }
   </script> 
   <div class="main-content">
