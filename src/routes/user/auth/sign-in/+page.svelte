@@ -178,8 +178,8 @@
 		margin-top: 1rem;
 	}
 	.cards {
-		margin-top: -185px;
-	}
+    margin-top: -10%;
+}	
 	.info-text {
 		padding-left: 15px;
 	}
@@ -200,9 +200,7 @@
 		padding: 22px;
 		margin-bottom: 20px;
 	}
-	.button.is-primary :hover {
-		background-color: rgb(0, 110, 184);
-	}
+
 	.info-icon {
 		padding-right: 11px;
 	}

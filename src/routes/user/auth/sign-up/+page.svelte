@@ -191,12 +191,13 @@
 		margin-top: 100px;
 		margin-bottom: 145px;
 	}
+	.cards {
+    margin-top: -15%;
+}
 	.login-card .button {
 		margin-top: 1rem;
 	}
-	.cards {
-		margin-top: -185px;
-	}
+
 	.info-text {
 		padding-left: 15px;
 	}
@@ -216,15 +217,10 @@
 		font-weight: 600;
 		padding: 22px;
 		margin-bottom: 20px;
-	}
-	.button.is-primary :hover {
-		background-color: rgb(0, 110, 184);
+	
 	}
 	.info-icon {
 		padding-right: 11px;
 	}
-	.has-text-right {
-		text-align: right !important;
-		margin-top: 4px;
-	}
+
 </style>
