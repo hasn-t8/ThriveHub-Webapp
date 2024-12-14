@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  	// @ts-ignore
   	import { API_BASE_URL } from '$lib/config'; // Assuming you have this in your config.ts
 
   let website = "";
@@ -64,6 +65,7 @@
         throw new Error("Authentication token not found in response.");
       }
     } catch (error) {
+      // @ts-ignore
       errorMessage = error.message;
     } finally {
       // Reset loading state
@@ -237,11 +239,7 @@
     }
   }
 /* Global Styles */
-  body {
-    font-family: 'Inter', sans-serif;
-    background-color: #E7F3FE;
-    height: auto;
-  }
+
   .container {
     max-width: 1200px;
     margin: auto;
@@ -280,7 +278,7 @@
     margin-top: 1rem;
   }
   .cards {
-    margin-top: -145px;
+    margin-top: -39%;
   }
   .info-text {
     padding-left: 15px;
@@ -311,8 +309,5 @@
   .info-icon {
     padding-right: 11px;
   }
-  .has-text-right {
-    text-align: right !important;
-    margin-top: 4px;
-  }
+ 
 </style>
