@@ -8,9 +8,12 @@
 	let businessProfile: Writable<ProfileData[]> = writable([]);
 
 
-	function editBusiness(id: number): void {
-		window.location.href = `/admin-area/edit-business/${id}`;
-	}
+	// function editBusiness(id: number): void {
+	// 	window.location.href = `/admin-area/edit-business/${id}`;
+	// }
+	function editBusiness(id: string) {
+    window.location.href = `/admin-area/edit-business/${id}`;
+  }
 
 	function addBusiness(): void {
 		window.location.href = '/admin-area/add-company';
@@ -75,7 +78,7 @@
 						</li>
 					</div>
 					<div class="business-actions">
-						<button class="custom-button edit" on:click={() => editBusiness(Number(business.id))}>Edit</button>
+						<button class="custom-button edit" on:click={() => editBusiness(business.id)}>Edit</button>
 					</div>
 				</div>
 			{/each}
