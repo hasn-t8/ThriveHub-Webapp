@@ -3,18 +3,20 @@
 	import { writable, get } from 'svelte/store';
 	import { getProfiles, saveBusinessProfile } from '$lib/stores/profile';
   
-	let selectedFileName = 'No file selected';
   
 	let businessProfile = writable({
-	  org_name: '',
-	  job_title: '',
-	  work_email: '',
-	  about_business: '',
-	  full_name: '',
-	  industry: '',
-	  business_website_url: ''
-	});
-  
+  org_name: '',
+  job_title: '',
+  work_email: '',
+  about_business: '',
+  full_name: '',
+  industry: '',
+  business_website_url: '',
+  profile_type: '',  // Add a default value
+  category: '',      // Add a default value
+  id: ''             // Add a default value
+});
+
 	// Handle form submission and collect data as JSON
 	async function addBusiness(event: Event) {
 	  event.preventDefault();
@@ -32,13 +34,16 @@
   
 	function resetForm() {
 	  businessProfile.set({
-		org_name: '',
-		job_title: '',
-		work_email: '',
-		about_business: '',
-		full_name: '',
-		industry: '',
-		business_website_url: ''
+		  org_name: '',
+		  job_title: '',
+		  work_email: '',
+		  about_business: '',
+		  full_name: '',
+		  industry: '',
+		  business_website_url: '',
+		  profile_type: '',
+		  category: '',
+		  id: ''
 	  });
 	}
   </script>

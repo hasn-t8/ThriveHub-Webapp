@@ -1,4 +1,12 @@
 export type ProfileData = {
+	job_title: string | undefined;
+	work_email: string | undefined;
+	about_business: string | undefined;
+	industry: string | undefined;
+	profile_type: string;
+	category: any;
+	business_website_url: any;
+	id:string;
 	fullName?: string;
 	email?: string;
 	dob?: string; // ISO date string (e.g., '2023-12-03')
