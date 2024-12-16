@@ -7,16 +7,17 @@
 
 	let businessProfile: Writable<ProfileData[]> = writable([]);
 
-	function editBusiness(id: string) {
-    window.location.href = `/admin-area/edit-business/${id}`;
-  }
+	function editBusiness(id: string | undefined) {
+		if (!id) {
+			console.error("Business ID is undefined");
+			alert("Failed to edit: Business ID is missing.");
+			return;
+		}
+		window.location.href = `/admin-area/edit-business/${id}`;
+	}
 
 	function addBusiness(): void {
 		window.location.href = '/admin-area/add-company';
-	}
-
-	function addBusinessProfile(newProfile: ProfileData): void {
-		businessProfile.update((profiles) => [...profiles, newProfile]);
 	}
 
 	async function fetchProfile(): Promise<void> {
@@ -43,7 +44,7 @@
 	});
 </script>
 
-<div class="main-content" style="height: 100vh; width:85%; justify-content:center; justify-items:flex-end">
+<div class="main-content">
 	<Sidemenu />
 	<div class="analytics-header">
 		<div class="header-top">
@@ -74,7 +75,7 @@
 						</li>
 					</div>
 					<div class="business-actions">
-						<button class="custom-button edit" on:click={() => editBusiness(business.id)}>Edit</button>
+						<button class="custom-button edit" on:click={() => editBusiness(business.profile_id)}>Edit</button>
 					</div>
 				</div>
 			{/each}
@@ -119,7 +120,6 @@
 		font-weight: bold;
 	}
 
-
 	.edit {
 		background-color: #007bff;
 		color: white;
@@ -130,84 +130,48 @@
 	.main-content {
 		margin-left: 200px;
 	}
+
 	.analytics-header {
-    margin-left: 50px;
-    padding: 20px;
-	width: 100%;
-    /* margin-right: 388px; */
-    /* background-color: transparent; */
-    /* align-content: center; */
-    /* align-items: flex-start; */
-    justify-self: flex-start;
-}
+		margin-left: 50px;
+		padding: 20px;
+		width: 100%;
+		justify-self: flex-start;
+	}
+
 	.header-top {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
+
 	.analytics-header h1 {
 		font-size: 2rem;
 		font-weight: bold;
 		color: #333;
 		margin: 0;
 	}
+
 	.divider {
 		border: none;
 		height: 1px;
 		background-color: #dfe6ed;
 		margin: 20px 0;
 	}
+
 	.business-list-container {
 		max-width: 800px;
 		margin: 0 auto;
 		padding: 20px;
 	}
+
 	.header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		margin-bottom: 20px;
 	}
+
 	.header .add-button {
 		cursor: pointer;
-	}
-	.header .add-button:hover {
-		background-color: #0056b3;
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-	}
-	.header .add-button:active {
-		background-color: #004080;
-	}
-	.business-list {
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-	}
-	.business-item {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		background-color: #f9f9f9;
-		border: 1px solid #ddd;
-		border-radius: 5px;
-		padding: 15px;
-		margin-bottom: 10px;
-	}
-	.business-item img {
-		width: 50px;
-		height: 50px;
-		border-radius: 5px;
-		margin-right: 15px;
-	}
-	.business-info {
-		flex-grow: 1;
-	}
-	.business-name {
-		font-weight: bold;
-		font-size: 18px;
-	}
-	.business-category {
-		color: gray;
-		font-size: 14px;
 	}
 </style>

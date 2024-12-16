@@ -3,6 +3,33 @@ import { API_BASE_URL } from '$lib/config';
 import { getJWT, logout } from '$lib/stores/auth';
 import type { ProfileData } from '$lib/types/Profile';
 
+
+export async function getProfiles() {
+    const JWT = getJWT();
+    console.log('getJWT from prof.ts:', JWT);
+
+    if (!JWT) {
+        goto('/user/auth/sign-in');
+        return false;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/businessprofiles`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${JWT}`
+        }
+    });
+
+    if(!response.ok) {
+        if(response.status === 401) {
+            logout();
+            goto('/user/auth/sign-in');
+        }
+    }
+
+    return await response.json();
+}
+
 /**
  * Save Business profile
  */
@@ -14,12 +41,10 @@ export async function saveBusinessProfile(profileData: ProfileData): Promise<num
         return false;
     }
 
-    // Dynamically filter out empty values
     const filterNonEmptyValues = (data: Record<string, string | undefined>) =>
         Object.entries(data).reduce(
             (acc, [key, value]) => {
                 if (value && value.trim() !== '') {
-                    // Check for non-empty strings
                     acc[key] = value;
                 }
                 return acc;
@@ -27,7 +52,6 @@ export async function saveBusinessProfile(profileData: ProfileData): Promise<num
             {} as Record<string, string>
         );
 
-    // Transform `ProfileData` into the required API format
     const apiRequestBody = {
         profileType: 'business',
         fullName: profileData.fullName,
@@ -63,6 +87,51 @@ export async function saveBusinessProfile(profileData: ProfileData): Promise<num
         return result.profile.profileId;
     } catch (error) {
         console.log(error);
+        throw error;
+    }
+}
+
+/**
+ * Update an existing Business profile
+ */
+export async function updateBusinessProfile(profileId: number, profileData: Partial<ProfileData>): Promise<boolean> {
+    const JWT = getJWT();
+
+    if (!JWT) {
+        goto('/user/auth/sign-in');
+        return false;
+    }
+
+    const apiRequestBody = {
+        profileData: {
+            org_name: profileData.org_name,
+            category: profileData.category,
+            business_website_url: profileData.business_website_url
+        }
+    };
+
+    console.log('apiRequestBody for updateBusinessProfile:', apiRequestBody);
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/businessprofiles/${profileId}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${JWT}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(apiRequestBody)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to update profile: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        console.log('Business profile updated successfully:', result);
+        alert('Business profile updated successfully!');
+        return true;
+    } catch (error) {
+        console.error(error);
         throw error;
     }
 }
