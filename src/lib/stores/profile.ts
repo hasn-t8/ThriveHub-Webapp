@@ -12,7 +12,7 @@ export async function getProfiles() {
 		return false;
 	}
 
-	const response = await fetch(`${API_BASE_URL}/businessprofiles`, {
+	const response = await fetch(`${API_BASE_URL}/profiles`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${JWT}`
@@ -71,7 +71,7 @@ export async function saveProfile(profileData: ProfileData): Promise<number | bo
 	console.log('apiRequestBody:', apiRequestBody);
 
 	try {
-		const response = await fetch(`${API_BASE_URL}/businessprofiles`, {
+		const response = await fetch(`${API_BASE_URL}/profiles`, {
 			method: 'POST',
 			headers: {
 				Authorization: `Bearer ${JWT}`,
@@ -85,14 +85,14 @@ export async function saveProfile(profileData: ProfileData): Promise<number | bo
 		}
 
 		const result = await response.json();
-		console.log('Profile saved with profile ID: ', result.profile.profileId);
-		alert('Profile submitted successfully!');
+		console.log('profile saved with profile id: ', result.profile.profileId);
 		return result.profile.profileId;
 	} catch (error) {
 		console.log(error);
 		throw error;
 	}
 }
+
 
 /**
  * Save Business profile
@@ -123,19 +123,19 @@ export async function saveBusinessProfile(profileData: ProfileData): Promise<num
 		profileType: 'business',
 		fullName: profileData.fullName,
 		profileData: filterNonEmptyValues({
-			org_name: profileData.org_name,
-			job_title: profileData.job_title,
-			work_email: profileData.work_email,
-			about_business: profileData.about_business,
-			industry: profileData.industry,
-			business_website_url: profileData.business_website_url
+		  org_name: profileData.org_name,
+		  job_title: profileData.job_title,
+		  work_email: profileData.work_email,
+		  about_business: profileData.about_business,
+		  industry: profileData.industry,
+		  business_website_url: profileData.business_website_url
 		})
-	};
-
+	  };
+	  
 	console.log('apiRequestBody for saveBusinessProfile:', apiRequestBody);
 
 	try {
-		const response = await fetch(`${API_BASE_URL}/businessprofiles`, {
+		const response = await fetch(`${API_BASE_URL}/profiles`, {
 			method: 'POST',
 			headers: {
 				Authorization: `Bearer ${JWT}`,
@@ -149,8 +149,7 @@ export async function saveBusinessProfile(profileData: ProfileData): Promise<num
 		}
 
 		const result = await response.json();
-		console.log('Business profile saved with profile ID: ', result.profile.profileId);
-		alert('Business profile submitted successfully!');
+		console.log('Business profile saved with profile id: ', result.profile.profileId);
 		return result.profile.profileId;
 	} catch (error) {
 		console.log(error);

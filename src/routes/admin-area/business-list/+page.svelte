@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Sidemenu from '../components/Sidemenu.svelte';
-	import { getProfiles } from '$lib/stores/profile';
+	import { getProfiles } from '$lib/stores/business';
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import type { ProfileData } from '$lib/types/Profile';
