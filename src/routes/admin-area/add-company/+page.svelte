@@ -11,14 +11,17 @@
 		full_name: '',
 		industry: '',
 		business_website_url: '',
-		profile_type: '', // Add a default value
-		category: '', // Add a default value
-		id: '' // Add a default value
+		profile_type: '',
+		category: '',
+		id: ''
 	});
+
+	let errorMessage = writable('');
 
 	// Handle form submission and collect data as JSON
 	async function addBusiness(event: Event) {
 		event.preventDefault();
+		errorMessage.set('');
 
 		const currentProfile = get(businessProfile);
 		console.log('Saving profile:', currentProfile);
@@ -26,8 +29,14 @@
 		try {
 			const result = await saveBusinessProfile(currentProfile);
 			console.log('Profile saved successfully:', result);
-		} catch (error) {
-			console.error('An error occurred while saving the profile:', error);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.error('An error occurred while saving the profile:', error);
+				errorMessage.set(`Form submission failed due to: ${error.message}`);
+			} else {
+				console.error('An unexpected error occurred:', error);
+				errorMessage.set('Form submission failed due to an unknown error.');
+			}
 		}
 	}
 
@@ -44,6 +53,7 @@
 			category: '',
 			id: ''
 		});
+		errorMessage.set('');
 	}
 </script>
 
@@ -56,6 +66,10 @@
 		</div>
 		<hr class="divider" />
 	</div>
+
+	{#if $errorMessage}
+		<div class="notification is-danger">{$errorMessage}</div>
+	{/if}
 
 	<div class="stats-section">
 		<div class="card">
