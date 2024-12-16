@@ -1,19 +1,8 @@
 <script lang="ts">
 	import Sidemenu from '../components/Sidemenu.svelte';
-	import { writable } from 'svelte/store';
+	import { writable, get } from 'svelte/store';
+	import { getProfiles, saveBusinessProfile } from '$lib/stores/business';
 
-	import { saveBusinessProfile } from '$lib/stores/profile';
-	import { onMount } from 'svelte';
-	let companyLogoPreview = '';
-	let selectedFileName = 'No file selected';
-	let companyName = '';
-	let description = '';
-	let fullName = '';
-	let jobTitle = '';
-	let email = '';
-	let companyCategory = '';
-	let companyUrl = '';
-	let companyDescription = '';
 	let businessProfile = writable({
 		org_name: '',
 		job_title: '',
@@ -21,37 +10,77 @@
 		about_business: '',
 		full_name: '',
 		industry: '',
-		business_website_url: ''
+		business_website_url: '',
+		profile_type: '',
+		category: '',
+		id: ''
 	});
 
+	let errorMessage = writable('');
 
-	function handleSubmit(event: Event) {
+	// Handle form submission and collect data as JSON
+	async function addBusiness(event: Event) {
 		event.preventDefault();
-		// Log the collected data as JSON
-		console.log('Form Data:', JSON.stringify('formData', null, 2));
+		errorMessage.set('');
+
+		const currentProfile = get(businessProfile);
+		console.log('Saving profile:', currentProfile);
+
+		try {
+			const result = await saveBusinessProfile(currentProfile);
+			console.log('Profile saved successfully:', result);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.error('An error occurred while saving the profile:', error);
+				errorMessage.set(`Form submission failed due to: ${error.message}`);
+			} else {
+				console.error('An unexpected error occurred:', error);
+				errorMessage.set('Form submission failed due to an unknown error.');
+			}
+		}
+	}
+
+	function resetForm() {
+		businessProfile.set({
+			org_name: '',
+			job_title: '',
+			work_email: '',
+			about_business: '',
+			full_name: '',
+			industry: '',
+			business_website_url: '',
+			profile_type: '',
+			category: '',
+			id: ''
+		});
+		errorMessage.set('');
 	}
 </script>
+
 <div class="main-content">
 	<Sidemenu />
-	<!-- Analytics Header -->
+
 	<div class="analytics-header">
 		<div class="header-top">
-			<h1>Add a new Company</h1>
-	
+			<h1>Add a New Company</h1>
 		</div>
 		<hr class="divider" />
 	</div>
+
+	{#if $errorMessage}
+		<div class="notification is-danger">{$errorMessage}</div>
+	{/if}
+
 	<div class="stats-section">
 		<div class="card">
-			<!-- <h1 class="title">Company Details</h1> -->
-			<form on:submit={handleSubmit}>
+			<form on:submit={addBusiness}>
 				<div class="columns is-multiline">
 					<div class="column is-half">
 						<label class="label">Company Name</label>
 						<input
 							class="input"
 							type="text"
-							bind:value={companyName}
+							bind:value={$businessProfile.org_name}
 							placeholder="Enter your company name"
 						/>
 					</div>
@@ -61,7 +90,7 @@
 						<input
 							class="input"
 							type="text"
-							bind:value={companyUrl}
+							bind:value={$businessProfile.business_website_url}
 							placeholder="www.company.com"
 						/>
 					</div>
@@ -71,55 +100,56 @@
 						<input
 							class="input"
 							type="text"
-							bind:value={fullName}
+							bind:value={$businessProfile.full_name}
 							placeholder="Enter your full name"
 						/>
 					</div>
 
 					<div class="column is-half">
-						<!-- svelte-ignore a11y_label_has_associated_control -->
 						<label class="label">Job Title</label>
 						<input
 							class="input"
 							type="text"
-							bind:value={jobTitle}
+							bind:value={$businessProfile.job_title}
 							placeholder="Enter your job title"
 						/>
 					</div>
 
 					<div class="column is-half">
 						<label class="label">Work Email</label>
-						<input class="input" type="email" bind:value={email} placeholder="Enter your email" />
+						<input
+							class="input"
+							type="email"
+							bind:value={$businessProfile.work_email}
+							placeholder="Enter your email"
+						/>
 					</div>
 
 					<div class="column is-half">
 						<label class="label">Business Category</label>
-						<select class="input" bind:value={companyCategory}>
+						<select class="input" bind:value={$businessProfile.industry}>
 							<option value="Tech">Tech</option>
 							<option value="E-commerce">E-commerce</option>
 							<option value="Wellness">Wellness</option>
 							<option value="Education">Education</option>
-							<option value="Finance">Finance
-							</option>
+							<option value="Finance">Finance</option>
 							<option value="Home Electronics">Home Electronics</option>
-
 						</select>
 					</div>
+
 					<div class="column is-full">
 						<label class="label">A Short Description</label>
 						<textarea
 							class="textarea"
-							bind:value={description}
+							bind:value={$businessProfile.about_business}
 							placeholder="Enter a short description"
 						></textarea>
 					</div>
-					<div class="column is-full">
-						<div class="column is-full is-flex is-justify-content-flex-end">
-							<button class="button is-light mr-5">Cancel</button>
-							<button type="submit" class="button is-primary">Save Company</button>
-						</div>
-					</div>
 
+					<div class="column is-full is-flex is-justify-content-flex-end">
+						<button type="button" class="button is-light mr-5" on:click={resetForm}>Cancel</button>
+						<button type="submit" class="button is-primary">Save Company</button>
+					</div>
 				</div>
 			</form>
 		</div>
@@ -136,7 +166,6 @@
 		background-color: #f4faff;
 	}
 
-	
 	.analytics-header h1 {
 		font-size: 2rem;
 		font-weight: bold;
@@ -160,6 +189,4 @@
 		background-color: #f4faff;
 		margin-top: -40px;
 	}
-
-
 </style>

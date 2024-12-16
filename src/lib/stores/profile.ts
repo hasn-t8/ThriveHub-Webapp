@@ -123,10 +123,15 @@ export async function saveBusinessProfile(profileData: ProfileData): Promise<num
 		profileType: 'business',
 		fullName: profileData.fullName,
 		profileData: filterNonEmptyValues({
-			org_name: profileData.org_name
+		  org_name: profileData.org_name,
+		  job_title: profileData.job_title,
+		  work_email: profileData.work_email,
+		  about_business: profileData.about_business,
+		  industry: profileData.industry,
+		  business_website_url: profileData.business_website_url
 		})
-	};
-
+	  };
+	  
 	console.log('apiRequestBody for saveBusinessProfile:', apiRequestBody);
 
 	try {

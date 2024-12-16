@@ -1,54 +1,113 @@
-<script>
+<script lang="ts">
 	// @ts-nocheck
 
 	import Sidemenu from '../components/Sidemenu.svelte';
 	import { onMount } from 'svelte';
 
-	let searchQuery = '';
+	// Props from the load function
+	export let profile: any;  
+
+	// State management
+	let isEditable = false; // Default to read-only
+
+	// Pre-filled form fields
+	let companyName = profile?.org_name || '';
+	let companyUrl = profile?.business_website_url || '';
+	let fullName = profile?.full_name || '';
+	let jobTitle = profile?.job_title || '';
+	let email = profile?.work_email || '';
+	let companyCategory = profile?.industry || '';
+	let companyDescription = profile?.about_business || '';
+
+	// Additional Form Variables
 	let companyLogoPreview = '';
 	let selectedFileName = 'No file selected';
-	let companyName = '';
-	let description = '';
-	let fullName = '';
-	let jobTitle = '';
-	let email = '';
-	let companyCategory = '';
-	let companyUrl = '';
-	let companyDescription = '';
 
-	let availableKeyFeatures = ['High Reliable Uptime', 'Affordable Plans', 'Easy-to-Use Control Panel', 'Scalability', 'Free Domain Name', 'Security Features', '24/7 Customer Support'];
+	// Key Features
+	let availableKeyFeatures = [
+		'High Reliable Uptime', 
+		'Affordable Plans', 
+		'Easy-to-Use Control Panel', 
+		'Scalability', 
+		'Free Domain Name', 
+		'Security Features', 
+		'24/7 Customer Support'
+	];
 	let keyFeatureTitle = '';
 	let customKeyFeatureTitle = '';
 	let keyFeatureDescription = '';
-	let keyFeatures = [];
+	let keyFeatures: { title: string; description: string }[] = [];
 
-	let availableWhyChoose = ['High Reliable Uptime', 'Affordable Plans', 'Easy-to-Use Control Panel', 'Scalability', 'Free Domain Name', 'Security Features', '24/7 Customer Support'];
+	// Why Choose
+	let availableWhyChoose = [...availableKeyFeatures];
 	let whyChooseTitle = '';
 	let customWhyChooseTitle = '';
 	let whyChooseDescription = '';
-	let whyChoose = [];
+	let whyChoose: { title: string; description: string }[] = [];
 
-	// Function to handle logo file upload
-	function handleLogoUpload(event) {
-		const file = event.target.files[0];
-		if (file) {
-			selectedFileName = file.name;
-			const reader = new FileReader();
-			reader.onload = () => {
-				companyLogoPreview = reader.result;
-			};
-			reader.readAsDataURL(file);
-		} else {
-			selectedFileName = 'No file selected';
-			companyLogoPreview = '';
+	// Function to toggle edit mode
+	function toggleEdit() {
+		isEditable = !isEditable;
+	}
+
+	// Form submission handler
+	async function handleSubmit(event: Event) {
+		event.preventDefault();
+
+		const updatedProfile = {
+			id: profile.id,
+			org_name: companyName,
+			business_website_url: companyUrl,
+			full_name: fullName,
+			job_title: jobTitle,
+			work_email: email,
+			industry: companyCategory,
+			about_business: companyDescription
+		};
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/profiles/${profile.id}`, {
+				method: 'PUT',
+				headers: {
+					Authorization: `Bearer ${getJWT()}`,
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(updatedProfile)
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to update the business profile.');
+			}
+
+			const result = await response.json();
+			console.log('Updated Profile:', result);
+			alert('Profile updated successfully!');
+		} catch (error) {
+			console.error('Error:', error);
+			alert('Failed to update the profile.');
 		}
 	}
 
+	// Handle file upload
+	function handleLogoUpload(event: Event) {
+		const file = (event.target as HTMLInputElement).files?.[0];
+		if (file) {
+			selectedFileName = file.name;
+			const reader = new FileReader();
+			reader.onload = () => (companyLogoPreview = reader.result as string);
+			reader.readAsDataURL(file);
+		} else {
+			removeLogo();
+		}
+	}
+
+	// Remove logo
 	function removeLogo() {
 		companyLogoPreview = '';
 		selectedFileName = 'No file selected';
 	}
 
+	// Manage Key Features
 	function addCustomKeyFeature() {
 		if (customKeyFeatureTitle) {
 			availableKeyFeatures = [...availableKeyFeatures, customKeyFeatureTitle];
@@ -64,46 +123,17 @@
 
 	function addKeyFeature() {
 		if (keyFeatureTitle && keyFeatureDescription) {
-			keyFeatures = [
-				...keyFeatures,
-				{ title: keyFeatureTitle, description: keyFeatureDescription }
-			];
+			keyFeatures = [...keyFeatures, { title: keyFeatureTitle, description: keyFeatureDescription }];
 			keyFeatureTitle = '';
 			keyFeatureDescription = '';
 		}
 	}
 
-	function removeKeyFeature(index) {
+	function removeKeyFeature(index: number) {
 		keyFeatures = keyFeatures.filter((_, i) => i !== index);
 	}
 
-	onMount(() => {
-		console.log('Component Mounted');
-	});
-
-	// Handle form submission and collect data as JSON
-	function handleSubmit(event) {
-		event.preventDefault(); // Prevent the default form submission behavior
-
-		// Create the JSON object with the collected data
-		const formData = {
-			companyName,
-			companyCategory,
-			companyUrl,
-			companyLogoPreview,
-			companyDescription,
-			keyFeatures,
-			whyChoose
-		};
-
-		// Log the collected data as JSON
-		console.log('Form Data:', JSON.stringify(formData, null, 2));
-	}
-
-	onMount(() => {
-		console.log('Component Mounted');
-	});
-
+	// Manage Why Choose
 	function addCustomWhyChoose() {
 		if (customWhyChooseTitle) {
 			availableWhyChoose = [...availableWhyChoose, customWhyChooseTitle];
@@ -125,7 +155,7 @@
 		}
 	}
 
-	function removeWhyChoose(index) {
+	function removeWhyChoose(index: number) {
 		whyChoose = whyChoose.filter((_, i) => i !== index);
 	}
 
@@ -133,21 +163,26 @@
 		console.log('Component Mounted');
 	});
 </script>
-
 <div class="main-content">
 	<Sidemenu />
 	<div class="analytics-header">
 		<hr class="divider" />
 	</div>
 
+	<!-- Company Details Form -->
 	<div class="stats-section">
 		<div class="card">
 			<h1 class="title">Company Details</h1>
 			<div class="column is-full is-flex is-justify-content-flex-end">
-				<button type="submit" class="button is-primary">Edit</button>
+				<!-- Toggle Button -->
+				<button type="button" class="button is-primary" on:click={toggleEdit}>
+					{isEditable ? 'Save' : 'Edit'}
+				</button>
 			</div>
-			<form on:submit={handleSubmit}>
+
+			<form on:submit|preventDefault={handleSubmit}>
 				<div class="columns is-multiline">
+					<!-- Company Name -->
 					<div class="column is-half">
 						<label class="label">Company Name</label>
 						<input
@@ -155,9 +190,11 @@
 							type="text"
 							bind:value={companyName}
 							placeholder="Enter your company name"
+							disabled={!isEditable}
 						/>
 					</div>
 
+					<!-- Business Website URL -->
 					<div class="column is-half">
 						<label class="label">Business Website URL</label>
 						<input
@@ -165,9 +202,11 @@
 							type="text"
 							bind:value={companyUrl}
 							placeholder="www.company.com"
+							disabled={!isEditable}
 						/>
 					</div>
 
+					<!-- Full Name -->
 					<div class="column is-half">
 						<label class="label">Full Name</label>
 						<input
@@ -175,46 +214,64 @@
 							type="text"
 							bind:value={fullName}
 							placeholder="Enter your full name"
+							disabled={!isEditable}
 						/>
 					</div>
 
+					<!-- Job Title -->
 					<div class="column is-half">
-						<!-- svelte-ignore a11y_label_has_associated_control -->
 						<label class="label">Job Title</label>
 						<input
 							class="input"
 							type="text"
 							bind:value={jobTitle}
 							placeholder="Enter your job title"
+							disabled={!isEditable}
 						/>
 					</div>
 
+					<!-- Work Email -->
 					<div class="column is-half">
 						<label class="label">Work Email</label>
-						<input class="input" type="email" bind:value={email} placeholder="Enter your email" />
+						<input
+							class="input"
+							type="email"
+							bind:value={email}
+							placeholder="Enter your email"
+							disabled={!isEditable}
+						/>
 					</div>
 
+					<!-- Business Category -->
 					<div class="column is-half">
 						<label class="label">Business Category</label>
-						<select class="input" bind:value={companyCategory}>
+						<select class="input" bind:value={companyCategory} disabled={!isEditable}>
 							<option value="Tech">Tech</option>
 							<option value="E-commerce">E-commerce</option>
 							<option value="Wellness">Wellness</option>
 							<option value="Education">Education</option>
-							<option value="Finance">Finance
-							</option>
+							<option value="Finance">Finance</option>
 							<option value="Home Electronics">Home Electronics</option>
-
 						</select>
 					</div>
+
+					<!-- Company Description -->
 					<div class="column is-full">
 						<label class="label">A Short Description</label>
 						<textarea
 							class="textarea"
-							bind:value={description}
+							bind:value={companyDescription}
 							placeholder="Enter a short description"
+							readonly={!isEditable}
 						></textarea>
 					</div>
+
+					<!-- Submit Button: Show only if in edit mode -->
+					{#if isEditable}
+						<div class="column is-full is-flex is-justify-content-flex-end">
+							<button type="submit" class="button is-success">Save Changes</button>
+						</div>
+					{/if}
 				</div>
 			</form>
 		</div>
