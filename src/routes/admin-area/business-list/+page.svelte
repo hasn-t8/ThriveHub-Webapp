@@ -7,7 +7,7 @@
 
 	let businessProfile: Writable<ProfileData[]> = writable([]);
 
-	function editBusiness(id: string | undefined) {
+	function editBusiness(id: number | undefined) {
 		if (!id) {
 			console.error('Business ID is undefined');
 			alert('Failed to edit: Business ID is missing.');
@@ -72,7 +72,7 @@
 			</li>
 		</div>
 		<div class="business-actions">
-			<button class="custom-button edit" on:click={() => editBusiness(item.id)}>Edit</button>
+			<button class="custom-button edit" on:click={() => editBusiness(item.business_profile_id)}>Edit</button>
 		</div>
 	</div>
 {/snippet}

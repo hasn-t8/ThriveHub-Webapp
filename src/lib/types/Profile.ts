@@ -7,7 +7,7 @@ export type ProfileData = {
 	category?: string;
 	business_website_url?: string;
 	profile_id?: string | number;
-	business_profile_id?: string | number;
+	business_profile_id?: number;
 	fullName?: string;
 	email?: string;
 	dob?: string; // ISO date string (e.g., '2023-12-03')

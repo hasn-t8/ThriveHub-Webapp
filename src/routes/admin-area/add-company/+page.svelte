@@ -62,7 +62,7 @@
 
 	<div class="analytics-header">
 		<div class="header-top">
-			<h1>Add a New Company</h1>
+			<span style="font-size:1.5rem">Add a New Organization</span>
 		</div>
 		<hr class="divider" />
 	</div>
