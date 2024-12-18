@@ -12,13 +12,13 @@ export async function getProfiles() {
 		return false;
 	}
 
-    const response = await fetch(`${API_BASE_URL}/admin/businessprofiles`, {
+	const response = await fetch(`${API_BASE_URL}/admin/businessprofiles`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${JWT}`
 		}
 	});
-	console.log('response from business-prof.ts:', response);
+	// console.log('response from business-prof.ts:', response);
 
 	if (!response.ok) {
 		if (response.status === 401) {
@@ -28,6 +28,38 @@ export async function getProfiles() {
 	}
 
 	return await response.json();
+}
+
+/**
+ * Delete a Business profile
+ */
+export async function deleteBusinessProfile(profileId: number): Promise<boolean> {
+	const JWT = getJWT();
+
+	if (!JWT) {
+		goto('/user/auth/sign-in');
+		return false;
+	}
+
+	try {
+		const response = await fetch(`${API_BASE_URL}/businessprofiles/${profileId}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${JWT}`
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(`Failed to delete profile: ${response.statusText}`);
+		}
+
+		console.log('Business profile deleted successfully');
+		alert('Business profile deleted successfully!');
+		return true;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 }
 
 /**
