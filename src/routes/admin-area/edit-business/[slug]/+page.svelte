@@ -24,16 +24,16 @@
 
 	// State management
 	let isEditable = false; // Default to read-only
-	let logoUrl: string = '';
-	theProfile.subscribe((profile) => {
-		logoUrl = profile.logo_url; // Update logoUrl whenever the profile changes
-	});
+	// let logoUrl: string = '';
+	// theProfile.subscribe((profile) => {
+	// 	logoUrl = profile.logo_url; // Update logoUrl whenever the profile changes
+	// });
 
-	function updateLogoUrl(url) {
-		theProfile.update((profile) => {
-			return { ...profile, logo_url: url };
-		});
-	}
+	// function updateLogoUrl(url) {
+	// 	theProfile.update((profile) => {
+	// 		return { ...profile, logo_url: url };
+	// 	});
+	// }
 
 	// Additional Form Variables
 	let companyLogoPreview = '';
@@ -66,6 +66,7 @@
 	async function fetchProfile(): Promise<void> {
 		try {
 			const profile: ProfileData = await getProfileById(slug);
+console.log('Profile: >>>>>>-----', profile.logo_url);
 
 			theProfile.set(profile);
 		} catch (error) {
@@ -306,7 +307,8 @@
 		</div>
 
 		<!-- Logo Section -->
-		<LogoUpload  bind:logoUrl on:logoChange={updateLogoUrl}></LogoUpload>
+		 {$theProfile.logo_url}
+		<LogoUpload  bind:value={$theProfile.logo_url}></LogoUpload>
 		<!-- <div class="stats-section">
 			<div class="box">
 				<div class="column is-half">
