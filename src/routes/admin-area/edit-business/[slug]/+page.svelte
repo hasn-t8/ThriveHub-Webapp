@@ -1,11 +1,16 @@
 <script lang="ts">
 	// @ts-nocheck
 
-	import Sidemenu from '../components/Sidemenu.svelte';
+	import Sidemenu from '../../components/Sidemenu.svelte';
 	import { onMount } from 'svelte';
 
 	// Props from the load function
-	export let profile: any;  
+	export let profile: any;
+
+	import { page } from '$app/stores';
+
+	// Access the slug dynamically
+	const { slug } = $page.params;
 
 	// State management
 	let isEditable = false; // Default to read-only
@@ -25,12 +30,12 @@
 
 	// Key Features
 	let availableKeyFeatures = [
-		'High Reliable Uptime', 
-		'Affordable Plans', 
-		'Easy-to-Use Control Panel', 
-		'Scalability', 
-		'Free Domain Name', 
-		'Security Features', 
+		'High Reliable Uptime',
+		'Affordable Plans',
+		'Easy-to-Use Control Panel',
+		'Scalability',
+		'Free Domain Name',
+		'Security Features',
 		'24/7 Customer Support'
 	];
 	let keyFeatureTitle = '';
@@ -123,7 +128,10 @@
 
 	function addKeyFeature() {
 		if (keyFeatureTitle && keyFeatureDescription) {
-			keyFeatures = [...keyFeatures, { title: keyFeatureTitle, description: keyFeatureDescription }];
+			keyFeatures = [
+				...keyFeatures,
+				{ title: keyFeatureTitle, description: keyFeatureDescription }
+			];
 			keyFeatureTitle = '';
 			keyFeatureDescription = '';
 		}
@@ -163,10 +171,13 @@
 		console.log('Component Mounted');
 	});
 </script>
+
 <div class="main-content">
 	<Sidemenu />
 	<div class="analytics-header">
-		<hr class="divider" />
+		<div class="header-top">
+			<span style="font-size:1.5rem">Edit {slug}</span>
+		</div>
 	</div>
 
 	<!-- Company Details Form -->
@@ -275,8 +286,8 @@
 				</div>
 			</form>
 		</div>
-</div>
-			<!-- Logo Section -->
+	</div>
+	<!-- Logo Section -->
 	<div class="stats-section">
 		<div class="box">
 			<div class="column is-half">
@@ -303,10 +314,10 @@
 			</div>
 		</div>
 	</div>
-			
-<div class="stats-section">
-	<div class="card">	
-	<!-- Key Features and Benefits Section -->
+
+	<div class="stats-section">
+		<div class="card">
+			<!-- Key Features and Benefits Section -->
 			<div class="column is-full">
 				<h1 class="title">Key Features and Benefits</h1>
 				<div class="columns is-multiline">
@@ -376,11 +387,11 @@
 					</tbody>
 				</table>
 			</div>
-</div>
-</div>
+		</div>
+	</div>
 
-<div class="stats-section">
-	<div class="card">
+	<div class="stats-section">
+		<div class="card">
 			<!-- Why Choose Section -->
 			<div class="column is-full">
 				<h1 class="title">Why Choose</h1>
@@ -451,12 +462,12 @@
 					</tbody>
 				</table>
 			</div>
-			
+
 			<div class="column is-full is-flex is-justify-content-flex-end">
 				<button type="submit" class="button is-primary">Submit</button>
 			</div>
 		</div>
-</div>
+	</div>
 </div>
 
 <style>
@@ -480,7 +491,7 @@
 		display: flex;
 		justify-content: space-between;
 		gap: 2px;
-		padding: 20px;
+		padding: 0 20px 0 20px;
 		border-radius: 10px;
 		background-color: #f4faff;
 	}
