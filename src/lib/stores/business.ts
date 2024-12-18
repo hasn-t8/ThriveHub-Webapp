@@ -3,6 +3,34 @@ import { API_BASE_URL } from '$lib/config';
 import { getJWT, logout } from '$lib/stores/auth';
 import type { ProfileData } from '$lib/types/Profile';
 
+export async function getProfileById(profilId: number) {
+	const JWT = getJWT();
+	console.log(JWT);
+
+	if (!JWT) {
+		goto('/user/auth/sign-in');
+		return false;
+	}
+
+	const response = await fetch(`${API_BASE_URL}/businessprofiles/${profilId}`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${JWT}`
+		}
+	});
+	// console.log('response from business-prof.ts:', response);
+
+	if (!response.ok) {
+		if (response.status === 401) {
+			logout();
+			goto('/user/auth/sign-in');
+		}
+	}
+
+	return await response.json();
+}
+
+
 export async function getProfiles() {
 	const JWT = getJWT();
 	console.log(JWT);
@@ -136,6 +164,26 @@ export async function updateBusinessProfile(
 		goto('/user/auth/sign-in');
 		return false;
 	}
+
+	const filterNonEmptyValues = (data: Record<string, string | undefined>) =>
+		Object.entries(data).reduce(
+			(acc, [key, value]) => {
+				if (value && value.trim() !== '') {
+					acc[key] = value;
+				}
+				return acc;
+			},
+			{} as Record<string, string>
+		);
+
+	console.log(
+		'filterNonEmptyValues:',
+		filterNonEmptyValues({
+			org_name: profileData.org_name,
+			category: profileData.category,
+			business_website_url: profileData.business_website_url
+		})
+	);
 
 	const apiRequestBody = {
 		profileData: {

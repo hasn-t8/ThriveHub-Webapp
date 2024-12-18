@@ -1,32 +1,29 @@
 <script lang="ts">
-	// @ts-nocheck
-
 	import Sidemenu from '../../components/Sidemenu.svelte';
-	import { getProfiles } from '$lib/stores/business';
+	import { updateBusinessProfile, getProfileById } from '$lib/stores/business';
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { page } from '$app/stores';
-	import type { ProfileData } from '$lib/types/Profile';
 
-	// Props from the load function
-	export let profile: any;
-	let theProfile: Writable<ProfileData> = writable();
-	// let theProfile: Writable<ProfileData | null> = writable(null);
+	const slug = Number($page.params.slug);
 
-	// Access the slug dynamically
-	const { slug } = $page.params;
+	let theProfile = writable({
+		org_name: '',
+		job_title: '',
+		work_email: '',
+		about_business: '',
+		full_name: '',
+		industry: '',
+		business_website_url: '',
+		profile_type: '',
+		category: '',
+		id: ''
+	});
+
+	
 
 	// State management
 	let isEditable = false; // Default to read-only
-
-	// Pre-filled form fields
-	let companyName = theProfile?.org_name || '';
-	let companyUrl = theProfile?.business_website_url || '';
-	let fullName = theProfile?.full_name || '';
-	let jobTitle = theProfile?.job_title || '';
-	let email = theProfile?.work_email || '';
-	let companyCategory = theProfile?.industry || '';
-	let companyDescription = theProfile?.about_business || '';
 
 	// Additional Form Variables
 	let companyLogoPreview = '';
@@ -54,12 +51,13 @@
 	let whyChooseDescription = '';
 	let whyChoose: { title: string; description: string }[] = [];
 
+	let errorMessage = writable('');
+
 	async function fetchProfile(): Promise<void> {
 		try {
-			const profiles: ProfileData = await getProfiles();
+			const profile: ProfileData = await getProfileById(slug);
 
-			theProfile.set(profiles[0]);
-			// console.log('Profiles:', profiles);
+			theProfile.set(profile);
 		} catch (error) {
 			console.error('Error fetching profiles:', error);
 		}
@@ -70,44 +68,20 @@
 	}
 
 	// Form submission handler
-	async function saveBusinessProfile(event: Event) {
-		event.preventDefault();
+	async function saveProfile(profileId: number) {
 		console.log('Submitting form...');
 
-		const updatedProfile = {
-			id: profile.id,
-			org_name,
-			business_website_url: companyUrl,
-			full_name: fullName,
-			job_title: jobTitle,
-			work_email: email,
-			industry: companyCategory,
-			about_business: companyDescription
-		};
-
-		console.log('Updated Profile:', updatedProfile);
-		return;
-
 		try {
-			const response = await fetch(`${API_BASE_URL}/profiles/${profile.id}`, {
-				method: 'PUT',
-				headers: {
-					Authorization: `Bearer ${getJWT()}`,
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(updatedProfile)
-			});
-
-			if (!response.ok) {
-				throw new Error('Failed to update the business profile.');
+			const result = await updateBusinessProfile(profileId, $theProfile);
+			console.log('Profile saved successfully:', result);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.error('An error occurred while saving the profile:', error);
+				errorMessage.set(`Form submission failed due to: ${error.message}`);
+			} else {
+				console.error('An unexpected error occurred:', error);
+				errorMessage.set('Form submission failed due to an unknown error.');
 			}
-
-			const result = await response.json();
-			console.log('Updated Profile:', result);
-			alert('Profile updated successfully!');
-		} catch (error) {
-			console.error('Error:', error);
-			alert('Failed to update the profile.');
 		}
 	}
 
@@ -244,25 +218,22 @@
 							<input
 								class="input"
 								type="text"
-								bind:value={companyUrl}
+								bind:value={$theProfile.business_website_url}
 								placeholder="www.company.com"
 								disabled={!isEditable}
 							/>
 						</div>
 
-						<!-- Full Name -->
-						<div class="column is-half">
+						<!-- <div class="column is-half">
 							<label class="label">Full Name</label>
 							<input
 								class="input"
 								type="text"
-								bind:value={fullName}
+								bind:value={$theProfile.full_name}
 								placeholder="Enter your full name"
 								disabled={!isEditable}
 							/>
 						</div>
-
-						<!-- Job Title -->
 						<div class="column is-half">
 							<label class="label">Job Title</label>
 							<input
@@ -272,7 +243,7 @@
 								placeholder="Enter your job title"
 								disabled={!isEditable}
 							/>
-						</div>
+						</div> -->
 
 						<!-- Work Email -->
 						<div class="column is-half">
@@ -280,16 +251,16 @@
 							<input
 								class="input"
 								type="email"
-								bind:value={email}
+								bind:value={$theProfile.work_email}
 								placeholder="Enter your email"
 								disabled={!isEditable}
 							/>
 						</div>
 
 						<!-- Business Category -->
-						<div class="column is-half">
+						<!-- <div class="column is-half">
 							<label class="label">Business Category</label>
-							<select class="input" bind:value={companyCategory} disabled={!isEditable}>
+							<select class="input" bind:value={$theProfile.category} disabled={!isEditable}>
 								<option value="Tech">Tech</option>
 								<option value="E-commerce">E-commerce</option>
 								<option value="Wellness">Wellness</option>
@@ -297,14 +268,14 @@
 								<option value="Finance">Finance</option>
 								<option value="Home Electronics">Home Electronics</option>
 							</select>
-						</div>
+						</div> -->
 
 						<!-- Company Description -->
 						<div class="column is-full">
 							<label class="label">A Short Description</label>
 							<textarea
 								class="textarea"
-								bind:value={companyDescription}
+								bind:value={$theProfile.business_website_url}
 								placeholder="Enter a short description"
 								readonly={!isEditable}
 							></textarea>
@@ -313,8 +284,9 @@
 						<!-- Submit Button: Show only if in edit mode -->
 						{#if isEditable}
 							<div class="column is-full is-flex is-justify-content-flex-end">
-								<button on:click={saveBusinessProfile} class="button is-success"
-									>Save Changes</button
+								<button
+									on:click={saveProfile($theProfile.business_profile_id)}
+									class="button is-success">Save Changes</button
 								>
 							</div>
 						{/if}

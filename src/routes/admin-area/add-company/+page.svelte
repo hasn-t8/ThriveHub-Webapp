@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Sidemenu from '../components/Sidemenu.svelte';
 	import { writable, get } from 'svelte/store';
-	import { getProfiles, saveBusinessProfile } from '$lib/stores/business';
+	import { saveBusinessProfile } from '$lib/stores/business';
 
 	let businessProfile = writable({
 		org_name: '',
