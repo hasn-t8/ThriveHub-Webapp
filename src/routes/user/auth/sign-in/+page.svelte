@@ -71,11 +71,12 @@
 				<h3 class="title is-4">Log in to Thrive Hub</h3>
 				<form>
 					<div class="field">
-						<label class="label">Email</label>
+						<label class="label" for="email">Email</label>
 						<div class="control">
 							<input
 								class="input"
 								type="email"
+								id="email"
 								placeholder="Enter your email"
 								bind:value={email}
 								on:input={validateForm}
@@ -83,10 +84,11 @@
 						</div>
 					</div>
 					<div class="field">
-						<label class="label">Password</label>
+						<label class="label" for="password">Password</label>
 						<div class="control">
 							<input
 								class="input"
+								id="password"
 								type="password"
 								placeholder="Enter your password"
 								bind:value={password}
@@ -178,8 +180,8 @@
 		margin-top: 1rem;
 	}
 	.cards {
-		margin-top: -185px;
-	}
+    margin-top: -10%;
+}	
 	.info-text {
 		padding-left: 15px;
 	}
@@ -189,20 +191,7 @@
 		font-weight: 600;
 		/* text-decoration: none; */
 	}
-	.button.is-primary {
-		background-color: lightgrey;
-		border-color: transparent;
-		color: gray;
-		border-radius: 11px;
-	}
-	button.button.is-fullwidth {
-		font-weight: 600;
-		padding: 22px;
-		margin-bottom: 20px;
-	}
-	.button.is-primary :hover {
-		background-color: rgb(0, 110, 184);
-	}
+
 	.info-icon {
 		padding-right: 11px;
 	}

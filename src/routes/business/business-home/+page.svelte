@@ -1,3 +1,7 @@
+<script>
+	import AboutUsReviews from "../../components/reviews/about-us-reviews.svelte";
+
+</script>
 <div class="hero-section">
 	<div class="text-content">
 		<h1>
@@ -14,7 +18,7 @@
 	</div>
 </div>
 
-<div class="container">
+<div class="container-info">
 	<div class="has-text-centered mb-5">
 		<h2 class="title is-4">Why Trive Hub?</h2>
 	</div>
@@ -23,7 +27,7 @@
 		<div class="column is-half">
 			<div class="box is-flex is-align-items-center mb-4">
 				<div class="info-icon mr-4">
-					<figure class="image is-64x64">
+					<figure class="image is-84x84">
 						<img src="/assets/1.png" alt="Search Icon" />
 					</figure>
 				</div>
@@ -35,7 +39,7 @@
 
 			<div class="box is-flex is-align-items-center mb-4">
 				<div class="info-icon mr-4">
-					<figure class="image is-64x64">
+					<figure class="image is-84x84">
 						<img src="/assets/2.png" alt="Star Icon" />
 					</figure>
 				</div>
@@ -49,7 +53,7 @@
 		<div class="column is-half">
 			<div class="box is-flex is-align-items-center mb-4">
 				<div class="info-icon mr-4">
-					<figure class="image is-64x64">
+					<figure class="image is-84x84">
 						<img src="/assets/3.png" alt="Cogs Icon" />
 					</figure>
 				</div>
@@ -61,7 +65,7 @@
 
 			<div class="box is-flex is-align-items-center mb-4">
 				<div class="info-icon mr-4">
-					<figure class="image is-64x64">
+					<figure class="image is-84x84">
 						<img src="/assets/4.png" alt="Shield Icon" />
 					</figure>
 				</div>
@@ -76,136 +80,126 @@
 	</div>
 </div>
 
-<div class="download-container">
-	<div class="text-column">
-		<h2>Ready to Elevate your business?</h2>
-		<p>Download the Thrive Hub app today and unlock the power of genuine reviews!</p>
-		<p>
-			Join thousands of businesses transforming their customer experience. Don't miss out—get
-			started now!
-		</p>
-		<div class="download-buttons">
-			<img src="/assets/appstore.png" alt="App Store" />
-			<img src="/assets/googleplay.png" alt="Google Play" />
-		</div>
-	</div>
+<!-- App Section -->
+	<div class="container">
+		<div class="app-box">
+			<div class="columns is-vcentered is-align-items-stretch is-gapless app-columns">
+				<!-- Left Column for Text -->
+				<div
+					class="column is-three-fifths is-flex is-flex-direction-column is-justify-content-center"
+					style="padding-left: 7%!important;"
+				>
+					<h2 class="title is-3" style="color:white; padding-right: 15%;">
+						Ready to Elevate your business?					</h2>
+						<p style="margin-bottom:2%; margin-top: 3%;     width: 70%;color:white; font-weight: 500!important;">
+							Download the Thrive Hub app today and unlock the power of genuine reviews!</p>
+						<p style="margin-bottom:2%; margin-top: 3%;     width: 70%;color:white; font-weight: 500!important;">
+							Join thousands of businesses transforming their customer experience. Don't miss out—get
+							started now!
+						</p>
+					<div class="columns is-vcentered app-box-1">
+						<!-- First Image -->
+						<div class="column">
+							<figure class="image app-figure">
+								<img src="/assets/appstore.png" alt="Apple Store" />
+							</figure>
+						</div>
 
-	<!-- Right Image Column -->
-	<div class="image-column">
-		<img
-			src="/assets/Person holding a smartphone with a case (6) 1.png"
-			alt="Phone Mockup"
-			class="phone-image"
-		/>
-		<div class="stats-widget">
-			<img src="/assets/review 1.png" alt="Stats" />
-		</div>
-		<div class="chart-widget">
-			<img src="/assets/Frame 1000002452 1.png" alt="User Chart" />
-		</div>
-	</div>
-</div>
+						<!-- Second Image -->
+						<div class="column">
+							<figure class="image app-figure">
+								<img src="/assets/googleplay.png" alt="Google Playstore" />
+							</figure>
+						</div>
+					</div>
+				</div>
 
-<div class="container-reviews">
-	<h2>Reviews about us</h2>
-	<div class="review-cards">
-		<div class="review-card">
-			<div class="review-header">
-				<img src="/assets/Ellipse_41.png" alt="User" />
-				<div class="review-details">
-					<div class="reviewer-name">Alice Palmer</div>
-					<div class="review-rating">4.9 ⭐</div>
-					<div class="review-location">USA</div>
+				<div class="column is-flex">
+					<figure
+						class="image-download is-flex is-align-items-center is-justify-content-center is-align-self-flex-end"
+					>
+						<img src="/assets/Hand with Phone.png" alt="Illustration" />
+					</figure>
 				</div>
 			</div>
-			<div class="review-content">
-				<strong>GoDaddy</strong><br />
-				Good service. Been looking for a similar one for a long time.
-			</div>
-			<div class="review-footer">
-				<span>1 day ago</span>
-				<span>23 ❤️</span>
-			</div>
 		</div>
-		<div class="review-card">
-			<div class="review-header">
-				<img src="/assets/Ellipse_41.png" alt="User" />
-				<div class="review-details">
-					<div class="reviewer-name">Alice Palmer</div>
-					<div class="review-rating">4.9 ⭐</div>
-					<div class="review-location">USA</div>
+	</div>
+<AboutUsReviews/>
+<!-- About Us -->
+<section class="section about-section">
+	<div class="container">
+		<div class="columns is-vcentered is-align-items-stretch is-gapless">
+			<!-- Left Column for Text -->
+			<div class="column is-half is-flex is-flex-direction-column about1">
+				<h2 class="title is-3">About Us</h2>
+				<p>
+					Thrive Hub is your go-to app for exploring reviews, leaving feedback, and making purchases
+					through affiliate links. Powered by AI, it simplifies review analysis, helping users make
+					informed decisions.
+				</p>
+
+				<div class="about-box left is-flex-grow-1 is-align-items-center">
+					<p>
+						Businesses can create accounts, engage with customers, and promote their services—all in
+						one place. Thrive Hub makes reviews smarter and connections stronger.
+					</p>
 				</div>
 			</div>
-			<div class="review-content">
-				<strong>GoDaddy</strong><br />
-				Good service. Been looking for a similar one for a long time.
-			</div>
-			<div class="review-footer">
-				<span>1 day ago</span>
-				<span>23 ❤️</span>
-			</div>
-		</div>
-		<div class="review-card">
-			<div class="review-header">
-				<img src="/assets/Ellipse_41.png" alt="User" />
-				<div class="review-details">
-					<div class="reviewer-name">Alice Palmer</div>
-					<div class="review-rating">4.9 ⭐</div>
-					<div class="review-location">USA</div>
+			<div class="column about2">
+				<h2 class="title is-3 is-hidden">About Us</h2>
+				<div class="columns is-gapless is-flex is-align-items-stretch">
+					<!-- Center Column for Images and Stats -->
+					<div class="column is-half is-full-mobile is-flex is-flex-direction-column">
+						<!-- First Image -->
+						<div class="column pl-0">
+							<figure class="image is-5by4">
+								<img src="/assets/young-person-intership 1.png" alt="Team working together" />
+							</figure>
+						</div>
+						<div class="column pl-0">
+							<div class="stat-box is-flex-direction-row is-justify-content-space-around">
+								<div class="stat-number">70%</div>
+								<p class="stat-label">
+									<strong style="color:#ffffff!important">AI</strong> speeds up review analysis
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Center Column for Images and Stats -->
+					<div class="column is-half is-full-mobile">
+						<!-- Stat Box -->
+						<div class="column pr-0">
+							<div class="stat-box has-text-centered">
+								<!-- Smiley Icon -->
+								<h3 class="stat-value">
+									<img
+										src="/assets/smiley.png"
+										alt="Smiley Icon"
+										style="width: 25px; height: auto; margin-right: 10%; margin-left:-50%;"
+									/>
+									10k+
+								</h3>
+								<p class="stat-label">Happy Users</p>
+							</div>
+						</div>
+
+						<!-- First Image -->
+						<div class="column pr-0">
+							<figure class="image is-5by4">
+								<img
+									src="/assets/medium-shot-woman-holding-device 1.png"
+									alt="Team working together"
+								/>
+							</figure>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="review-content">
-				<strong>GoDaddy</strong><br />
-				Good service. Been looking for a similar one for a long time.
-			</div>
-			<div class="review-footer">
-				<span>1 day ago</span>
-				<span>23 ❤️</span>
-			</div>
 		</div>
 	</div>
-</div>
+</section>
 
-<div class="container-about">
-	<!-- Left Column -->
-	<div class="left-column">
-		<h2>About us</h2>
-		<p>
-			Thrive Hub is your go-to app for exploring reviews, leaving feedback, and making purchases
-			through affiliate links. Powered by AI, it simplifies review analysis, helping users make
-			informed decisions.
-		</p>
-		<div class="highlight-card">
-			Businesses can create accounts, engage with customers, and promote their services—all in one
-			place. Thrive Hub makes reviews smarter and connections stronger.
-		</div>
-	</div>
-
-	<!-- Right Column -->
-	<div class="right-column">
-		<!-- Info Card 1 -->
-		<!--  -->
-		<img src="/assets/young-person-intership_1.png" alt="User" />
-		<!-- </div> -->
-
-		<!-- Blue Widget 1 -->
-		<div class="blue-widget">
-			<div class="stat-number">10K+</div>
-			<div class="stat-text">Happy users</div>
-		</div>
-
-		<!-- Blue Widget 2 -->
-		<div class="blue-widget">
-			<div class="stat-number">70%</div>
-			<div class="stat-text">AI speeds up review analysis</div>
-		</div>
-
-		<!-- Info Card 2 -->
-		<div class="info-card">
-			<img src="/assets/medium-shot-woman-holding-device_1.png" alt="User" />
-		</div>
-	</div>
-</div>
 
 <div class="container">
 	<div class="mb-5">
@@ -310,22 +304,19 @@
 	.hero-section {
 		display: flex;
 		background-color: #ffffff;
-		/* max-width: 1340px; */
 		background-image: url('/assets/Mask_group.png'); /* Replace with your image path */
 		background-size: cover; /* Ensures the image covers the entire section */
 		background-position: center; /* Centers the image */
 		background-repeat: no-repeat; /* Prevents the image from repeating */
 	}
 	.columns.is-variable > .column {
-		/* padding-left: var(--columnGap); */
-		/* padding-right: var(--columnGap); */
+	
 		width: 50%;
 	}
 
 	.text-content {
 		flex: 1;
 		padding-top: 94px;
-		/* padding-left: 103px; */
 		padding-bottom: 95px;
 	}
 
@@ -337,7 +328,6 @@
 		letter-spacing: -2px;
 		line-height: 120%;
 		text-align: center;
-		/* justify-content: center; */
 	}
 
 	.text-content p {
@@ -354,10 +344,7 @@
 		background-color: #f0f0f0;
 		border-radius: 50px;
 		text-align: center;
-		/* padding: 10px; */
-		/* margin-top: 20px; */
 		width: 50%;
-		/* margin-left: 295px; */
 	}
 	.text-content .search-box input {
 		border: none;
@@ -382,20 +369,28 @@
 	}
 
 	.container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 20px;
+		max-width: 1340px;
+				margin: 0 auto;
+		padding: 30px;
 	}
+
+	.container-info {
+    max-width: 80%;
+    margin: 0 auto;
+    /* padding: 30px; */
+    padding-top: 64px;
+}
 
 	.has-text-centered {
 		text-align: center;
 	}
 
 	.title.is-4 {
-		font-size: 36px;
+		font-size: 36px;    text-align: justify;
 		font-weight: bold;
 		color: #333;
 		margin-bottom: 30px;
+		padding-left: 4%;
 	}
 	.title.is-6 {
 		font-size: 1rem;
@@ -416,281 +411,184 @@
 		background-color: transparent;
 		box-shadow: none;
 	}
-	.review-card {
-		background: white;
-		border-radius: 8px;
-		box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-		padding: 20px;
+	
+
+
+	/* ========================================
+  About Section Page Styling Starts Here
+======================================== */
+.about1 {
+		margin-right: 1% !important;
 	}
 
-	.review-card .review-header {
-		display: flex;
-		align-items: center;
-		margin-bottom: 10px;
+	.about2 {
+		margin-left: 1% !important;
 	}
 
-	.review-card .review-header img {
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		margin-right: 10px;
+	.about-section {
+		background: #ffffff;
 	}
 
-	.review-card .review-header .review-details {
-		font-size: 14px;
-		color: #333;
-	}
-
-	.review-card .review-header .review-details .reviewer-name {
-		font-weight: bold;
-		color: #333;
-	}
-
-	.review-card .review-header .review-details .review-rating {
-		color: #fbc02d;
-	}
-
-	.review-card .review-content {
-		font-size: 14px;
-		color: #555;
-		margin-top: 10px;
-	}
-
-	.review-card .review-footer {
-		display: flex;
-		justify-content: space-between;
-		margin-top: 10px;
-		font-size: 12px;
-		color: #777;
-	}
-
-	.container-about {
-		margin: 50px auto;
-		display: flex;
-		flex-wrap: wrap;
-		align-items: flex-start;
-		gap: 20px;
-		background-color: white;
-		padding: 6%;
-	}
-
-	.left-column {
-		flex: 1;
-		max-width: 50%;
-	}
-
-	.left-column h2 {
-		font-size: 28px;
-		font-weight: bold;
-		color: #333;
-		margin-bottom: 15px;
-	}
-
-	.left-column p {
-		font-size: 16px;
-		color: #555;
-		line-height: 1.6;
-		margin-bottom: 20px;
-	}
-
-	.left-column .highlight-card {
-		background-color: #d9ecff;
-		padding: 35px;
-		border-radius: 8px;
-		font-size: 16px;
-		color: #333;
+	.about-section p {
+		color: #81858e;
+		font-size: 1em;
+		width: 90%;
 		line-height: 1.5;
 	}
 
-	.right-column {
-		/* flex: 1.5; */
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 20px;
+	.about-box {
+		display: flex;
+		background: #e8f5fe;
+		border-radius: 10px;
+		padding: 2rem;
+		padding-top: 3%;
+		padding-bottom: 3%;
+		margin-bottom: 2%;
+		margin-top: 3%;
+		text-align: justify;
+		color: #555;
 	}
 
-	.info-card {
-		width: 100%;
-		border-radius: 8px;
-		height: 100px;
-		object-fit: cover;
-		margin-bottom: 106px;
-		margin-top: -115px;
-	}
-
-	.blue-widget {
-		background-color: #118bf6;
-		color: white;
-		border-radius: 8px;
-		padding: 55px;
-		text-align: center;
+	.stat-box {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		height: 50%;
-		width: 90%;
+		padding: 1rem;
+		background: #118cf6;
+		border-radius: 15px;
+		color: #ffffff;
+		height: 100%; /* Make the box fill its parent height */
 	}
-
-	.blue-widget .stat-number {
+	.stat-number {
 		font-size: 36px;
 		font-weight: bold;
 	}
 
-	.blue-widget .stat-text {
-		font-size: 16px;
-		margin-top: 5px;
+	.stat-box p,
+	.stat-box h3 {
+		margin: 0;
+		color: #ffffff;
+		width: 50%;
 	}
 
-	.info-card img {
-		width: 83%;
-		border-radius: 8px;
+	@media (max-width: 768px) {
+		.about2 {
+			margin-left: 0% !important;
+		}
+		.about-section {
+			padding-bottom: 0%;
+		}
+		.about-section > div > div > div.column.about2 > h2 {
+			margin: 0;
+			display: block !important;
+		}
+		.about-section > div > div > div.column.about2 > div {
+			flex-direction: column;
+		}
+		.about2
+			> div
+			> div.column.is-half.is-full-mobile.is-flex.is-flex-direction-column
+			> div:nth-child(1) {
+			padding-right: 0% !important;
+		}
+		.about2
+			> div
+			> div.column.is-half.is-full-mobile.is-flex.is-flex-direction-column
+			> div:nth-child(2) {
+			padding-right: 0% !important;
+		}
+		.about2 > div > div:nth-child(2) > div:nth-child(1) {
+			padding-left: 0% !important;
+		}
+		.about2 > div > div:nth-child(2) > div:nth-child(2) {
+			display: none !important;
+			padding-left: 0% !important;
+		}
+		.section.about-section > div > div {
+			display: flex !important;
+			flex-direction: column-reverse;
+		}
+		.is-half.is-flex.is-flex-direction-column.about1 > h2 {
+			display: none;
+		}
+		.is-half.is-flex.is-flex-direction-column.about1 {
+			margin-right: 0% !important;
+		}
 	}
 
-	.download-container {
-		background-color: #449ceb;
-		color: white;
-		/* border-radius: 15px; */
-		padding: 70px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		/* max-width: 1200px; */
-		/* width: 96%; */
-		/* margin: 50px auto; */
-		position: relative;
-		overflow: hidden;
-	}
-	.text-column {
-		flex: 1;
-		padding-right: 30px;
-	}
-
-	.text-column h2 {
-		font-size: 28px;
-		font-weight: bold;
-		width: 75%;
-		margin-bottom: 33px;
-	}
-
-	.text-column p {
-		font-size: 16px;
-		margin-bottom: 20px;
-		width: 80%;
-	}
-
-	.download-buttons {
-		display: flex;
-		gap: 10px;
-	}
-
-	.download-buttons img {
-		width: 150px;
-		cursor: pointer;
-	}
-
-	.image-column {
-		flex: 1;
-		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.phone-image {
-		position: relative;
-		z-index: 3;
-		/* width: 269px; */
-		/* height: auto; */
-		right: 12%;
-	}
-	.stats-widget {
-		position: absolute;
-		top: 32%;
-		left: 320px;
-
-		z-index: 29;
-	}
-	.chart-widget {
-		position: absolute;
-		z-index: 29;
-		top: 50%;
-		left: 320px;
-	}
-	.chart-widget img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.container-reviews {
-		padding: 70px;
-	}
-	.container-reviews h2 {
-		font-size: 36px;
+	.stat-value {
+		font-size: 1.5rem;
 		font-weight: bold;
 		color: #333;
-		margin-bottom: 20px;
+		width: 70%;
 	}
 
-	.review-cards {
-		display: flex;
-		justify-content: space-between;
-		gap: 20px;
-	}
-
-	.review-card {
-		flex: 1;
-		background: white;
-		border-radius: 8px;
-		box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-		padding: 20px;
-	}
-
-	.review-card .review-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 10px;
-	}
-
-	.review-header img {
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		margin-right: 10px;
-	}
-
-	.review-details {
-		flex: 1;
-	}
-
-	.review-details .reviewer-name {
-		font-size: 14px;
-		font-weight: bold;
-		color: #333;
-	}
-
-	.review-details .review-location {
-		font-size: 12px;
-		color: #777;
-	}
-
-	.review-content {
-		margin-top: 10px;
-		font-size: 14px;
+	.stat-label {
+		font-size: 1rem;
 		color: #555;
 	}
 
-	.review-footer {
-		margin-top: 10px;
-		display: flex;
-		justify-content: space-between;
-		font-size: 12px;
-		color: #777;
+	/* About Section Page Styling End */
+
+
+	/* ========================================
+  App Download Section Page Styling Starts Here
+======================================== */
+
+
+	.app-box {    background-color: #469dec;
+    /* border-radius: 30px; */
+    padding: 23px;
+    padding-top: 70px;
+
 	}
 
-	.review-footer span {
-		display: flex;
-		align-items: center;
+	.app-figure {
+		width: 190px !important;
+		margin-top: 3% !important;
+		margin-bottom: 10%;
 	}
+
+	.app-box-1 {
+		width: 60%;
+	}
+
+	.image-download img {
+		border-radius: 15px;
+		object-fit: cover;
+		width: 80%;
+		height: auto;
+		margin-top: 8%;
+		margin-right: 2%;
+	}
+
+	@media (max-width: 768px) {
+		.app-columns {
+			display: flex;
+			flex-direction: column-reverse; /* Stack elements on smaller screens */
+		}
+		.image-download img {
+			margin-right: 0%;
+		}
+
+		.app-box-1 {
+			width: 100%;
+		}
+
+	
+		.app-figure {
+			width: 85% !important;
+			margin-bottom: 0% !important;
+			margin-top: 0% !important;
+		}
+		.column.is-three-fifths.is-flex.is-flex-direction-column.is-justify-content-center
+			> div
+			> div:nth-child(2) {
+			margin-bottom: 8%;
+		}
+	}
+
+	/* App Download Section Page Styling End */
+
 </style>
