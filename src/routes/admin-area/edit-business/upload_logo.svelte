@@ -1,6 +1,8 @@
 <script lang="ts">
+    import { uploadBusinessLogo } from '$lib/stores/business';
 	let {
 		value = $bindable(),
+        businessProfileId = null,
 		selectedFileName = 'No file selected',
 		companyLogoPreview,
 		...props
@@ -14,6 +16,13 @@
 		const file = input && input.files ? input.files[0] : null;
 		if (file) {
 			selectedFileName = file.name;
+
+			// Validate file type (only images)
+			if (!file.type.startsWith('image/')) {
+				alert('Please select a valid image file!');
+				resetFileInput();
+				return;
+			}
 
 			// Create a preview of the image
 			const reader = new FileReader();
@@ -29,11 +38,26 @@
 		}
 	}
 
+	function resetFileInput() {
+		selectedFileName = 'No file selected';
+		companyLogoPreview = null;
+		value = null;
+	}
+
 	// Simulate upload action
-	function uploadLogo() {
+	async function uploadLogo() {
 		if (companyLogoPreview) {
-			alert(`Logo "${selectedFileName}" uploaded successfully!`);
-			// Add actual upload logic here (e.g., API call)
+			// alert(`Logo "${selectedFileName}" uploaded successfully!`);
+			const inputFile = document.querySelector('input[type="file"]') as HTMLInputElement;
+            const file = inputFile?.files?.[0];
+
+            if (!file) {
+            alert('Please select a file first!');
+            return;
+            }
+
+            const success = await uploadBusinessLogo(file, businessProfileId);
+            //TODO: Handle success and error
 		} else {
 			alert('Please select a file first!');
 		}
@@ -56,7 +80,12 @@
 			<!-- File Input -->
 			<div class="file has-name is-boxed">
 				<label class="file-label">
-					<input class="file-input" type="file" accept="image/*" on:change={handleLogoUpload} />
+					<input
+						class="file-input"
+						type="file"
+						accept="image/*"
+						on:change={handleLogoUpload}
+					/>
 					<span class="file-cta">
 						<span class="file-icon">
 							<i class="fas fa-upload"></i>
@@ -71,13 +100,19 @@
 			{#if companyLogoPreview}
 				<figure class="image is-128x128 mt-3">
 					<img
-						src={typeof companyLogoPreview === 'string' ? companyLogoPreview : ''}
+						src={typeof companyLogoPreview === 'string'
+							? companyLogoPreview
+							: ''}
 						alt="Logo Preview"
 					/>
 				</figure>
 				<div class="buttons mt-3">
-					<button class="button is-primary" on:click={uploadLogo}>Upload Logo</button>
-					<button class="button is-danger" on:click={removeLogo}>Remove Image</button>
+					<button class="button is-primary" on:click={uploadLogo}
+						>Upload Logo</button
+					>
+					<button class="button is-danger" on:click={removeLogo}
+						>Remove Image</button
+					>
 				</div>
 			{/if}
 		</div>

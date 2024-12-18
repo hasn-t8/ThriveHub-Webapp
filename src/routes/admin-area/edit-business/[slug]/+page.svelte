@@ -66,7 +66,7 @@
 	async function fetchProfile(): Promise<void> {
 		try {
 			const profile: ProfileData = await getProfileById(slug);
-console.log('Profile: >>>>>>-----', profile.logo_url);
+			console.log('Profile: >>>>>>-----', profile.logo_url);
 
 			theProfile.set(profile);
 		} catch (error) {
@@ -160,7 +160,10 @@ console.log('Profile: >>>>>>-----', profile.logo_url);
 
 	function addWhyChoose() {
 		if (whyChooseTitle && whyChooseDescription) {
-			whyChoose = [...whyChoose, { title: whyChooseTitle, description: whyChooseDescription }];
+			whyChoose = [
+				...whyChoose,
+				{ title: whyChooseTitle, description: whyChooseDescription }
+			];
 			whyChooseTitle = '';
 			whyChooseDescription = '';
 		}
@@ -171,7 +174,9 @@ console.log('Profile: >>>>>>-----', profile.logo_url);
 	}
 
 	function handleDelete(id: number) {
-		const confirmDelete = confirm('Are you sure you want to delete this business?');
+		const confirmDelete = confirm(
+			'Are you sure you want to delete this business?'
+		);
 		if (confirmDelete) {
 			console.log('Deleting business:', id);
 		}
@@ -203,7 +208,11 @@ console.log('Profile: >>>>>>-----', profile.logo_url);
 				<div class="column is-full is-flex is-justify-content-flex-end">
 					<!-- Toggle Button -->
 					{#if !isEditable}
-						<button type="button" class="button is-primary" on:click={toggleEdit}>
+						<button
+							type="button"
+							class="button is-primary"
+							on:click={toggleEdit}
+						>
 							{isEditable ? 'Save' : 'Edit'}
 						</button>
 					{/if}
@@ -307,8 +316,11 @@ console.log('Profile: >>>>>>-----', profile.logo_url);
 		</div>
 
 		<!-- Logo Section -->
-		 {$theProfile.logo_url}
-		<LogoUpload  bind:value={$theProfile.logo_url}></LogoUpload>
+		{$theProfile.logo_url}
+		<LogoUpload
+			bind:value={$theProfile.logo_url}
+			businessProfileId={$theProfile.business_profile_id}
+		></LogoUpload>
 		<!-- <div class="stats-section">
 			<div class="box">
 				<div class="column is-half">
@@ -357,8 +369,10 @@ console.log('Profile: >>>>>>-----', profile.logo_url);
 									bind:value={customKeyFeatureTitle}
 									placeholder="Enter custom title"
 								/>
-								<button class="button is-success mt-2" type="button" on:click={addCustomKeyFeature}
-									>✔</button
+								<button
+									class="button is-success mt-2"
+									type="button"
+									on:click={addCustomKeyFeature}>✔</button
 								>
 								<button
 									class="button is-danger mt-2"
@@ -368,7 +382,9 @@ console.log('Profile: >>>>>>-----', profile.logo_url);
 							{/if}
 						</div>
 						<div class="column is-half">
-							<label class="label" for="key-feature-description">Description</label>
+							<label class="label" for="key-feature-description"
+								>Description</label
+							>
 							<input
 								class="input"
 								id="key-feature-description"
@@ -378,8 +394,10 @@ console.log('Profile: >>>>>>-----', profile.logo_url);
 							/>
 						</div>
 						<div class="column is-full">
-							<button class="button is-primary mt-3" type="button" on:click={addKeyFeature}
-								>Add to Key Features Table</button
+							<button
+								class="button is-primary mt-3"
+								type="button"
+								on:click={addKeyFeature}>Add to Key Features Table</button
 							>
 						</div>
 					</div>
@@ -434,16 +452,22 @@ console.log('Profile: >>>>>>-----', profile.logo_url);
 									bind:value={customWhyChooseTitle}
 									placeholder="Enter custom title"
 								/>
-								<button class="button is-success mt-2" type="button" on:click={addCustomWhyChoose}
-									>✔</button
+								<button
+									class="button is-success mt-2"
+									type="button"
+									on:click={addCustomWhyChoose}>✔</button
 								>
-								<button class="button is-danger mt-2" type="button" on:click={cancelCustomWhyChoose}
-									>✘</button
+								<button
+									class="button is-danger mt-2"
+									type="button"
+									on:click={cancelCustomWhyChoose}>✘</button
 								>
 							{/if}
 						</div>
 						<div class="column is-half">
-							<label class="label" for="why-choose-description">Description</label>
+							<label class="label" for="why-choose-description"
+								>Description</label
+							>
 							<input
 								class="input"
 								id="why-choose-description"
@@ -453,8 +477,10 @@ console.log('Profile: >>>>>>-----', profile.logo_url);
 							/>
 						</div>
 						<div class="column is-full">
-							<button class="button is-primary mt-3" type="button" on:click={addWhyChoose}
-								>Add to Why Choose Table</button
+							<button
+								class="button is-primary mt-3"
+								type="button"
+								on:click={addWhyChoose}>Add to Why Choose Table</button
 							>
 						</div>
 					</div>
@@ -497,12 +523,16 @@ console.log('Profile: >>>>>>-----', profile.logo_url);
 				<!-- Delete this Business -->
 				<div class="column is-full">
 					<h1 class="title">Delete this Business}</h1>
-					<p>Once you delete a business, there is no going back. Please be certain.</p>
+					<p>
+						Once you delete a business, there is no going back. Please be
+						certain.
+					</p>
 
 					<button
 						class="button is-danger"
 						type="button"
-						on:click={handleDelete($theProfile.business_profile_id)}>Delete this Business</button
+						on:click={handleDelete($theProfile.business_profile_id)}
+						>Delete this Business</button
 					>
 				</div>
 			</div>
