@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { page } from '$app/stores';
+	import LogoUpload from '../upload_logo.svelte';
 
 	const slug = Number($page.params.slug);
 
@@ -17,13 +18,22 @@
 		business_website_url: '',
 		profile_type: '',
 		category: '',
-		id: ''
+		id: '',
+		logo_url: ''
 	});
-
-	
 
 	// State management
 	let isEditable = false; // Default to read-only
+	let logoUrl: string = '';
+	theProfile.subscribe((profile) => {
+		logoUrl = profile.logo_url; // Update logoUrl whenever the profile changes
+	});
+
+	function updateLogoUrl(url) {
+		theProfile.update((profile) => {
+			return { ...profile, logo_url: url };
+		});
+	}
 
 	// Additional Form Variables
 	let companyLogoPreview = '';
@@ -296,7 +306,8 @@
 		</div>
 
 		<!-- Logo Section -->
-		<div class="stats-section">
+		<LogoUpload  bind:logoUrl on:logoChange={updateLogoUrl}></LogoUpload>
+		<!-- <div class="stats-section">
 			<div class="box">
 				<div class="column is-half">
 					<h1 class="title">Logo</h1>
@@ -321,7 +332,7 @@
 					{/if}
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="stats-section">
 			<div class="card">
