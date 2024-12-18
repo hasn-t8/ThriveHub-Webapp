@@ -20,18 +20,20 @@
 		window.location.href = '/admin-area/add-company';
 	}
 
-	async function fetchProfile(): Promise<void> {
+	async function fetchProfiles(): Promise<void> {
 		try {
 			const profiles: ProfileData[] = await getProfiles();
 
 			businessProfile.set(profiles);
+			console.log('Profiles:', profiles);
+			
 		} catch (error) {
 			console.error('Error fetching profiles:', error);
 		}
 	}
 
 	onMount(() => {
-		fetchProfile();
+		fetchProfiles();
 	});
 </script>
 
