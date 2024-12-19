@@ -1,32 +1,39 @@
 <script lang="ts">
-	// @ts-nocheck
-
 	import Sidemenu from '../../components/Sidemenu.svelte';
-	import { getProfiles } from '$lib/stores/business';
+	import { updateBusinessProfile, getProfileById } from '$lib/stores/business';
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { page } from '$app/stores';
-	import type { ProfileData } from '$lib/types/Profile';
+	import LogoUpload from '../upload_logo.svelte';
 
-	// Props from the load function
-	export let profile: any;
-	let theProfile: Writable<ProfileData> = writable();
-	// let theProfile: Writable<ProfileData | null> = writable(null);
+	const slug = Number($page.params.slug);
 
-	// Access the slug dynamically
-	const { slug } = $page.params;
+	let theProfile = writable({
+		org_name: '',
+		job_title: '',
+		work_email: '',
+		about_business: '',
+		full_name: '',
+		industry: '',
+		business_website_url: '',
+		profile_type: '',
+		category: '',
+		id: '',
+		logo_url: ''
+	});
 
 	// State management
 	let isEditable = false; // Default to read-only
+	// let logoUrl: string = '';
+	// theProfile.subscribe((profile) => {
+	// 	logoUrl = profile.logo_url; // Update logoUrl whenever the profile changes
+	// });
 
-	// Pre-filled form fields
-	let companyName = theProfile?.org_name || '';
-	let companyUrl = theProfile?.business_website_url || '';
-	let fullName = theProfile?.full_name || '';
-	let jobTitle = theProfile?.job_title || '';
-	let email = theProfile?.work_email || '';
-	let companyCategory = theProfile?.industry || '';
-	let companyDescription = theProfile?.about_business || '';
+	// function updateLogoUrl(url) {
+	// 	theProfile.update((profile) => {
+	// 		return { ...profile, logo_url: url };
+	// 	});
+	// }
 
 	// Additional Form Variables
 	let companyLogoPreview = '';
@@ -54,12 +61,14 @@
 	let whyChooseDescription = '';
 	let whyChoose: { title: string; description: string }[] = [];
 
+	let errorMessage = writable('');
+
 	async function fetchProfile(): Promise<void> {
 		try {
-			const profiles: ProfileData = await getProfiles();
+			const profile: ProfileData = await getProfileById(slug);
+			console.log('Profile: >>>>>>-----', profile.logo_url);
 
-			theProfile.set(profiles[0]);
-			// console.log('Profiles:', profiles);
+			theProfile.set(profile);
 		} catch (error) {
 			console.error('Error fetching profiles:', error);
 		}
@@ -70,44 +79,20 @@
 	}
 
 	// Form submission handler
-	async function saveBusinessProfile(event: Event) {
-		event.preventDefault();
+	async function saveProfile(profileId: number) {
 		console.log('Submitting form...');
 
-		const updatedProfile = {
-			id: profile.id,
-			org_name,
-			business_website_url: companyUrl,
-			full_name: fullName,
-			job_title: jobTitle,
-			work_email: email,
-			industry: companyCategory,
-			about_business: companyDescription
-		};
-
-		console.log('Updated Profile:', updatedProfile);
-		return;
-
 		try {
-			const response = await fetch(`${API_BASE_URL}/profiles/${profile.id}`, {
-				method: 'PUT',
-				headers: {
-					Authorization: `Bearer ${getJWT()}`,
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(updatedProfile)
-			});
-
-			if (!response.ok) {
-				throw new Error('Failed to update the business profile.');
+			const result = await updateBusinessProfile(profileId, $theProfile);
+			console.log('Profile saved successfully:', result);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.error('An error occurred while saving the profile:', error);
+				errorMessage.set(`Form submission failed due to: ${error.message}`);
+			} else {
+				console.error('An unexpected error occurred:', error);
+				errorMessage.set('Form submission failed due to an unknown error.');
 			}
-
-			const result = await response.json();
-			console.log('Updated Profile:', result);
-			alert('Profile updated successfully!');
-		} catch (error) {
-			console.error('Error:', error);
-			alert('Failed to update the profile.');
 		}
 	}
 
@@ -175,7 +160,10 @@
 
 	function addWhyChoose() {
 		if (whyChooseTitle && whyChooseDescription) {
-			whyChoose = [...whyChoose, { title: whyChooseTitle, description: whyChooseDescription }];
+			whyChoose = [
+				...whyChoose,
+				{ title: whyChooseTitle, description: whyChooseDescription }
+			];
 			whyChooseTitle = '';
 			whyChooseDescription = '';
 		}
@@ -186,7 +174,9 @@
 	}
 
 	function handleDelete(id: number) {
-		const confirmDelete = confirm('Are you sure you want to delete this business?');
+		const confirmDelete = confirm(
+			'Are you sure you want to delete this business?'
+		);
 		if (confirmDelete) {
 			console.log('Deleting business:', id);
 		}
@@ -218,7 +208,11 @@
 				<div class="column is-full is-flex is-justify-content-flex-end">
 					<!-- Toggle Button -->
 					{#if !isEditable}
-						<button type="button" class="button is-primary" on:click={toggleEdit}>
+						<button
+							type="button"
+							class="button is-primary"
+							on:click={toggleEdit}
+						>
 							{isEditable ? 'Save' : 'Edit'}
 						</button>
 					{/if}
@@ -244,25 +238,22 @@
 							<input
 								class="input"
 								type="text"
-								bind:value={companyUrl}
+								bind:value={$theProfile.business_website_url}
 								placeholder="www.company.com"
 								disabled={!isEditable}
 							/>
 						</div>
 
-						<!-- Full Name -->
-						<div class="column is-half">
+						<!-- <div class="column is-half">
 							<label class="label">Full Name</label>
 							<input
 								class="input"
 								type="text"
-								bind:value={fullName}
+								bind:value={$theProfile.full_name}
 								placeholder="Enter your full name"
 								disabled={!isEditable}
 							/>
 						</div>
-
-						<!-- Job Title -->
 						<div class="column is-half">
 							<label class="label">Job Title</label>
 							<input
@@ -272,7 +263,7 @@
 								placeholder="Enter your job title"
 								disabled={!isEditable}
 							/>
-						</div>
+						</div> -->
 
 						<!-- Work Email -->
 						<div class="column is-half">
@@ -280,16 +271,16 @@
 							<input
 								class="input"
 								type="email"
-								bind:value={email}
+								bind:value={$theProfile.work_email}
 								placeholder="Enter your email"
 								disabled={!isEditable}
 							/>
 						</div>
 
 						<!-- Business Category -->
-						<div class="column is-half">
+						<!-- <div class="column is-half">
 							<label class="label">Business Category</label>
-							<select class="input" bind:value={companyCategory} disabled={!isEditable}>
+							<select class="input" bind:value={$theProfile.category} disabled={!isEditable}>
 								<option value="Tech">Tech</option>
 								<option value="E-commerce">E-commerce</option>
 								<option value="Wellness">Wellness</option>
@@ -297,14 +288,14 @@
 								<option value="Finance">Finance</option>
 								<option value="Home Electronics">Home Electronics</option>
 							</select>
-						</div>
+						</div> -->
 
 						<!-- Company Description -->
 						<div class="column is-full">
 							<label class="label">A Short Description</label>
 							<textarea
 								class="textarea"
-								bind:value={companyDescription}
+								bind:value={$theProfile.about_business}
 								placeholder="Enter a short description"
 								readonly={!isEditable}
 							></textarea>
@@ -313,8 +304,9 @@
 						<!-- Submit Button: Show only if in edit mode -->
 						{#if isEditable}
 							<div class="column is-full is-flex is-justify-content-flex-end">
-								<button on:click={saveBusinessProfile} class="button is-success"
-									>Save Changes</button
+								<button
+									on:click={saveProfile($theProfile.business_profile_id)}
+									class="button is-success">Save Changes</button
 								>
 							</div>
 						{/if}
@@ -324,32 +316,11 @@
 		</div>
 
 		<!-- Logo Section -->
-		<div class="stats-section">
-			<div class="box">
-				<div class="column is-half">
-					<h1 class="title">Logo</h1>
-					<div class="file has-name is-boxed">
-						<label class="file-label">
-							<input class="file-input" type="file" accept="image/*" on:change={handleLogoUpload} />
-							<span class="file-cta">
-								<span class="file-icon">
-									<i class="fas fa-upload"></i>
-								</span>
-								<span class="file-label">Choose a file…</span>
-							</span>
-							<span class="file-name">{selectedFileName}</span>
-						</label>
-					</div>
-
-					{#if companyLogoPreview}
-						<figure class="image is-128x128 mt-3">
-							<img src={companyLogoPreview} alt="Logo Preview" />
-						</figure>
-						<button class="button is-danger mt-3" on:click={removeLogo}>Remove Image</button>
-					{/if}
-				</div>
-			</div>
-		</div>
+		{$theProfile.logo_url}
+		<LogoUpload
+			bind:value={$theProfile.logo_url}
+			businessProfileId={$theProfile.business_profile_id}
+		></LogoUpload>
 
 		<div class="stats-section">
 			<div class="card">
@@ -372,8 +343,10 @@
 									bind:value={customKeyFeatureTitle}
 									placeholder="Enter custom title"
 								/>
-								<button class="button is-success mt-2" type="button" on:click={addCustomKeyFeature}
-									>✔</button
+								<button
+									class="button is-success mt-2"
+									type="button"
+									on:click={addCustomKeyFeature}>✔</button
 								>
 								<button
 									class="button is-danger mt-2"
@@ -383,7 +356,9 @@
 							{/if}
 						</div>
 						<div class="column is-half">
-							<label class="label" for="key-feature-description">Description</label>
+							<label class="label" for="key-feature-description"
+								>Description</label
+							>
 							<input
 								class="input"
 								id="key-feature-description"
@@ -393,8 +368,10 @@
 							/>
 						</div>
 						<div class="column is-full">
-							<button class="button is-primary mt-3" type="button" on:click={addKeyFeature}
-								>Add to Key Features Table</button
+							<button
+								class="button is-primary mt-3"
+								type="button"
+								on:click={addKeyFeature}>Add to Key Features Table</button
 							>
 						</div>
 					</div>
@@ -449,16 +426,22 @@
 									bind:value={customWhyChooseTitle}
 									placeholder="Enter custom title"
 								/>
-								<button class="button is-success mt-2" type="button" on:click={addCustomWhyChoose}
-									>✔</button
+								<button
+									class="button is-success mt-2"
+									type="button"
+									on:click={addCustomWhyChoose}>✔</button
 								>
-								<button class="button is-danger mt-2" type="button" on:click={cancelCustomWhyChoose}
-									>✘</button
+								<button
+									class="button is-danger mt-2"
+									type="button"
+									on:click={cancelCustomWhyChoose}>✘</button
 								>
 							{/if}
 						</div>
 						<div class="column is-half">
-							<label class="label" for="why-choose-description">Description</label>
+							<label class="label" for="why-choose-description"
+								>Description</label
+							>
 							<input
 								class="input"
 								id="why-choose-description"
@@ -468,8 +451,10 @@
 							/>
 						</div>
 						<div class="column is-full">
-							<button class="button is-primary mt-3" type="button" on:click={addWhyChoose}
-								>Add to Why Choose Table</button
+							<button
+								class="button is-primary mt-3"
+								type="button"
+								on:click={addWhyChoose}>Add to Why Choose Table</button
 							>
 						</div>
 					</div>
@@ -511,13 +496,17 @@
 			<div class="card">
 				<!-- Delete this Business -->
 				<div class="column is-full">
-					<h1 class="title">Delete this Business}</h1>
-					<p>Once you delete a business, there is no going back. Please be certain.</p>
+					<h1 class="title">Delete this Business</h1>
+					<p>
+						Once you delete a business, there is no going back. Please be
+						certain.
+					</p>
 
 					<button
 						class="button is-danger"
 						type="button"
-						on:click={handleDelete($theProfile.business_profile_id)}>Delete this Business</button
+						on:click={handleDelete($theProfile.business_profile_id)}
+						>Delete this Business</button
 					>
 				</div>
 			</div>
