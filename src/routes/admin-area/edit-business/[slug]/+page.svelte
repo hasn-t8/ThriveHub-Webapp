@@ -295,7 +295,7 @@
 							<label class="label">A Short Description</label>
 							<textarea
 								class="textarea"
-								bind:value={$theProfile.business_website_url}
+								bind:value={$theProfile.about_business}
 								placeholder="Enter a short description"
 								readonly={!isEditable}
 							></textarea>
@@ -321,32 +321,6 @@
 			bind:value={$theProfile.logo_url}
 			businessProfileId={$theProfile.business_profile_id}
 		></LogoUpload>
-		<!-- <div class="stats-section">
-			<div class="box">
-				<div class="column is-half">
-					<h1 class="title">Logo</h1>
-					<div class="file has-name is-boxed">
-						<label class="file-label">
-							<input class="file-input" type="file" accept="image/*" on:change={handleLogoUpload} />
-							<span class="file-cta">
-								<span class="file-icon">
-									<i class="fas fa-upload"></i>
-								</span>
-								<span class="file-label">Choose a file…</span>
-							</span>
-							<span class="file-name">{selectedFileName}</span>
-						</label>
-					</div>
-
-					{#if companyLogoPreview}
-						<figure class="image is-128x128 mt-3">
-							<img src={companyLogoPreview} alt="Logo Preview" />
-						</figure>
-						<button class="button is-danger mt-3" on:click={removeLogo}>Remove Image</button>
-					{/if}
-				</div>
-			</div>
-		</div> -->
 
 		<div class="stats-section">
 			<div class="card">
@@ -522,7 +496,7 @@
 			<div class="card">
 				<!-- Delete this Business -->
 				<div class="column is-full">
-					<h1 class="title">Delete this Business}</h1>
+					<h1 class="title">Delete this Business</h1>
 					<p>
 						Once you delete a business, there is no going back. Please be
 						certain.
