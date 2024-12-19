@@ -47,9 +47,9 @@
 
 <!-- Main Content -->
 <div class="container">
-	<div class="columns is-vcentered">
+	<div class="columns is-vcentered is-multiline">
 		<!-- Left Section -->
-		<div class="column is-half info-section">
+		<div class="column is-full-mobile is-half-tablet is-half-desktop info-section is-hidden-mobile">
 			<div class="cards">
 				{#each [{ icon: '/assets/1.png', title: 'Seamless Search Experience', text: 'Harness the power of AI to uncover top-rated reviews and recommendations with unparalleled ease.' }, { icon: '/assets/2.png', title: 'Authentic User Perspectives', text: 'Gain valuable insights from real users sharing their honest experiences with products and services.' }, { icon: '/assets/3.png', title: 'AI-Driven Review Summaries', text: 'Transform countless reviews into clear, meaningful summaries to simplify your decision-making process.' }, { icon: '/assets/4.png', title: 'Unfiltered and Reliable Feedback', text: 'Make confident choices backed by unbiased, trustworthy reviews from genuine users.' }] as item}
 					<div class="info-item">
@@ -66,15 +66,15 @@
 		</div>
 
 		<!-- Right Section -->
-		<div class="column is-half">
+		<div class="column is-full-mobile is-half-tablet is-half-desktop">
 			<div class="login-card">
 				<h3 class="title is-4">Log in to Thrive Hub</h3>
 				<form>
 					<div class="field">
-						<label class="label" for="email">Email</label>
+						<label class="label has-text-weight-medium" for="email">Email</label>
 						<div class="control">
 							<input
-								class="input"
+								class="input custom-input"
 								type="email"
 								id="email"
 								placeholder="Enter your email"
@@ -84,23 +84,21 @@
 						</div>
 					</div>
 					<div class="field">
-						<label class="label" for="password">Password</label>
+						<label class="label">Password</label>
 						<div class="control">
 							<input
-								class="input"
-								id="password"
+								class="input custom-input"
 								type="password"
 								placeholder="Enter your password"
 								bind:value={password}
 								on:input={validateForm}
 							/>
 						</div>
-						<p class="has-text-right"><a href="#">Forgot Password?</a></p>
+						<p class="has-text-right mt-5 "><a href="/user/auth/forgot_password" class="has-text-weight-medium is-underlined">Forgot Password ?</a></p>
 					</div>
 					<button
 						type="button"
-						class="button is-fullwidth is-primary"
-						style="color: white; background-color: #118BF6;"
+						class="button is-primary is-medium is-fullwidth"
 						on:click={handleLogin}
 						disabled={isLoginDisabled || isLoading}
 					>
@@ -111,7 +109,7 @@
 							Log in
 						{/if}
 					</button>
-					<p class="has-text-danger">{errorMessage}</p>
+					<p class="has-text-danger p-0">{errorMessage}</p>
 
 					<!-- <div class="field has-text-centered">
 						<p>Or log in with</p>
@@ -128,12 +126,28 @@
 							Continue with Facebook
 						</button>
 					</div> -->
+
 				</form>
-				<p class="has-text-centered">
+				<p class="has-text-centered mt-5">
 					Don’t have an account? <a href="/user/auth/sign-up">Create account</a>
 				</p>
 			</div>
 		</div>
+
+
+		<!-- Right Section -->
+		<div class="column is-full-mobile is-full-tablet is-full-deskto is-hidden-tablet">
+			<div class="login-card mt-0">
+				<h3 class="title is-4 has-text-centered">Are you a business?</h3>
+				<p class="mb-0 is-6 has-text-centered">Set up your business account on Thrive Hub for free</p>
+				<div class="is-flex is-flex-direction-column">
+					<button class="button is-primary is-medium">Log in</button>
+					<button class="button is-outlined is-medium">Sign up</button>
+				</div>
+			</div>
+		</div>
+
+
 	</div>
 </div>
 
@@ -141,7 +155,14 @@
 	.container {
 		max-width: 1200px;
 		margin: auto;
+		padding: 1rem;
 	}
+
+	.custom-input{
+		border-radius: 9px;
+		height: 3em;
+	}
+
 
 	.info-section {
 		margin-top: 2rem;
@@ -151,7 +172,12 @@
 		display: flex;
 		align-items: center;
 		margin-bottom: 1.5rem;
-		width: 80%;
+		width: 100%;
+	}
+
+	.info-item img {
+		max-width: 80px;
+		flex-shrink: 0;
 	}
 
 	.info-text h4 {
@@ -164,39 +190,86 @@
 		font-size: 0.9rem;
 		color: #6b6b6b;
 	}
+
 	.field {
 		border-radius: 11px;
 	}
+
 	.login-card {
 		padding: 2rem;
 		background: white;
 		border-radius: 19px;
-		margin: 55px;
+		margin: 2rem auto;
 		width: 90%;
-		margin-top: 100px;
-		margin-bottom: 145px;
 	}
+
 	.login-card .button {
 		margin-top: 1rem;
 	}
+
 	.cards {
-    margin-top: -10%;
-}	
+		margin-top: 1rem;
+	}
+
 	.info-text {
 		padding-left: 15px;
 	}
+
 	a {
 		color: #060606;
 		cursor: pointer;
 		font-weight: 600;
-		/* text-decoration: none; */
+	}
+
+	.button.is-primary {
+		background-color: #118BF6;
+		border-color: transparent;
+		color: #FFFFFF;
+		border-radius: 17px;
+		height: 3.7rem!important;
+		font-weight: 500;
+	}
+
+	.button.is-grayed {
+		background-color: #EEEEEE;
+		border-color: transparent;
+		color: #707070;
+		border-radius: 17px;
+		height: 3.7rem!important;
+		font-weight: 500;
+	}
+
+	.button.is-outlined {
+		background-color: #FFFFFF;
+		border-color: #118BF6;
+		color: #118BF6;
+		border-radius: 17px;
+		height: 3.7rem!important;
+		font-weight: 500;
+	}
+
+	.button.is-primary:hover {
+		background-color: rgb(0, 110, 184);
 	}
 
 	.info-icon {
 		padding-right: 11px;
 	}
+
 	.has-text-right {
 		text-align: right !important;
 		margin-top: 4px;
+	}
+
+	/* Responsive Design */
+	@media screen and (max-width: 768px) {
+		.info-item {
+			flex-direction: column;
+			text-align: center;
+		}
+
+		.info-text {
+			padding-left: 0;
+		}
 	}
 </style>
