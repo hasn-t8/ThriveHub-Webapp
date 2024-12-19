@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   thrive-hub-ssr:
+    container_name: th_ssr_app
     build:
       context: .
     environment:
