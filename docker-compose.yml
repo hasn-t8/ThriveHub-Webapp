@@ -8,3 +8,9 @@ services:
       - PORT=8000 
     ports:
       - "8000:8000"
+    networks:
+      - th_app_shared_network
+
+networks:
+  th_app_shared_network:
+    external: true
