@@ -66,7 +66,6 @@
 	async function fetchProfile(): Promise<void> {
 		try {
 			const profile: ProfileData = await getProfileById(slug);
-			console.log('Profile: >>>>>>-----', profile.logo_url);
 
 			theProfile.set(profile);
 		} catch (error) {
