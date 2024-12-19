@@ -2,20 +2,16 @@ FROM node:18
 
 WORKDIR /app
 
-# Copy package files first
 COPY package*.json ./
 
-# Install dependencies
 RUN npm install
 
-# Copy all source files
 COPY . .
 
-# Build the app
+RUN npx svelte-kit sync
+
 RUN npm run build
 
-# Expose port
-EXPOSE 3000
-
-# Start the server (ensure static files are served)
+EXPOSE 8000
+ENV PORT=8000
 CMD ["node", "build"]
