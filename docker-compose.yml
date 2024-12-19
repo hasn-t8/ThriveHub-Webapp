@@ -4,5 +4,7 @@ services:
   thrive-hub-ssr:
     build:
       context: .
+    environment:
+      - PORT=8000 
     ports:
-      - "4000:8000"
+      - "8000:8000"
