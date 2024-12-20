@@ -128,6 +128,8 @@
 					keyFeatureTitle = newFeature.name;
 					customKeyFeatureTitle = '';
 					alert('Feature added successfully!');
+					window.location.reload(); // Reload the page
+
 				} else {
 					throw new Error('Failed to add feature.');
 				}
@@ -163,7 +165,10 @@
 				...keyFeatures,
 				{ title: keyFeatureTitle, description: keyFeatureDescription }
 			];
+			window.location.reload(); // Reload the page
+
 			clearForm();
+			
 		} else {
 			alert('Failed to add the key feature. Please try again.');
 		}
