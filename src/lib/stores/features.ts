@@ -31,6 +31,8 @@ export async function getFeatures() {
 }
 
 export async function addFeatures(featureData: any) {
+    console.log('function hit');
+
     const JWT = getJWT();
     console.log('getJWT from prof.ts:', JWT);
 

@@ -3,7 +3,7 @@
 
 	import Sidemenu from '../components/Sidemenu.svelte';
 	import { onMount } from 'svelte';
-	import { getFeatures } from '$lib/stores/features';
+	import { getFeatures, addFeatures } from '$lib/stores/features';
 
 	// Props from the load function
 	export let profile: any;
@@ -101,13 +101,35 @@
 	}
 
 	// Manage Key Features
-	function addCustomKeyFeature() {
+	// function addCustomKeyFeature() {
+	// 	if (customKeyFeatureTitle.trim()) {
+	// 		availableKeyFeatures = [...availableKeyFeatures, customKeyFeatureTitle];
+	// 		keyFeatureTitle = customKeyFeatureTitle;
+	// 		customKeyFeatureTitle = '';
+	// 	}
+	// }
+	
+	// Manage Key Features
+	async function addCustomKeyFeature() {
 		if (customKeyFeatureTitle.trim()) {
-			availableKeyFeatures = [...availableKeyFeatures, customKeyFeatureTitle];
-			keyFeatureTitle = customKeyFeatureTitle;
-			customKeyFeatureTitle = '';
+			try {
+				const newFeature = await addFeatures({ name: customKeyFeatureTitle });
+				if (newFeature) {
+					availableKeyFeatures = [...availableKeyFeatures, newFeature];
+					keyFeatureTitle = newFeature.name;
+					customKeyFeatureTitle = '';
+					alert('Feature added successfully!');
+				} else {
+					throw new Error('Failed to add feature.');
+				}
+			} catch (error) {
+				console.error('Failed to add feature:', error);
+				alert('Error adding feature. Please try again.');
+			}
 		}
 	}
+
+
 
 	function cancelCustomKeyFeature() {
 		customKeyFeatureTitle = '';
@@ -376,7 +398,7 @@
 		  </div>
 		</div>
 	  </div>
-	  
+
 
 	<div class="stats-section">
 		<div class="card">
