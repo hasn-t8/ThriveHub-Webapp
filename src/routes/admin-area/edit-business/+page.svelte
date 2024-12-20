@@ -205,16 +205,21 @@ function clearForm() {
 		whyChoose = whyChoose.filter((_, i) => i !== index);
 	}
 
+
 	onMount(async () => {
-		availableKeyFeatures = await getFeatures() || [];
-		availableWhyChoose = availableKeyFeatures;
-	});
-	onMount(async () => {
-    const features = await getKeyFeatures();
+  try {
+    availableKeyFeatures = await getFeatures() || [];
+    availableWhyChoose = availableKeyFeatures;
+
+    const features = await getKeyFeatures(businessProfileId);
     if (features) {
       keyFeatures = features;
     }
-  });
+  } catch (error) {
+    console.error('Error fetching data on mount:', error);
+    alert('Failed to load features. Please refresh the page.');
+  }
+});
 
 </script>
 

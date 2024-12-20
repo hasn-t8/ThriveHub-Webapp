@@ -217,14 +217,14 @@ export async function createKeyFeature(featureData: number) {
 }
   
 
-export async function getKeyFeatures() {
+export async function getKeyFeatures(businessProfileId: number) {
     const JWT = getJWT();
     if (!JWT) {
         goto('/user/auth/sign-in');
         return false;
     }
 
-    const response = await fetch(`${API_BASE_URL}/key-features`, {
+    const response = await fetch(`${API_BASE_URL}/keyfeatures/business-profile/${businessProfileId}`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${JWT}`
@@ -242,6 +242,7 @@ export async function getKeyFeatures() {
     return await response.json();
 }
 
+
 export async function deleteKeyFeatureById(keyFeatureId: any) {
     const JWT = getJWT();
     if (!JWT) {
@@ -249,7 +250,7 @@ export async function deleteKeyFeatureById(keyFeatureId: any) {
         return false;
     }
 
-    const response = await fetch(`${API_BASE_URL}/key-features/${keyFeatureId}`, {
+    const response = await fetch(`${API_BASE_URL}/keyfeatures/${keyFeatureId}`, {
         method: 'DELETE',
         headers: {
             Authorization: `Bearer ${JWT}`

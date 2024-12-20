@@ -5,7 +5,8 @@
 	import { writable, type Writable } from 'svelte/store';
 	import { page } from '$app/stores';
 	import LogoUpload from '../upload_logo.svelte';
-	import { getFeatures, addFeatures, createKeyFeature } from '$lib/stores/features';
+	import { getFeatures, addFeatures, createKeyFeature, getKeyFeatures,deleteKeyFeatureById } from '$lib/stores/features';
+	import type { ProfileData } from '$lib/types/Profile';
 
 	const slug = Number($page.params.slug);
 
@@ -115,6 +116,8 @@
 		selectedFileName = 'No file selected';
 	}
 
+
+
 	// Manage Key Features
 	async function addCustomKeyFeature() {
 		if (customKeyFeatureTitle.trim()) {
@@ -166,9 +169,9 @@
 		}
 	}
 
-	function removeKeyFeature(index: number) {
-		keyFeatures = keyFeatures.filter((_, i) => i !== index);
-	}
+	// function removeKeyFeature(index: number) {
+	// 	keyFeatures = keyFeatures.filter((_, i) => i !== index);
+	// }
 
 	// Manage Why Choose
 	function addCustomWhyChoose() {
@@ -203,15 +206,23 @@
 		}
 	}
 
-	onMount(() => {
-		fetchProfile();
-		console.log('Component Mounted');
-		console.log('Profile: >>>', theProfile);
-	});
-	onMount(async () => {
-		availableKeyFeatures = (await getFeatures()) || [];
-		availableWhyChoose = availableKeyFeatures;
-	});
+onMount(async () => {
+  try {
+    availableKeyFeatures = await getFeatures() || [];
+    availableWhyChoose = availableKeyFeatures;
+
+    const features = await getKeyFeatures(slug);
+    if (features) {
+      keyFeatures = features;
+    }
+  
+  } catch (error) {
+    console.error('Error fetching data on mount:', error);
+    alert('Failed to load features. Please refresh the page.');
+  }
+});
+
+
 </script>
 
 <div class="main-content">
@@ -399,36 +410,44 @@
 					</div>
 					<table class="table is-striped is-hoverable is-fullwidth mt-5">
 						<thead>
-							<tr>
-								<th>Title</th>
-								<th>Description</th>
-								<th>Actions</th>
-							</tr>
+						  <tr>
+							<th>Feature Name</th>
+							<th>Text</th>
+							<th>Actions</th>
+						  </tr>
 						</thead>
 						<tbody>
-							{#if keyFeatures.length > 0}
-								{#each keyFeatures as { title, description }, index}
-									<tr>
-										<td>{title}</td>
-										<td>{description}</td>
-										<td>
-											<button
-												class="button is-danger"
-												type="button"
-												on:click={() => removeKeyFeature(index)}
-											>
-												Remove
-											</button>
-										</td>
-									</tr>
-								{/each}
-							{:else}
-								<tr>
-									<td colspan="3">No features found.</td>
-								</tr>
-							{/if}
+						  {#if keyFeatures.length > 0}
+							{#each keyFeatures as { id, feature_name, text }, index}
+							  <tr>
+								<td>{feature_name}</td>
+								<td>{text}</td>
+								<td>
+								  <button
+									class="button is-danger"
+									type="button"
+									on:click={async () => {
+									  const success = await deleteKeyFeatureById(id);
+									  if (success) {
+										keyFeatures = keyFeatures.filter((_, i) => i !== index);
+									  } else {
+										alert('Failed to remove the feature. Please try again.');
+									  }
+									}}
+								  >
+									Remove
+								  </button>
+								</td>
+							  </tr>
+							{/each}
+						  {:else}
+							<tr>
+							  <td colspan="3">No features found.</td>
+							</tr>
+						  {/if}
 						</tbody>
-					</table>
+					  </table>
+					  
 				</div>
 			</div>
 		</div>
