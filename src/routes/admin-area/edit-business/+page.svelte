@@ -3,7 +3,7 @@
 
 	import Sidemenu from '../components/Sidemenu.svelte';
 	import { onMount } from 'svelte';
-	import { getFeatures, addFeatures } from '$lib/stores/features';
+	import { getFeatures, addFeatures,createKeyFeature} from '$lib/stores/features';
 
 	// Props from the load function
 	export let profile: any;
@@ -136,13 +136,44 @@
 		keyFeatureTitle = '';
 	}
 
-	function addKeyFeature() {
-		if (keyFeatureTitle && keyFeatureDescription.trim()) {
-			keyFeatures = [...keyFeatures, { title: keyFeatureTitle, description: keyFeatureDescription }];
-			keyFeatureTitle = '';
-			keyFeatureDescription = '';
-		}
-	}
+	// function addKeyFeature() {
+	// 	if (keyFeatureTitle && keyFeatureDescription.trim()) {
+	// 		keyFeatures = [...keyFeatures, { title: keyFeatureTitle, description: keyFeatureDescription }];
+	// 		keyFeatureTitle = '';
+	// 		keyFeatureDescription = '';
+	// 	}
+	// }
+
+	async function addKeyFeature() {
+  const featureNameId = availableKeyFeatures.findIndex(
+    (feature) => feature.name === keyFeatureTitle
+  );
+
+  const newFeature = {
+    featureNameId: featureNameId >= 0 ? featureNameId : 0,
+    text: keyFeatureDescription
+  };
+
+  console.log("Payload for addKeyFeature:", newFeature);
+
+  const response = await createKeyFeature(newFeature);
+
+  if (response) {
+    keyFeatures = [
+      ...keyFeatures,
+      { title: keyFeatureTitle, description: keyFeatureDescription }
+    ];
+    clearForm();
+  } else {
+    alert("Failed to add the key feature. Please try again.");
+  }
+}
+
+function clearForm() {
+  keyFeatureTitle = '';
+  customKeyFeatureTitle = '';
+  keyFeatureDescription = '';
+}
 
 	function removeKeyFeature(index: number) {
 		keyFeatures = keyFeatures.filter((_, i) => i !== index);
@@ -178,6 +209,13 @@
 		availableKeyFeatures = await getFeatures() || [];
 		availableWhyChoose = availableKeyFeatures;
 	});
+	onMount(async () => {
+    const features = await getKeyFeatures();
+    if (features) {
+      keyFeatures = features;
+    }
+  });
+
 </script>
 
 
@@ -364,37 +402,48 @@
 			  </div>
 	  
 			  <div class="column is-full">
-				<button class="button is-primary mt-3" type="button" on:click={addKeyFeature}>
+				<!-- <button class="button is-primary mt-3" type="button" on:click={addKeyFeature}>
 				  Add to Key Features Table
-				</button>
-			  </div>
+				</button> -->
+		
+				<button class="button is-primary mt-3" type="button" on:click={addKeyFeature}>
+					Add to Key Features Table
+				  </button>
+				  
 			</div>
-	  
-			<table class="table is-striped is-hoverable is-fullwidth mt-5">
-			  <thead>
-				<tr>
-				  <th>Title</th>
-				  <th>Description</th>
-				  <th>Actions</th>
-				</tr>
-			  </thead>
-			  <tbody>
-				{#each keyFeatures as { title, description }, index}
-				  <tr>
-					<td>{title}</td>
-					<td>{description}</td>
-					<td>
-					  <button
-						class="button is-danger"
-						type="button"
-						on:click={() => removeKeyFeature(index)}>
-						Remove
-					  </button>
-					</td>
-				  </tr>
-				{/each}
-			  </tbody>
-			</table>
+			</div>
+	  <table class="table is-striped is-hoverable is-fullwidth mt-5">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {#if keyFeatures.length > 0}
+      {#each keyFeatures as { title, description }, index}
+        <tr>
+          <td>{title}</td>
+          <td>{description}</td>
+          <td>
+            <button
+              class="button is-danger"
+              type="button"
+              on:click={() => removeKeyFeature(index)}
+            >
+              Remove
+            </button>
+          </td>
+        </tr>
+      {/each}
+    {:else}
+      <tr>
+        <td colspan="3">No features found.</td>
+      </tr>
+    {/if}
+  </tbody>
+</table>
 		  </div>
 		</div>
 	  </div>

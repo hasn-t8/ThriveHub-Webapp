@@ -143,3 +143,126 @@ export async function deleteFeature(featureId: any) {
 
     return true;
 }
+export interface KeyFeature {
+    featureNameId: number;
+    text: string;
+  }
+
+// export async function createKeyFeature(newFeature: KeyFeature): Promise<any> {
+//     const JWT = getJWT();
+//     if (!JWT) {
+//       goto('/user/auth/sign-in');
+//       return false;
+//     }
+  
+//     try {
+//       console.log("Sending payload:", newFeature);
+  
+//       const response = await fetch(`${API_BASE_URL}/keyfeatures`, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           Authorization: `Bearer ${JWT}`
+//         },
+//         body: JSON.stringify(newFeature)
+//       });
+  
+//       if (!response.ok) {
+//         const errorDetails = await response.json();
+//         console.error("API Response Error:", errorDetails);
+//         throw new Error(`API Error: ${errorDetails.message || 'Unknown error'}`);
+//       }
+  
+//       return await response.json();
+//     } catch (error: unknown) {
+//       if (error instanceof Error) {
+//         console.error("Network or Parsing Error:", error.message);
+//       } else {
+//         console.error("Unexpected Error:", error);
+//       }
+//       return false;
+//     }
+//   }
+  
+
+export async function createKeyFeature(featureData: number) {
+    console.log('function hit');
+
+    const JWT = getJWT();
+    console.log('getJWT from prof.ts:', JWT);
+
+    if (!JWT) {
+        goto('/user/auth/sign-in');
+        return false;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/keyfeatures`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${JWT}`
+        },
+        body: JSON.stringify(featureData)
+    });
+
+    if(!response.ok) {
+        if(response.status === 401) {
+            logout();
+            goto('/user/auth/sign-in');
+        }
+        return false;
+    }
+
+    return await response.json();
+}
+  
+
+export async function getKeyFeatures() {
+    const JWT = getJWT();
+    if (!JWT) {
+        goto('/user/auth/sign-in');
+        return false;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/key-features`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${JWT}`
+        }
+    });
+
+    if(!response.ok) {
+        if(response.status === 401) {
+            logout();
+            goto('/user/auth/sign-in');
+        }
+        return false;
+    }
+
+    return await response.json();
+}
+
+export async function deleteKeyFeatureById(keyFeatureId: any) {
+    const JWT = getJWT();
+    if (!JWT) {
+        goto('/user/auth/sign-in');
+        return false;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/key-features/${keyFeatureId}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${JWT}`
+        }
+    });
+
+    if(!response.ok) {
+        if(response.status === 401) {
+            logout();
+            goto('/user/auth/sign-in');
+        }
+        return false;
+    }
+
+    return true;
+}
