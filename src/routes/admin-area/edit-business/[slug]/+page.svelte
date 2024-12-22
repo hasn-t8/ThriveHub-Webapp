@@ -1,16 +1,16 @@
 <script lang="ts">
 	import Sidemenu from '../../components/Sidemenu.svelte';
-	import { updateBusinessProfile, getProfileById } from '$lib/stores/business';
+	import { updateBusinessProfile, getProfileById, deleteBusinessProfile } from '$lib/stores/business';
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { page } from '$app/stores';
 	import LogoUpload from '../upload_logo.svelte';
-	import { getFeatures, addFeatures, createKeyFeature, getKeyFeatures,deleteKeyFeatureById } from '$lib/stores/features';
+	import { getFeatures, addFeatures, createKeyFeature, getKeyFeatures, deleteKeyFeatureById } from '$lib/stores/features';
 	import type { ProfileData } from '$lib/types/Profile';
 
 	const slug = Number($page.params.slug);
 
-	let theProfile = writable({
+	let theProfile = writable<ProfileData>({
 		org_name: '',
 		job_title: '',
 		work_email: '',
@@ -18,6 +18,7 @@
 		full_name: '',
 		industry: '',
 		business_website_url: '',
+		business_profile_id: null,
 		profile_type: '',
 		category: '',
 		id: '',
@@ -204,15 +205,17 @@
 		whyChoose = whyChoose.filter((_, i) => i !== index);
 	}
 
-	function handleDelete(id: number) {
+	function handleDelete() {
 		const confirmDelete = confirm('Are you sure you want to delete this business?');
 		if (confirmDelete) {
-			console.log('Deleting business:', id);
+			deleteBusinessProfile(slug);
+			console.log('Deleting business:', slug, '   -  type: ', typeof slug);
 		}
 	}
 
 onMount(async () => {
   try {
+	fetchProfile();
     availableKeyFeatures = await getFeatures() || [];
     availableWhyChoose = availableKeyFeatures;
 
@@ -546,7 +549,7 @@ onMount(async () => {
 					<button
 						class="button is-danger"
 						type="button"
-						on:click={handleDelete($theProfile.business_profile_id)}>Delete this Business</button
+						on:click={handleDelete()}>Delete this Business</button
 					>
 				</div>
 			</div>

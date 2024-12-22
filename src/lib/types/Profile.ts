@@ -1,5 +1,6 @@
 export type ProfileData = {
 	job_title?: string;
+	full_name?: string;
 	work_email?: string;
 	about_business?: string;
 	industry?: string;
@@ -7,7 +8,7 @@ export type ProfileData = {
 	category?: string;
 	business_website_url?: string;
 	profile_id?: string | number;
-	business_profile_id?: number;
+	business_profile_id?: string | number | null;
 	fullName?: string;
 	email?: string;
 	dob?: string; // ISO date string (e.g., '2023-12-03')
@@ -20,4 +21,5 @@ export type ProfileData = {
 	profileImage?: string;
 	org_name?: string;
 	work_email_verified?: boolean | string;
+	id?: string | number;
 };
