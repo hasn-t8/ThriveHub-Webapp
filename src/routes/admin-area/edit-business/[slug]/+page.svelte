@@ -5,6 +5,8 @@
 	import { writable, type Writable } from 'svelte/store';
 	import { page } from '$app/stores';
 	import LogoUpload from '../upload_logo.svelte';
+	import { getFeatures, addFeatures, createKeyFeature, getKeyFeatures,deleteKeyFeatureById } from '$lib/stores/features';
+	import type { ProfileData } from '$lib/types/Profile';
 
 	const slug = Number($page.params.slug);
 
@@ -114,12 +116,27 @@
 		selectedFileName = 'No file selected';
 	}
 
+
+
 	// Manage Key Features
-	function addCustomKeyFeature() {
-		if (customKeyFeatureTitle) {
-			availableKeyFeatures = [...availableKeyFeatures, customKeyFeatureTitle];
-			keyFeatureTitle = customKeyFeatureTitle;
-			customKeyFeatureTitle = '';
+	async function addCustomKeyFeature() {
+		if (customKeyFeatureTitle.trim()) {
+			try {
+				const newFeature = await addFeatures({ name: customKeyFeatureTitle });
+				if (newFeature) {
+					availableKeyFeatures = [...availableKeyFeatures, newFeature];
+					keyFeatureTitle = newFeature.name;
+					customKeyFeatureTitle = '';
+					alert('Feature added successfully!');
+					window.location.reload(); // Reload the page
+
+				} else {
+					throw new Error('Failed to add feature.');
+				}
+			} catch (error) {
+				console.error('Failed to add feature:', error);
+				alert('Error adding feature. Please try again.');
+			}
 		}
 	}
 
@@ -128,20 +145,38 @@
 		keyFeatureTitle = '';
 	}
 
-	function addKeyFeature() {
-		if (keyFeatureTitle && keyFeatureDescription) {
+	async function addKeyFeature() {
+		const featureNameId = availableKeyFeatures.findIndex(
+			(feature) => feature.name === keyFeatureTitle
+		);
+
+		const newFeature = {
+			businessProfileId: slug,
+			featureNameId: featureNameId,
+			text: keyFeatureDescription
+		};
+
+		console.log('Payload for addKeyFeature:', newFeature);
+
+		const response = await createKeyFeature(newFeature);
+
+		if (response) {
 			keyFeatures = [
 				...keyFeatures,
 				{ title: keyFeatureTitle, description: keyFeatureDescription }
 			];
-			keyFeatureTitle = '';
-			keyFeatureDescription = '';
+			window.location.reload(); // Reload the page
+
+			clearForm();
+			
+		} else {
+			alert('Failed to add the key feature. Please try again.');
 		}
 	}
 
-	function removeKeyFeature(index: number) {
-		keyFeatures = keyFeatures.filter((_, i) => i !== index);
-	}
+	// function removeKeyFeature(index: number) {
+	// 	keyFeatures = keyFeatures.filter((_, i) => i !== index);
+	// }
 
 	// Manage Why Choose
 	function addCustomWhyChoose() {
@@ -159,10 +194,7 @@
 
 	function addWhyChoose() {
 		if (whyChooseTitle && whyChooseDescription) {
-			whyChoose = [
-				...whyChoose,
-				{ title: whyChooseTitle, description: whyChooseDescription }
-			];
+			whyChoose = [...whyChoose, { title: whyChooseTitle, description: whyChooseDescription }];
 			whyChooseTitle = '';
 			whyChooseDescription = '';
 		}
@@ -173,19 +205,29 @@
 	}
 
 	function handleDelete(id: number) {
-		const confirmDelete = confirm(
-			'Are you sure you want to delete this business?'
-		);
+		const confirmDelete = confirm('Are you sure you want to delete this business?');
 		if (confirmDelete) {
 			console.log('Deleting business:', id);
 		}
 	}
 
-	onMount(() => {
-		fetchProfile();
-		console.log('Component Mounted');
-		console.log('Profile: >>>', theProfile);
-	});
+onMount(async () => {
+  try {
+    availableKeyFeatures = await getFeatures() || [];
+    availableWhyChoose = availableKeyFeatures;
+
+    const features = await getKeyFeatures(slug);
+    if (features) {
+      keyFeatures = features;
+    }
+  
+  } catch (error) {
+    console.error('Error fetching data on mount:', error);
+    alert('Failed to load features. Please refresh the page.');
+  }
+});
+
+
 </script>
 
 <div class="main-content">
@@ -207,11 +249,7 @@
 				<div class="column is-full is-flex is-justify-content-flex-end">
 					<!-- Toggle Button -->
 					{#if !isEditable}
-						<button
-							type="button"
-							class="button is-primary"
-							on:click={toggleEdit}
-						>
+						<button type="button" class="button is-primary" on:click={toggleEdit}>
 							{isEditable ? 'Save' : 'Edit'}
 						</button>
 					{/if}
@@ -323,7 +361,6 @@
 
 		<div class="stats-section">
 			<div class="card">
-				<!-- Key Features and Benefits Section -->
 				<div class="column is-full">
 					<h1 class="title">Key Features and Benefits</h1>
 					<div class="columns is-multiline">
@@ -331,7 +368,7 @@
 							<label class="label" for="key-feature-title">Title</label>
 							<select class="input" bind:value={keyFeatureTitle}>
 								{#each availableKeyFeatures as feature}
-									<option>{feature}</option>
+									<option value={feature.name}>{feature.name}</option>
 								{/each}
 								<option value="custom">Other...</option>
 							</select>
@@ -342,22 +379,21 @@
 									bind:value={customKeyFeatureTitle}
 									placeholder="Enter custom title"
 								/>
-								<button
-									class="button is-success mt-2"
-									type="button"
-									on:click={addCustomKeyFeature}>✔</button
-								>
+								<button class="button is-success mt-2" type="button" on:click={addCustomKeyFeature}>
+									✔
+								</button>
 								<button
 									class="button is-danger mt-2"
 									type="button"
-									on:click={cancelCustomKeyFeature}>✘</button
+									on:click={cancelCustomKeyFeature}
 								>
+									✘
+								</button>
 							{/if}
 						</div>
+
 						<div class="column is-half">
-							<label class="label" for="key-feature-description"
-								>Description</label
-							>
+							<label class="label" for="key-feature-description">Description</label>
 							<input
 								class="input"
 								id="key-feature-description"
@@ -366,40 +402,57 @@
 								placeholder="Enter feature description"
 							/>
 						</div>
+
 						<div class="column is-full">
-							<button
-								class="button is-primary mt-3"
-								type="button"
-								on:click={addKeyFeature}>Add to Key Features Table</button
-							>
+							<!-- <button class="button is-primary mt-3" type="button" on:click={addKeyFeature}>
+					  Add to Key Features Table
+					</button> -->
+
+							<button class="button is-primary mt-3" type="button" on:click={addKeyFeature}>
+								Add to Key Features Table
+							</button>
 						</div>
 					</div>
-
-					<!-- Key Features Table -->
 					<table class="table is-striped is-hoverable is-fullwidth mt-5">
 						<thead>
-							<tr>
-								<th>Title</th>
-								<th>Description</th>
-								<th>Actions</th>
-							</tr>
+						  <tr>
+							<th>Feature Name</th>
+							<th>Text</th>
+							<th>Actions</th>
+						  </tr>
 						</thead>
 						<tbody>
-							{#each keyFeatures as { title, description }, index}
-								<tr>
-									<td>{title}</td>
-									<td>{description}</td>
-									<td>
-										<button
-											class="button is-danger"
-											type="button"
-											on:click={() => removeKeyFeature(index)}>Remove</button
-										>
-									</td>
-								</tr>
+						  {#if keyFeatures.length > 0}
+							{#each keyFeatures as { id, feature_name, text }, index}
+							  <tr>
+								<td>{feature_name}</td>
+								<td>{text}</td>
+								<td>
+								  <button
+									class="button is-danger"
+									type="button"
+									on:click={async () => {
+									  const success = await deleteKeyFeatureById(id);
+									  if (success) {
+										keyFeatures = keyFeatures.filter((_, i) => i !== index);
+									  } else {
+										alert('Failed to remove the feature. Please try again.');
+									  }
+									}}
+								  >
+									Remove
+								  </button>
+								</td>
+							  </tr>
 							{/each}
+						  {:else}
+							<tr>
+							  <td colspan="3">No features found.</td>
+							</tr>
+						  {/if}
 						</tbody>
-					</table>
+					  </table>
+					  
 				</div>
 			</div>
 		</div>
@@ -425,22 +478,16 @@
 									bind:value={customWhyChooseTitle}
 									placeholder="Enter custom title"
 								/>
-								<button
-									class="button is-success mt-2"
-									type="button"
-									on:click={addCustomWhyChoose}>✔</button
+								<button class="button is-success mt-2" type="button" on:click={addCustomWhyChoose}
+									>✔</button
 								>
-								<button
-									class="button is-danger mt-2"
-									type="button"
-									on:click={cancelCustomWhyChoose}>✘</button
+								<button class="button is-danger mt-2" type="button" on:click={cancelCustomWhyChoose}
+									>✘</button
 								>
 							{/if}
 						</div>
 						<div class="column is-half">
-							<label class="label" for="why-choose-description"
-								>Description</label
-							>
+							<label class="label" for="why-choose-description">Description</label>
 							<input
 								class="input"
 								id="why-choose-description"
@@ -450,10 +497,8 @@
 							/>
 						</div>
 						<div class="column is-full">
-							<button
-								class="button is-primary mt-3"
-								type="button"
-								on:click={addWhyChoose}>Add to Why Choose Table</button
+							<button class="button is-primary mt-3" type="button" on:click={addWhyChoose}
+								>Add to Why Choose Table</button
 							>
 						</div>
 					</div>
@@ -496,16 +541,12 @@
 				<!-- Delete this Business -->
 				<div class="column is-full">
 					<h1 class="title">Delete this Business</h1>
-					<p>
-						Once you delete a business, there is no going back. Please be
-						certain.
-					</p>
+					<p>Once you delete a business, there is no going back. Please be certain.</p>
 
 					<button
 						class="button is-danger"
 						type="button"
-						on:click={handleDelete($theProfile.business_profile_id)}
-						>Delete this Business</button
+						on:click={handleDelete($theProfile.business_profile_id)}>Delete this Business</button
 					>
 				</div>
 			</div>

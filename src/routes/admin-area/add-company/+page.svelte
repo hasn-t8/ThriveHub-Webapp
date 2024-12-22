@@ -127,7 +127,7 @@
 
 					<div class="column is-half">
 						<label class="label">Business Category</label>
-						<select class="input" bind:value={$businessProfile.industry}>
+						<select class="input" bind:value={$businessProfile.category}>
 							<option value="Tech">Tech</option>
 							<option value="E-commerce">E-commerce</option>
 							<option value="Wellness">Wellness</option>
