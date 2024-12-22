@@ -30,6 +30,29 @@ export async function getProfiles() {
 	return await response.json();
 }
 
+export async function getProfilesPublic(): Promise<any> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/businessprofiles`, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            console.error(`API request failed with status ${response.status}`);
+            return {
+                error: `Failed to fetch profiles. Status: ${response.status}`
+            };
+        }
+
+        const data = await response.json();
+        console.log('Profiles fetched:', data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching profiles:', error);
+        return { error: 'An unexpected error occurred.' };
+    }
+}
+
+
 /**
  * Delete a Business profile
  */
