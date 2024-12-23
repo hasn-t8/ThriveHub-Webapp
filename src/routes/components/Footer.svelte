@@ -56,14 +56,44 @@
 		<!-- Bottom Section (Social Icons at Right) -->
 		<div class="is-flex is-justify-content-flex-end">
 			<div class="social-icons">
-				<a href="#" class="fab fa-facebook" aria-label="Facebook"></a>
-				<a href="#" class="fab fa-twitter" aria-label="Twitter"></a>
-				<a href="#" class="fab fa-instagram" aria-label="Instagram"></a>
-				<a href="#" class="fab fa-linkedin" aria-label="LinkedIn"></a>
-				<a href="#" class="fab fa-youtube" aria-label="YouTube"></a>
-				<a href="#" class="fab fa-pinterest" aria-label="Pinterest"></a>
+			  <a style="background-color: #8080808C;" href="#" aria-label="pinterest" class="button is-light">
+				<span class="icon">
+				  <img src="/assets/pinterest.png" alt="Pinterest">
+				</span>
+			  </a>
+			  <a style="background-color: #8080808C; margin-left: 1rem;" href="#" aria-label="instagram" class="button is-light">
+				<span class="icon">
+				  <img src="/assets/instagram.png" alt="Instagram">
+				</span>
+			  </a>
+			  <a style="background-color: #8080808C; margin-left: 1rem;" href="#" aria-label="facebook" class="button is-light">
+				<span class="icon">
+				  <img src="/assets/facebook.png" alt="Facebook">
+				</span>
+			  </a>
+			  <a style="background-color: #8080808C; margin-left: 1rem;" href="#" aria-label="linkedin" class="button is-light">
+				<span class="icon">
+				  <img src="/assets/linkedin.png" alt="LinkedIn">
+				</span>
+			  </a>
+			  <a style="background-color: #8080808C; margin-left: 1rem;" href="#" aria-label="youtube" class="button is-light">
+				<span class="icon">
+				  <img src="/assets/youtube.png" alt="YouTube">
+				</span>
+			  </a>
+			  <a style="background-color: #8080808C; margin-left: 1rem;" href="#" aria-label="tiktok" class="button is-light">
+				<span class="icon">
+				  <img src="/assets/tik_tok.png" alt="TikTok">
+				</span>
+			  </a>
+			  <a style="background-color: #8080808C; margin-left: 1rem;" href="#" aria-label="x" class="button is-light">
+				<span class="icon">
+				  <img src="/assets/x.png" alt="X">
+				</span>
+			  </a>
 			</div>
-		</div>
+		  </div>
+		  
 	</div>
 </footer>
 
@@ -103,32 +133,41 @@
 		line-height: 2;
 	}
 
-	/* Style for social icons */
-	.social-icons {
-		display: flex;
-		gap: 16px;
-		margin-right: 100px;
-		/* Adjust the value as needed */
+	@media screen and (max-width: 768px) {
+		footer > div > div.is-flex{
+			justify-content: center!important;
+		}
+
+
+		.columns.is-one-forth.is-align-items-center.padded-column {
+			margin-top: 16px;
+			padding: 0px 40px;
+			line-height: 2;
+			text-align: center;
+		}
+
+		.columns.is-two-forth.is-align-items-center.padded-column {
+			padding: 0px 42px;
+			text-align: center;
+			margin-top:30px;
+			justify-content: center;
+		}
+
+		.title.is-5{
+			margin:0;
+		}
+
+		.columns.is-one-third.is-flex.is-align-items-flex-start {
+			padding-left: 0;
+			margin-top: 0;
+			margin-right: 0;
+			justify-content: center;
+		}
+
+		footer{
+			padding: 3rem 1.5rem 3rem;
+		}
 	}
 
-	.social-icons a {
-		width: 40px;
-		height: 40px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		border-radius: 15%;
-		background-color: #8080808c;
-		color: #ffffff;
-		border: 1px solid #ddd;
-		transition:
-			transform 0.2s ease,
-			background-color 0.2s ease;
-	}
 
-	.social-icons a:hover {
-		transform: scale(1.1);
-		background-color: #555;
-		color: #fff;
-	}
 </style>

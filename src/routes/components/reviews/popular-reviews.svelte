@@ -870,7 +870,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom:0;
 }
 
 .review-user {
@@ -888,10 +888,16 @@
 .user-info .name {
     font-size: 1rem;
     margin: 0;
+    color:#1E1E1E;
 }
 
 .user-info .rating {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    color:#949494;
+    margin: 0;
+}
+.user-info .star {
+    font-size: 1rem;
     color: #ffd342;
     margin: 0;
 }
@@ -920,11 +926,11 @@
 
 
 .is-divider{
-    margin:1rem 0!important;
+    margin:0.7rem 0!important;
 }
 
 .review-title {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin: 0.5rem 0;
     font-weight: 500!important;
     text-decoration: underline;

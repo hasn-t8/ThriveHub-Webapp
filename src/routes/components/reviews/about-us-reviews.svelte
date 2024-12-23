@@ -127,11 +127,9 @@
                             <div class="card-content review-card-content">
                                 <div class="review-header">
                                     <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
                                         <div class="user-info">
                                             <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
+                                            <h5 class="name">Alice P.</h5>
                                             <p class="rating">
                                                 4.9 <span class="star">★</span>
                                             </p>
@@ -146,12 +144,9 @@
                                     </div>
                                 </div>
                                 <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
                                 <!-- Review Text -->
                                 <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
+                                    Thrive Hub has completely changed how I shop! The AI-powered reviews are so helpful, and I can easily make confident decisions. I trust this app for every purchase
                                 </p>
                                 <div class="review-footer">
                                     <p class="likes">
@@ -169,11 +164,9 @@
                             <div class="card-content review-card-content">
                                 <div class="review-header">
                                     <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
                                         <div class="user-info">
                                             <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
+                                            <h5 class="name">Alice P.</h5>
                                             <p class="rating">
                                                 4.9 <span class="star">★</span>
                                             </p>
@@ -188,12 +181,9 @@
                                     </div>
                                 </div>
                                 <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
                                 <!-- Review Text -->
                                 <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
+                                    Thrive Hub has completely changed how I shop! The AI-powered reviews are so helpful, and I can easily make confident decisions. I trust this app for every purchase
                                 </p>
                                 <div class="review-footer">
                                     <p class="likes">
@@ -211,11 +201,9 @@
                             <div class="card-content review-card-content">
                                 <div class="review-header">
                                     <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
                                         <div class="user-info">
                                             <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
+                                            <h5 class="name">Alice P.</h5>
                                             <p class="rating">
                                                 4.9 <span class="star">★</span>
                                             </p>
@@ -230,12 +218,9 @@
                                     </div>
                                 </div>
                                 <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
                                 <!-- Review Text -->
                                 <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
+                                    Thrive Hub has completely changed how I shop! The AI-powered reviews are so helpful, and I can easily make confident decisions. I trust this app for every purchase
                                 </p>
                                 <div class="review-footer">
                                     <p class="likes">
@@ -253,11 +238,9 @@
                             <div class="card-content review-card-content">
                                 <div class="review-header">
                                     <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
                                         <div class="user-info">
                                             <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
+                                            <h5 class="name">Alice P.</h5>
                                             <p class="rating">
                                                 4.9 <span class="star">★</span>
                                             </p>
@@ -272,12 +255,9 @@
                                     </div>
                                 </div>
                                 <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
                                 <!-- Review Text -->
                                 <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
+                                    Thrive Hub has completely changed how I shop! The AI-powered reviews are so helpful, and I can easily make confident decisions. I trust this app for every purchase
                                 </p>
                                 <div class="review-footer">
                                     <p class="likes">
@@ -296,11 +276,9 @@
                             <div class="card-content review-card-content">
                                 <div class="review-header">
                                     <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
                                         <div class="user-info">
                                             <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
+                                            <h5 class="name">Alice P.</h5>
                                             <p class="rating">
                                                 4.9 <span class="star">★</span>
                                             </p>
@@ -315,12 +293,9 @@
                                     </div>
                                 </div>
                                 <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
                                 <!-- Review Text -->
                                 <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
+                                    Thrive Hub has completely changed how I shop! The AI-powered reviews are so helpful, and I can easily make confident decisions. I trust this app for every purchase
                                 </p>
                                 <div class="review-footer">
                                     <p class="likes">
@@ -340,11 +315,9 @@
                             <div class="card-content review-card-content">
                                 <div class="review-header">
                                     <div class="review-user">
-                                        <!-- User Avatar -->
-                                        <img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
                                         <div class="user-info">
                                             <!-- User Name and Rating -->
-                                            <h5 class="name">Alice Palmer</h5>
+                                            <h5 class="name">Alice P.</h5>
                                             <p class="rating">
                                                 4.9 <span class="star">★</span>
                                             </p>
@@ -359,12 +332,9 @@
                                     </div>
                                 </div>
                                 <div class="is-divider"></div>
-                                <!-- Review Title -->
-                                <h4 class="review-title">GoDaddy</h4>
                                 <!-- Review Text -->
                                 <p class="review-text">
-                                    Good service. Been looking for a similar one for a long time. Good service. Been looking for a similar one
-                                    for a long time. Good service.
+                                    Thrive Hub has completely changed how I shop! The AI-powered reviews are so helpful, and I can easily make confident decisions. I trust this app for every purchase
                                 </p>
                                 <div class="review-footer">
                                     <p class="likes">
@@ -460,7 +430,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
 }
 
 .review-user {
@@ -476,14 +446,23 @@
 }
 
 .user-info .name {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin: 0;
+    font-weight: 700;
 }
 
 .user-info .rating {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    color: #949494;
+    margin: 0;
+    padding:0;
+}
+
+.user-info .rating .star{
+    font-size: 1rem;
     color: #ffd342;
     margin: 0;
+    padding:0;
 }
 
 .meta-info {
@@ -491,26 +470,26 @@
 }
 
 .location-icon {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: #949494;
     margin-right: 5px;
 }
 
 .meta-location {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     font-weight: normal;
     color: #949494;
 }
 
 .meta-date {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: #999;
     margin-top: 2px;
 }
 
 
 .is-divider{
-    margin:1rem 0!important;
+    margin:0.7rem 0!important;
 }
 
 .review-title {
@@ -521,7 +500,7 @@
 }
 
 .review-text {
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.4;
     color: #8b8a8f;
     margin-bottom: 1rem;

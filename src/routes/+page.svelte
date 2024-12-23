@@ -18,11 +18,10 @@
 				class="column is-half p-6 is-flex is-flex-direction-column is-justify-content-center custom-gap-5"
 			>
 				<h1 class="title is-size-1 is-size-3-mobile">
-					Discover a company you can rely on with <span style="color: #118BF6;">Thrive Hub</span>
+					Trustworthy Brands at Your Fingertips with <span style="color: #118BF6;">Thrive Hub</span>
 				</h1>
-				<p class="has-text-grey-dark is-size-5 hide-mobile">
-					Shop smart. Find a company or service and try their product with an exclusive discount
-					from us.
+				<p class="has-text-grey-dark is-size-5 hide-mobile" style="font-weight: 600;">
+					Skip the guesswork! Explore top-rated companies and services, get AI-driven review summaries, and enjoy exclusive discounts.
 				</p>
 				<div class="field has-addons mt-5 hide-search">
 					<div class="control has-icons-left is-expanded">
@@ -138,11 +137,11 @@
 		<div class="columns is-vcentered">
 			<!-- Left Column for Text -->
 			<div class="column is-two-fourth cta-right-padding">
-				<h3 class="title is-3">Do you have a business?</h3>
-				<p>
-					Join Thrive Hub to build trust and inspire confidence with authentic customer reviews.
+				<h3 class="title is-3">Got a business?</h3>
+				<p class="text">
+					Join Thrive Hub to gain trust and foster confidence through genuine customer reviews.
 				</p>
-				<button class="button is-primary cta-button">Launch as a business</button>
+				<button class="button is-primary cta-button">Build your brand</button>
 			</div>
 
 			<!-- Right Column for Testimonials -->
@@ -186,17 +185,14 @@
 		<div class="columns is-vcentered is-align-items-stretch is-gapless">
 			<!-- Left Column for Text -->
 			<div class="column is-half is-flex is-flex-direction-column about1">
-				<h2 class="title is-3">About Us</h2>
+				<h2 class="title is-3">About us</h2>
 				<p>
-					Thrive Hub is your go-to app for exploring reviews, leaving feedback, and making purchases
-					through affiliate links. Powered by AI, it simplifies review analysis, helping users make
-					informed decisions.
+					Welcome to Thrive Hub—your one-stop platform for honest reviews, real-time feedback, and exclusive deals through trusted affiliate links. Powered by AI, we make it easier to sift through reviews and make confident, informed choices.
 				</p>
 
 				<div class="about-box left is-flex-grow-1 is-align-items-center">
 					<p>
-						Businesses can create accounts, engage with customers, and promote their services—all in
-						one place. Thrive Hub makes reviews smarter and connections stronger.
+						For businesses, Thrive Hub is the ultimate tool for connecting, engaging, and growing. It builds trust, boosts your brand, and promotes your services—all in one powerful platform. We’re here to make reviews smarter and connections stronger!
 					</p>
 				</div>
 			</div>
@@ -265,10 +261,10 @@
 					class="column is-three-fifths is-flex is-flex-direction-column is-justify-content-center"
 					style="padding-left: 7%!important;"
 				>
-					<p style="margin-bottom:2%; margin-top: 3%; color:white; font-weight: 500!important;">
+					<p style="margin-bottom:2%; margin-top: 3%; color:white; font-weight: 500!important; font-size:1.1rem;">
 						Join thousands of users discovering trusted reviews!
 					</p>
-					<h2 class="title is-3" style="color:white; padding-right: 15%;">
+					<h2 class="title is-3" style="color:white; max-width: 500px;font-weight:700;">
 						Download the app and sign up today!
 					</h2>
 
@@ -645,6 +641,11 @@
 		color: #81858e;
 		margin-bottom: 1.5rem;
 		font-size: 1em;
+		max-width: 450px;
+	}
+
+	.cta-section .text {
+		font-weight: 600;
 	}
 
 	.cta-section .button {
@@ -658,7 +659,7 @@
 	/* Testimonial Container Styling */
 
 	.cta-right-padding {
-		padding-right: 10%;
+		padding-right: 0;
 		margin-top: 4%;
 	}
 
@@ -681,8 +682,8 @@
 		background: #f5f8fd;
 		border-radius: 25px;
 		box-shadow: 10px 6px 10px rgba(0, 0, 0, 0.1);
-		padding: 0.5rem;
-		width: 60%;
+		padding: 1.5rem;
+		width: 55%;
 		z-index: 2;
 		text-align: center;
 		/* padding-bottom: 4%; */
@@ -692,7 +693,7 @@
 	.testimonial-box.right {
 		position: absolute;
 		top: 8%;
-		left: 48%;
+		left: 53%;
 		background: #f5f8fd;
 		border-radius: 25px;
 		box-shadow: 10px 6px 10px rgba(0, 0, 0, 0.1);
@@ -701,8 +702,8 @@
 		text-align: center;
 		opacity: 0.95;
 		padding-bottom: 4%;
-		padding: 0.5rem;
-		width: 60%;
+		padding: 1.5rem;
+		width: 47%;
 	}
 
 	.testimonial-box .image {
@@ -768,7 +769,6 @@
 		}
 
 		.testimonial-container {
-			justify-content: center;
 			margin-top: 0%;
 		}
 
@@ -805,9 +805,10 @@
 		}
 
 		.testimonial-box.right {
-			left: 55%;
+			left: 57%;
 			width: 43%;
 			top: 9%;
+			padding:0.5rem;
 		}
 
 		.cta-button {
@@ -843,7 +844,7 @@
 	.image-download img {
 		border-radius: 15px;
 		object-fit: cover;
-		width: 80%;
+		width: 70%;
 		height: auto;
 		margin-top: 8%;
 		margin-right: 2%;
@@ -890,7 +891,7 @@
 		}
 
 		.app-figure {
-			width: 85% !important;
+			width: 12rem !important;
 			margin-bottom: 0% !important;
 			margin-top: 0% !important;
 		}
@@ -923,6 +924,7 @@
 		font-size: 1em;
 		width: 90%;
 		line-height: 1.5;
+		font-weight: 600;
 	}
 
 	.about-box {
