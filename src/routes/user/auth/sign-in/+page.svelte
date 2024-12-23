@@ -32,7 +32,13 @@
 			if (response.ok) {
 
 				login(data.token);
-				goto('/user/settings');
+				//goto('/user/settings');
+
+				const previousPath = localStorage.getItem('previousPath') || '/';
+				localStorage.removeItem('previousPath'); // Clean up the stored path
+				goto(previousPath);
+
+
 
 			} else {
 				errorMessage = data.message || 'Login failed. Please try again.';
@@ -84,6 +90,7 @@
 						</div>
 					</div>
 					<div class="field">
+						<!-- svelte-ignore a11y_label_has_associated_control -->
 						<label class="label">Password</label>
 						<div class="control">
 							<input

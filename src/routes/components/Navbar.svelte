@@ -6,13 +6,33 @@
 
 	let jwtTokenFound = $state(false);
 
+
+
 	let menuActive = false;
 	function toggleMenu() {
 		menuActive = !menuActive;
 	}
 	onMount(() => {
 		jwtTokenFound = localStorage.getItem('authToken') ? true : false;
+		if (jwtTokenFound) {
+			console.log('User is logged in.');
+			if($page.url.pathname === '/user/auth/sign-in'){
+				goto('/org/explore');
+			}
+		} else {
+			console.log('User is not logged in.');
+		}
+
 	});
+
+
+
+	function navigateToLogin() {
+		// Save the current path before navigating to the login screen
+		localStorage.setItem('previousPath', $page.url.pathname);
+		goto('/user/auth/sign-in'); // Navigate to the login screen
+	}
+
 
 	function logoutHandler() {
 		logout();
@@ -48,11 +68,17 @@
 				<a class="navbar-item" href="#help">Help</a> -->
 				<a class="navbar-item" href="/user/settings">Settings</a>
 				{#if $loggedInStatus || jwtTokenFound}
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<!-- svelte-ignore a11y_missing_attribute -->
 					<a class="navbar-item" onclick={() => logoutHandler()}>Logout</a>
 				{:else if $page.url.pathname === '/business/business-home'}
 					<a class="navbar-item" href="/business/signup">Login</a>
 				{:else}
-					<a class="navbar-item" href="/user/auth/sign-in">Login</a>
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<!-- svelte-ignore a11y_missing_attribute -->
+					<a class="navbar-item" onclick={() => navigateToLogin()}>Login</a>
 				{/if}
 				{#if $page.url.pathname === '/business/business-home'}
 					<div class="navbar-item">
