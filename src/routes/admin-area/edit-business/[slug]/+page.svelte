@@ -1,13 +1,23 @@
 <script lang="ts">
 	import Sidemenu from '../../components/Sidemenu.svelte';
-	import { updateBusinessProfile, getProfileById, deleteBusinessProfile } from '$lib/stores/business';
+	import {
+		updateBusinessProfile,
+		getProfileById,
+		deleteBusinessProfile
+	} from '$lib/stores/business';
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { page } from '$app/stores';
 	import LogoUpload from '../upload_logo.svelte';
-	import { getFeatures, addFeatures, createKeyFeature, getKeyFeatures, deleteKeyFeatureById } from '$lib/stores/features';
+	import {
+		getFeatures,
+		addFeatures,
+		createKeyFeature,
+		getKeyFeatures,
+		deleteKeyFeatureById
+	} from '$lib/stores/features';
 	import type { ProfileData } from '$lib/types/Profile';
-
+	import { addKeypointname,getKeypointnames,createKeyPoint,getKeyPoints } from '$lib/stores/key-point';
 	const slug = Number($page.params.slug);
 
 	let theProfile = writable<ProfileData>({
@@ -56,6 +66,11 @@
 	let customKeyFeatureTitle = '';
 	let keyFeatureDescription = '';
 	let keyFeatures: { title: string; description: string }[] = [];
+	type KeyFeature = {
+    name: string;
+};
+
+// let availableKeyFeatures: KeyFeature[] = [];
 
 	// Why Choose
 	let availableWhyChoose = [...availableKeyFeatures];
@@ -117,29 +132,27 @@
 		selectedFileName = 'No file selected';
 	}
 
+	// // Manage Key Features
+	// async function addCustomKeyFeature() {
+	// 	if (customKeyFeatureTitle.trim()) {
+	// 		try {
+	// 			const newFeature = await addFeatures({ name: customKeyFeatureTitle });
+	// 			if (newFeature) {
+	// 				availableKeyFeatures = [...availableKeyFeatures, newFeature];
+	// 				keyFeatureTitle = newFeature.name;
+	// 				customKeyFeatureTitle = '';
+	// 				alert('Feature added successfully!');
+	// 				window.location.reload(); // Reload the page
 
-
-	// Manage Key Features
-	async function addCustomKeyFeature() {
-		if (customKeyFeatureTitle.trim()) {
-			try {
-				const newFeature = await addFeatures({ name: customKeyFeatureTitle });
-				if (newFeature) {
-					availableKeyFeatures = [...availableKeyFeatures, newFeature];
-					keyFeatureTitle = newFeature.name;
-					customKeyFeatureTitle = '';
-					alert('Feature added successfully!');
-					window.location.reload(); // Reload the page
-
-				} else {
-					throw new Error('Failed to add feature.');
-				}
-			} catch (error) {
-				console.error('Failed to add feature:', error);
-				alert('Error adding feature. Please try again.');
-			}
-		}
-	}
+	// 			} else {
+	// 				throw new Error('Failed to add feature.');
+	// 			}
+	// 		} catch (error) {
+	// 			console.error('Failed to add feature:', error);
+	// 			alert('Error adding feature. Please try again.');
+	// 		}
+	// 	}
+	// }
 
 	function cancelCustomKeyFeature() {
 		customKeyFeatureTitle = '';
@@ -147,33 +160,140 @@
 	}
 
 	async function addKeyFeature() {
-		const featureNameId = availableKeyFeatures.findIndex(
-			(feature) => feature.name === keyFeatureTitle
-		);
+    try {
+        // Find the selected key point by its name
+        const selectedFeature = availableKeyFeatures.find(
+            (feature) => feature.name === keyFeatureTitle
+        );
 
-		const newFeature = {
-			businessProfileId: slug,
-			featureNameId: featureNameId,
-			text: keyFeatureDescription
-		};
+        if (!selectedFeature || !selectedFeature.id) {
+            alert('Please select a valid key point name from the list.');
+            return;
+        }
 
-		console.log('Payload for addKeyFeature:', newFeature);
+        const newFeature = {
+            businessProfileId: slug, // Assuming `slug` is in scope
+            keyPointNameId: selectedFeature.id, // Use the ID of the selected key point
+            text: keyFeatureDescription, // Description for the feature
+            type: "feature", // Default type
+        };
 
-		const response = await createKeyFeature(newFeature);
+        console.log('Payload for addKeyFeature:', newFeature);
 
-		if (response) {
-			keyFeatures = [
-				...keyFeatures,
-				{ title: keyFeatureTitle, description: keyFeatureDescription }
-			];
-			window.location.reload(); // Reload the page
+        const response = await createKeyPoint(newFeature);
 
-			clearForm();
-			
-		} else {
-			alert('Failed to add the key feature. Please try again.');
-		}
-	}
+        if (response) {
+            console.log('Feature added successfully!', response);
+            // Update the keyFeatures list optimistically
+            keyFeatures = [
+                ...keyFeatures,
+                { title: keyFeatureTitle, description: keyFeatureDescription },
+            ];
+            clearForm(); // Clear the input fields
+        } else {
+            alert('Failed to add the key feature. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error in addKeyFeature:', error);
+        alert('An unexpected error occurred. Please try again.');
+    }
+}
+
+
+// 	async function handleAddKeypoint(keypointTitle: any, keypointType: any) {
+//     try {
+//         const keypointData = {
+//             name: keypointTitle,
+//             type: keypointType,
+//             businessProfileId: slug // Assuming `slug` is available in scope
+//         };
+
+//         console.log('Payload for addKeypointName:', keypointData);
+
+//         const response = await addKeypointname(keypointData);
+
+//         if (response) {
+//             console.log('Keypoint added successfully!', response);
+//             // Update UI optimistically instead of reloading
+//             const keypoints = [
+//                 ...keypoints,
+//                 { title: keypointTitle, description: keypointDescription }
+//             ];
+//             clearForm();
+//         } else {
+//             alert('Failed to add the key point. Please try again.');
+//         }
+//     } catch (error) {
+//         console.error('Error in addKeypointName:', error);
+//         alert('An unexpected error occurred. Please try again.');
+//     }
+// }
+
+async function handleAddKeypoint(customKeyFeatureTitle: string) {
+    try {
+        if (!customKeyFeatureTitle) {
+            alert('Please enter a valid title.');
+            return;
+        }
+
+        const keypointData = {
+            name: customKeyFeatureTitle, // Title becomes the name
+            type: "feature", // Default to "feature"
+            businessProfileId: slug // Assuming `slug` is in scope
+        };
+
+        console.log('Payload for addKeypointName:', keypointData);
+
+        const response = await addKeypointname(keypointData);
+
+        if (response) {
+            console.log('Keypoint added successfully!', response);
+            // Update UI optimistically instead of reloading
+            keypoints = [
+                ...keypoints,
+                { title: customKeyFeatureTitle, description: "" } // Update as per your data structure
+            ];
+            clearForm(); // Clear the input field
+        } else {
+            alert('Failed to add the key point. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error in addKeypointName:', error);
+        alert('An unexpected error occurred. Please try again.');
+    }
+}
+async function fetchKeyFeatures() {
+    try {
+        const response = await getKeyPoints(slug);
+
+        if (response) {
+            console.log('Fetched key points:', response);
+            console.log('Available Key Features:', availableKeyFeatures);
+
+            keyFeatures = response.map((feature) => {
+                const matchedFeature = availableKeyFeatures.find(
+                    (kf) => kf.id === feature.keyPointNameId
+                );
+                console.log(
+                    `Matching keyPointNameId ${feature.keyPointNameId}:`,
+                    matchedFeature
+                );
+
+                return {
+                    ...feature,
+                    keyPointName: matchedFeature?.name || 'Unknown',
+                };
+            });
+
+            console.log('Mapped key features with names:', keyFeatures);
+        } else {
+            console.error('Failed to fetch key points.');
+        }
+    } catch (error) {
+        console.error('Error fetching key points:', error);
+    }
+}
+
 
 	// function removeKeyFeature(index: number) {
 	// 	keyFeatures = keyFeatures.filter((_, i) => i !== index);
@@ -195,7 +315,10 @@
 
 	function addWhyChoose() {
 		if (whyChooseTitle && whyChooseDescription) {
-			whyChoose = [...whyChoose, { title: whyChooseTitle, description: whyChooseDescription }];
+			whyChoose = [
+				...whyChoose,
+				{ title: whyChooseTitle, description: whyChooseDescription }
+			];
 			whyChooseTitle = '';
 			whyChooseDescription = '';
 		}
@@ -206,31 +329,29 @@
 	}
 
 	function handleDelete() {
-		const confirmDelete = confirm('Are you sure you want to delete this business?');
+		const confirmDelete = confirm(
+			'Are you sure you want to delete this business?'
+		);
 		if (confirmDelete) {
 			deleteBusinessProfile(slug);
 			console.log('Deleting business:', slug, '   -  type: ', typeof slug);
 		}
 	}
+	onMount(async () => {
+		fetchKeyFeatures();
 
-onMount(async () => {
-  try {
-	fetchProfile();
-    availableKeyFeatures = await getFeatures() || [];
-    availableWhyChoose = availableKeyFeatures;
-
-    const features = await getKeyFeatures(slug);
-    if (features) {
-      keyFeatures = features;
+    const keypoints = await getKeypointnames();
+    if (keypoints) {
+      availableKeyFeatures = keypoints;
+    } else {
+      console.error('Failed to fetch keypoints');
     }
-  
-  } catch (error) {
-    console.error('Error fetching data on mount:', error);
-    alert('Failed to load features. Please refresh the page.');
-  }
-});
+  });
 
-
+ 
+	function clearForm() {
+		throw new Error('Function not implemented.');
+	}
 </script>
 
 <div class="main-content">
@@ -252,7 +373,11 @@ onMount(async () => {
 				<div class="column is-full is-flex is-justify-content-flex-end">
 					<!-- Toggle Button -->
 					{#if !isEditable}
-						<button type="button" class="button is-primary" on:click={toggleEdit}>
+						<button
+							type="button"
+							class="button is-primary"
+							on:click={toggleEdit}
+						>
 							{isEditable ? 'Save' : 'Edit'}
 						</button>
 					{/if}
@@ -367,36 +492,47 @@ onMount(async () => {
 				<div class="column is-full">
 					<h1 class="title">Key Features and Benefits</h1>
 					<div class="columns is-multiline">
+					
+<div class="column is-half">
+	<label class="label" for="key-feature-title">Title</label>
+	<select
+	  class="input"
+	  bind:value={keyFeatureTitle}
+	>
+	  {#each availableKeyFeatures as feature}
+		<option value={feature.name}>{feature.name}</option>
+	  {/each}
+	  <option value="custom">Other...</option>
+	</select>
+  
+	{#if keyFeatureTitle === 'custom'}
+	  <input
+		class="input mt-2"
+		type="text"
+		bind:value={customKeyFeatureTitle}
+		placeholder="Enter custom title"
+	  />
+	  <button
+		class="button is-success mt-2"
+		type="button"
+		on:click={() => handleAddKeypoint(customKeyFeatureTitle)}
+	  >
+		✔
+	  </button>
+	  <button
+		class="button is-danger mt-2"
+		type="button"
+		on:click={cancelCustomKeyFeature}
+	  >
+		✘
+	  </button>
+	{/if}
+  </div>
+  
 						<div class="column is-half">
-							<label class="label" for="key-feature-title">Title</label>
-							<select class="input" bind:value={keyFeatureTitle}>
-								{#each availableKeyFeatures as feature}
-									<option value={feature.name}>{feature.name}</option>
-								{/each}
-								<option value="custom">Other...</option>
-							</select>
-							{#if keyFeatureTitle === 'custom'}
-								<input
-									class="input mt-2"
-									type="text"
-									bind:value={customKeyFeatureTitle}
-									placeholder="Enter custom title"
-								/>
-								<button class="button is-success mt-2" type="button" on:click={addCustomKeyFeature}>
-									✔
-								</button>
-								<button
-									class="button is-danger mt-2"
-									type="button"
-									on:click={cancelCustomKeyFeature}
-								>
-									✘
-								</button>
-							{/if}
-						</div>
-
-						<div class="column is-half">
-							<label class="label" for="key-feature-description">Description</label>
+							<label class="label" for="key-feature-description"
+								>Description</label
+							>
 							<input
 								class="input"
 								id="key-feature-description"
@@ -411,51 +547,52 @@ onMount(async () => {
 					  Add to Key Features Table
 					</button> -->
 
-							<button class="button is-primary mt-3" type="button" on:click={addKeyFeature}>
+							<button
+								class="button is-primary mt-3"
+								type="button"
+								on:click={addKeyFeature}
+							>
 								Add to Key Features Table
 							</button>
 						</div>
 					</div>
+				
 					<table class="table is-striped is-hoverable is-fullwidth mt-5">
 						<thead>
-						  <tr>
-							<th>Feature Name</th>
-							<th>Text</th>
-							<th>Actions</th>
-						  </tr>
+							<tr>
+								<th>Key Point Name</th>
+								<!-- <th>Feature Name</th> -->
+								<th>Text</th>
+								<th>Actions</th>
+							</tr>
 						</thead>
 						<tbody>
-						  {#if keyFeatures.length > 0}
-							{#each keyFeatures as { id, feature_name, text }, index}
-							  <tr>
-								<td>{feature_name}</td>
-								<td>{text}</td>
-								<td>
-								  <button
-									class="button is-danger"
-									type="button"
-									on:click={async () => {
-									  const success = await deleteKeyFeatureById(id);
-									  if (success) {
-										keyFeatures = keyFeatures.filter((_, i) => i !== index);
-									  } else {
-										alert('Failed to remove the feature. Please try again.');
-									  }
-									}}
-								  >
-									Remove
-								  </button>
-								</td>
-							  </tr>
-							{/each}
-						  {:else}
-							<tr>
-							  <td colspan="3">No features found.</td>
-							</tr>
-						  {/if}
+							{#if keyFeatures.length > 0}
+								{#each keyFeatures as { id, keyPointName, text }, index}
+									<tr>
+										<td>{keyPointName}</td>
+										<!-- <td>{}</td> -->
+										<td>{text}</td>
+										<td>
+											<button
+												class="button is-danger"
+												type="button"
+												on:click={() => removeKeyFeature(id, index)}
+											>
+												Remove
+											</button>
+										</td>
+									</tr>
+								{/each}
+							{:else}
+								<tr>
+									<td colspan="4">No features found.</td>
+								</tr>
+							{/if}
 						</tbody>
-					  </table>
-					  
+					</table>
+					
+
 				</div>
 			</div>
 		</div>
@@ -481,16 +618,22 @@ onMount(async () => {
 									bind:value={customWhyChooseTitle}
 									placeholder="Enter custom title"
 								/>
-								<button class="button is-success mt-2" type="button" on:click={addCustomWhyChoose}
-									>✔</button
+								<button
+									class="button is-success mt-2"
+									type="button"
+									on:click={addCustomWhyChoose}>✔</button
 								>
-								<button class="button is-danger mt-2" type="button" on:click={cancelCustomWhyChoose}
-									>✘</button
+								<button
+									class="button is-danger mt-2"
+									type="button"
+									on:click={cancelCustomWhyChoose}>✘</button
 								>
 							{/if}
 						</div>
 						<div class="column is-half">
-							<label class="label" for="why-choose-description">Description</label>
+							<label class="label" for="why-choose-description"
+								>Description</label
+							>
 							<input
 								class="input"
 								id="why-choose-description"
@@ -500,8 +643,10 @@ onMount(async () => {
 							/>
 						</div>
 						<div class="column is-full">
-							<button class="button is-primary mt-3" type="button" on:click={addWhyChoose}
-								>Add to Why Choose Table</button
+							<button
+								class="button is-primary mt-3"
+								type="button"
+								on:click={addWhyChoose}>Add to Why Choose Table</button
 							>
 						</div>
 					</div>
@@ -544,7 +689,10 @@ onMount(async () => {
 				<!-- Delete this Business -->
 				<div class="column is-full">
 					<h1 class="title">Delete this Business</h1>
-					<p>Once you delete a business, there is no going back. Please be certain.</p>
+					<p>
+						Once you delete a business, there is no going back. Please be
+						certain.
+					</p>
 
 					<button
 						class="button is-danger"
