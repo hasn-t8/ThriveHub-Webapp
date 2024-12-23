@@ -318,7 +318,7 @@ onMount(async () => {
 						</div>
 
 						<!-- Business Category -->
-						<!-- <div class="column is-half">
+						<div class="column is-half">
 							<label class="label">Business Category</label>
 							<select class="input" bind:value={$theProfile.category} disabled={!isEditable}>
 								<option value="Tech">Tech</option>
@@ -328,7 +328,7 @@ onMount(async () => {
 								<option value="Finance">Finance</option>
 								<option value="Home Electronics">Home Electronics</option>
 							</select>
-						</div> -->
+						</div>
 
 						<!-- Company Description -->
 						<div class="column is-full">
