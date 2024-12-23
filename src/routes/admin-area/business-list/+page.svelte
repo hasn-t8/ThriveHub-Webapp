@@ -64,7 +64,7 @@
 		<div class="business-info">
 			<li class="business-item">
 				<div class="business-logo">
-					<img src="https://via.placeholder.com/50" alt="Company Logo" />
+					<img src="{item.logo_url ? item.logo_url : "https://via.placeholder.com/50"}" alt="Company Logo" />
 				</div>
 				<div class="business-info">
 					<div class="business-name">{item.org_name}</div>
