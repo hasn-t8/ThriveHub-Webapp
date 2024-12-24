@@ -145,7 +145,7 @@
 
 
 //  create Key-point-name
-async function handleAddKeypoint(customKeyFeatureTitle: string) {
+async function handleAddKeypoint(customKeyFeatureTitle: string, type: string) {
     try {
         if (!customKeyFeatureTitle) {
             alert('Please enter a valid title.');
@@ -154,23 +154,23 @@ async function handleAddKeypoint(customKeyFeatureTitle: string) {
 
         const keypointData = {
             name: customKeyFeatureTitle, // Title becomes the name
-            type: "feature", // Default to "feature"
+            type, 
             businessProfileId: slug // Assuming `slug` is in scope
         };
 
         console.log('Payload for addKeypointName:', keypointData);
 
         const response = await addKeypointname(keypointData);
-        alert('Key-point name Added Sucessfully');
-		window.location.reload();
-
+        alert('Key-point name added successfully');
+        window.location.reload();
     } catch (error) {
         console.error('Error in addKeypointName:', error);
         alert('An unexpected error occurred. Please try again.');
     }
 }
+
 // createKeyPoint
-async function addKeyPoint() {
+async function addKeyPoint(type: string) {
     try {
         // Find the selected key point by its name
         const selectedFeature = availableKeyFeatures.find(
@@ -186,7 +186,7 @@ async function addKeyPoint() {
             businessProfileId: slug, // Assuming `slug` is in scope
             keyPointNameId: selectedFeature.id, // Use the ID of the selected key point
             text: keyFeatureDescription, // Description for the feature
-            type: "feature", // Default type
+            type, // Pass type dynamically
         };
 
         console.log('Payload for addKeyPoint:', newFeature);
@@ -210,6 +210,7 @@ async function addKeyPoint() {
         alert('An unexpected error occurred. Please try again.');
     }
 }
+
 
 async function reloadKeypointsList() {
     try {
@@ -289,7 +290,7 @@ async function fetchKeyPoints() {
 //  remove key-points
 
 // Integrating the function with the button
-function removeKeyPoints(id, index) {
+function removeKeyPoints(id: any, index: number) {
     if (confirm('Are you sure you want to remove this key feature?')) {
         deleteKeyPointById(id).then((success) => {
             if (success) {
@@ -532,12 +533,13 @@ function removeKeyPoints(id, index) {
 		placeholder="Enter custom title"
 	  />
 	  <button
-		class="button is-success mt-2"
-		type="button"
-		on:click={() => handleAddKeypoint(customKeyFeatureTitle)}
-	  >
-		✔
-	  </button>
+	  class="button is-success mt-2"
+	  type="button"
+	  on:click={() => handleAddKeypoint(customKeyFeatureTitle, 'feature')}
+  >
+	  ✔
+  </button>
+  
 	  <button
 		class="button is-danger mt-2"
 		type="button"
@@ -566,13 +568,14 @@ function removeKeyPoints(id, index) {
 					  Add to Key Features Table
 					</button> -->
 
-							<button
-								class="button is-primary mt-3"
-								type="button"
-								on:click={addKeyPoint}
-							>
-								Add to Key Features Table
-							</button>
+					<button
+					class="button is-primary mt-3"
+					type="button"
+					on:click={() => addKeyPoint('feature')}
+				>
+					Add to Key Features Table
+				</button>
+				
 						</div>
 					</div>
 				
