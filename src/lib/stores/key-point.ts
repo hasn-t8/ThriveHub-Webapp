@@ -81,7 +81,7 @@ type KeyPoint = {
     name: string; // Define properties you expect in the keypoint object
 };
 
-export async function getKeypointnames(): Promise<KeyPoint[] | false> {
+export async function getKeypointnames(type: string): Promise<KeyPoint[] | false> {
     const JWT = getJWT();
     console.log('getJWT from prof.ts:', JWT);
 
@@ -91,7 +91,7 @@ export async function getKeypointnames(): Promise<KeyPoint[] | false> {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/business-key-point-names/feature`, {
+        const response = await fetch(`${API_BASE_URL}/business-key-point-names/${type}`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${JWT}`,
@@ -120,6 +120,7 @@ export async function getKeypointnames(): Promise<KeyPoint[] | false> {
         return false;
     }
 }
+
 
 export async function createKeyPoint(featureData: number) {
     console.log('function hit');
