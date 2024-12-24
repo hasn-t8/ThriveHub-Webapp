@@ -176,3 +176,28 @@ export async function getKeyPoints(businessProfileId: number) {
 
     return await response.json();
 }
+
+export async function deleteKeyPointById(id: any) {
+    const JWT = getJWT();
+    if (!JWT) {
+        goto('/user/auth/sign-in');
+        return false;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/business-key-points/${id}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${JWT}`
+        }
+    });
+
+    if(!response.ok) {
+        if(response.status === 401) {
+            logout();
+            goto('/user/auth/sign-in');
+        }
+        return false;
+    }
+
+    return true;
+}

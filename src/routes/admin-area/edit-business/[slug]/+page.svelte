@@ -17,7 +17,7 @@
 		deleteKeyFeatureById
 	} from '$lib/stores/features';
 	import type { ProfileData } from '$lib/types/Profile';
-	import { addKeypointname,getKeypointnames,createKeyPoint,getKeyPoints } from '$lib/stores/key-point';
+	import { addKeypointname,getKeypointnames,createKeyPoint,getKeyPoints,deleteKeyPointById } from '$lib/stores/key-point';
 	const slug = Number($page.params.slug);
 
 	let theProfile = writable<ProfileData>({
@@ -65,7 +65,10 @@
 	let keyFeatureTitle = '';
 	let customKeyFeatureTitle = '';
 	let keyFeatureDescription = '';
-	let keyFeatures: { title: string; description: string }[] = [];
+	let keyFeatures: {
+		keyPointName: any;
+		text: any; title: string; description: string 
+}[] = [];
 	type KeyFeature = {
     name: string;
 };
@@ -132,34 +135,42 @@
 		selectedFileName = 'No file selected';
 	}
 
-	// // Manage Key Features
-	// async function addCustomKeyFeature() {
-	// 	if (customKeyFeatureTitle.trim()) {
-	// 		try {
-	// 			const newFeature = await addFeatures({ name: customKeyFeatureTitle });
-	// 			if (newFeature) {
-	// 				availableKeyFeatures = [...availableKeyFeatures, newFeature];
-	// 				keyFeatureTitle = newFeature.name;
-	// 				customKeyFeatureTitle = '';
-	// 				alert('Feature added successfully!');
-	// 				window.location.reload(); // Reload the page
-
-	// 			} else {
-	// 				throw new Error('Failed to add feature.');
-	// 			}
-	// 		} catch (error) {
-	// 			console.error('Failed to add feature:', error);
-	// 			alert('Error adding feature. Please try again.');
-	// 		}
-	// 	}
-	// }
-
 	function cancelCustomKeyFeature() {
 		customKeyFeatureTitle = '';
 		keyFeatureTitle = '';
 	}
 
-	async function addKeyFeature() {
+
+
+
+
+//  create Key-point-name
+async function handleAddKeypoint(customKeyFeatureTitle: string) {
+    try {
+        if (!customKeyFeatureTitle) {
+            alert('Please enter a valid title.');
+            return;
+        }
+
+        const keypointData = {
+            name: customKeyFeatureTitle, // Title becomes the name
+            type: "feature", // Default to "feature"
+            businessProfileId: slug // Assuming `slug` is in scope
+        };
+
+        console.log('Payload for addKeypointName:', keypointData);
+
+        const response = await addKeypointname(keypointData);
+        alert('Key-point name Added Sucessfully');
+		window.location.reload();
+
+    } catch (error) {
+        console.error('Error in addKeypointName:', error);
+        alert('An unexpected error occurred. Please try again.');
+    }
+}
+// createKeyPoint
+async function addKeyPoint() {
     try {
         // Find the selected key point by its name
         const selectedFeature = availableKeyFeatures.find(
@@ -178,112 +189,94 @@
             type: "feature", // Default type
         };
 
-        console.log('Payload for addKeyFeature:', newFeature);
+        console.log('Payload for addKeyPoint:', newFeature);
 
         const response = await createKeyPoint(newFeature);
 
         if (response) {
             console.log('Feature added successfully!', response);
-            // Update the keyFeatures list optimistically
-            keyFeatures = [
-                ...keyFeatures,
-                { title: keyFeatureTitle, description: keyFeatureDescription },
-            ];
-            clearForm(); // Clear the input fields
+            alert('Keypoint added successfully!');
+
+            // Reload the keypoints list after successful addition
+            await reloadKeypointsList();
+
+            // Clear the input fields
+            clearForm();
         } else {
             alert('Failed to add the key feature. Please try again.');
         }
     } catch (error) {
-        console.error('Error in addKeyFeature:', error);
+        console.error('Error in addKeyPoint:', error);
         alert('An unexpected error occurred. Please try again.');
     }
 }
 
-
-// 	async function handleAddKeypoint(keypointTitle: any, keypointType: any) {
-//     try {
-//         const keypointData = {
-//             name: keypointTitle,
-//             type: keypointType,
-//             businessProfileId: slug // Assuming `slug` is available in scope
-//         };
-
-//         console.log('Payload for addKeypointName:', keypointData);
-
-//         const response = await addKeypointname(keypointData);
-
-//         if (response) {
-//             console.log('Keypoint added successfully!', response);
-//             // Update UI optimistically instead of reloading
-//             const keypoints = [
-//                 ...keypoints,
-//                 { title: keypointTitle, description: keypointDescription }
-//             ];
-//             clearForm();
-//         } else {
-//             alert('Failed to add the key point. Please try again.');
-//         }
-//     } catch (error) {
-//         console.error('Error in addKeypointName:', error);
-//         alert('An unexpected error occurred. Please try again.');
-//     }
-// }
-
-async function handleAddKeypoint(customKeyFeatureTitle: string) {
+async function reloadKeypointsList() {
     try {
-        if (!customKeyFeatureTitle) {
-            alert('Please enter a valid title.');
-            return;
-        }
+        // Fetch the updated keypoints list
+        const updatedKeypoints = await fetchKeyPoints(); // Replace with your actual function to fetch keypoints
 
-        const keypointData = {
-            name: customKeyFeatureTitle, // Title becomes the name
-            type: "feature", // Default to "feature"
-            businessProfileId: slug // Assuming `slug` is in scope
-        };
+        // Update the UI directly
+        const keypointsListElement = document.getElementById('keypointsList'); // Assuming an element with this ID exists
+        if (keypointsListElement) {
+            keypointsListElement.innerHTML = ''; // Clear existing keypoints
 
-        console.log('Payload for addKeypointName:', keypointData);
+            updatedKeypoints.forEach((keypoint: { keyPointNameId: any; name: any; description: any; }) => {
+                // Resolve the name using availableKeyFeatures if necessary
+                const resolvedName = availableKeyFeatures.find(
+                    (feature) => feature.id === keypoint.keyPointNameId
+                )?.name;
 
-        const response = await addKeypointname(keypointData);
-
-        if (response) {
-            console.log('Keypoint added successfully!', response);
-            // Update UI optimistically instead of reloading
-            keypoints = [
-                ...keypoints,
-                { title: customKeyFeatureTitle, description: "" } // Update as per your data structure
-            ];
-            clearForm(); // Clear the input field
-        } else {
-            alert('Failed to add the key point. Please try again.');
+                const listItem = document.createElement('li');
+                listItem.textContent = `${resolvedName || keypoint.name}: ${keypoint.description}`;
+                keypointsListElement.appendChild(listItem);
+            });
         }
     } catch (error) {
-        console.error('Error in addKeypointName:', error);
-        alert('An unexpected error occurred. Please try again.');
+        console.error('Error reloading keypoints list:', error);
+        alert('Failed to reload keypoints list. Please refresh the page.');
     }
 }
-async function fetchKeyFeatures() {
+// Function to clear the form
+function clearForm() {
+    const titleInput = document.getElementById('keyFeatureTitle'); // Assuming an element with this ID exists
+    const descriptionInput = document.getElementById('keyFeatureDescription'); // Assuming an element with this ID exists
+
+    if (titleInput) titleInput.value = '';
+    if (descriptionInput) descriptionInput.value = '';
+}
+// getKeyPoints
+async function fetchKeyPoints() {
     try {
-        const response = await getKeyPoints(slug);
+        const response = await getKeyPoints(slug); // Fetch the data
 
         if (response) {
             console.log('Fetched key points:', response);
-            console.log('Available Key Features:', availableKeyFeatures);
 
-            keyFeatures = response.map((feature) => {
+            // Map the data to include the name dynamically if needed
+            keyFeatures = response.map((feature: { business_key_point_name_id: any; key_point_name: any; }) => {
+                // Assuming availableKeyFeatures contains the mapping
                 const matchedFeature = availableKeyFeatures.find(
-                    (kf) => kf.id === feature.keyPointNameId
-                );
-                console.log(
-                    `Matching keyPointNameId ${feature.keyPointNameId}:`,
-                    matchedFeature
+                    (kf) => kf.id === feature.business_key_point_name_id
                 );
 
                 return {
                     ...feature,
-                    keyPointName: matchedFeature?.name || 'Unknown',
+                    keyPointName: matchedFeature?.name || feature.key_point_name || 'Unknown',
                 };
             });
+
+            // Update the UI to display the key points
+            const keypointsListElement = document.getElementById('keypointsList'); // UI container
+            if (keypointsListElement) {
+                keypointsListElement.innerHTML = ''; // Clear existing items
+
+                keyFeatures.forEach((keyFeature) => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${keyFeature.keyPointName}: ${keyFeature.text}`;
+                    keypointsListElement.appendChild(listItem);
+                });
+            }
 
             console.log('Mapped key features with names:', keyFeatures);
         } else {
@@ -293,11 +286,39 @@ async function fetchKeyFeatures() {
         console.error('Error fetching key points:', error);
     }
 }
+//  remove key-points
+
+// Integrating the function with the button
+function removeKeyPoints(id, index) {
+    if (confirm('Are you sure you want to remove this key feature?')) {
+        deleteKeyPointById(id).then((success) => {
+            if (success) {
+                // Remove the key point from the local list
+                keyFeatures.splice(index, 1);
+
+                // Reload the UI
+                reloadKeypointsList();
+
+                alert('Key feature removed successfully.');
+            } else {
+                alert('Failed to remove the key feature. Please try again.');
+            }
+        }).catch((error) => {
+            console.error('Error removing key feature:', error);
+            alert('An unexpected error occurred. Please try again.');
+        });
+    }
+}
 
 
-	// function removeKeyFeature(index: number) {
-	// 	keyFeatures = keyFeatures.filter((_, i) => i !== index);
-	// }
+
+
+
+
+
+
+
+
 
 	// Manage Why Choose
 	function addCustomWhyChoose() {
@@ -338,7 +359,7 @@ async function fetchKeyFeatures() {
 		}
 	}
 	onMount(async () => {
-		fetchKeyFeatures();
+		fetchKeyPoints();
 
     const keypoints = await getKeypointnames();
     if (keypoints) {
@@ -349,9 +370,7 @@ async function fetchKeyFeatures() {
   });
 
  
-	function clearForm() {
-		throw new Error('Function not implemented.');
-	}
+
 </script>
 
 <div class="main-content">
@@ -550,7 +569,7 @@ async function fetchKeyFeatures() {
 							<button
 								class="button is-primary mt-3"
 								type="button"
-								on:click={addKeyFeature}
+								on:click={addKeyPoint}
 							>
 								Add to Key Features Table
 							</button>
@@ -577,7 +596,7 @@ async function fetchKeyFeatures() {
 											<button
 												class="button is-danger"
 												type="button"
-												on:click={() => removeKeyFeature(id, index)}
+												on:click={() => removeKeyPoints(id, index)}
 											>
 												Remove
 											</button>
