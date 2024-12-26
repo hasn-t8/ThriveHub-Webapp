@@ -26,9 +26,12 @@
 
 // const authToken = typeof window !== 'undefined' ? localStorage.Item('authToken') || '' : '';
 // const loggedInStatus = writable(!!authToken);
+// src/lib/store.js
 
 import { API_BASE_URL } from '$lib/config';
 import { writable } from 'svelte/store';
+
+export const userEmail = writable('');
 
 type JWTHeader = {
 	alg: string;
@@ -134,9 +137,9 @@ const isTokenValid = (token: string): boolean => {
 	const isValid = payload.exp > currentTime + bufferTime; // Check expiration
 	return isValid; // Return true if valid, false if expired or about to expire
 };
-/****************************************/
 
 
+/********************password management********************/
 
 
 export async function forgotPassword(email: string): Promise<string> {
@@ -219,6 +222,54 @@ export async function changePassword(email: string, token: string, newPassword: 
     } catch (error) {
         if (error instanceof Error) {
             console.error('Error in changePassword:', error.message);
+            throw error;
+        } else {
+            console.error('Unexpected error:', error);
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
+
+/********************Account verification********************/
+
+
+
+export async function getVerificationCode(email: string): Promise<number> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/activate-account/get-code`, {
+            method: 'POST',
+            headers: {
+                accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+
+            // Handle specific status codes
+            if (response.status === 400) {
+                const validationErrors = errorData.errors.map((err: { msg: string }) => err.msg).join(', ');
+                throw new Error(`Validation error: ${validationErrors}`);
+            }
+            if (response.status === 404) {
+                throw new Error(errorData.error || 'User not found or code not found.');
+            }
+            if (response.status === 500) {
+                throw new Error(errorData.error || 'Internal Server Error.');
+            }
+
+            throw new Error('An unexpected error occurred.');
+        }
+
+        const data = await response.json();
+        console.log('Verification code retrieved successfully:', data);
+        return data.verificationCode;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error in getVerificationCode:', error.message);
             throw error;
         } else {
             console.error('Unexpected error:', error);
