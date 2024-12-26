@@ -60,15 +60,15 @@
 	// let keyFeatures = [];
 	let whyChoosePoints: any[] = [];
 	// Key Features
-	let availableKeyFeatures = [
-		'High Reliable Uptime',
-		'Affordable Plans',
-		'Easy-to-Use Control Panel',
-		'Scalability',
-		'Free Domain Name',
-		'Security Features',
-		'24/7 Customer Support'
-	];
+	// let availableKeyFeatures = [
+	// 	'High Reliable Uptime',
+	// 	'Affordable Plans',
+	// 	'Easy-to-Use Control Panel',
+	// 	'Scalability',
+	// 	'Free Domain Name',
+	// 	'Security Features',
+	// 	'24/7 Customer Support'
+	// ];
 	let keyFeatureTitle = '';
 	let customKeyFeatureTitle = '';
 	let keyFeatureDescription = '';
@@ -89,7 +89,7 @@
 		name: string;
 	};
 
-	// let availableKeyFeatures: KeyFeature[] = [];
+	let availableKeyFeatures: KeyFeature[] = [];
 
 	// Why Choose
 	// availableWhyChoose = [...filteredKeyPoints];
@@ -190,7 +190,7 @@
 		title: string,
 		description: string,
 		availableKeyPoints: any[],
-		slug: string,
+		slug: number,
 		createKeyPoint: Function,
 		reloadKeypointsList: Function,
 		clearForm: Function
