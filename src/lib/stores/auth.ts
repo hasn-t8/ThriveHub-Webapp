@@ -27,6 +27,7 @@
 // const authToken = typeof window !== 'undefined' ? localStorage.Item('authToken') || '' : '';
 // const loggedInStatus = writable(!!authToken);
 
+import { API_BASE_URL } from '$lib/config';
 import { writable } from 'svelte/store';
 
 type JWTHeader = {
@@ -134,3 +135,94 @@ const isTokenValid = (token: string): boolean => {
 	return isValid; // Return true if valid, false if expired or about to expire
 };
 /****************************************/
+
+
+
+
+export async function forgotPassword(email: string): Promise<string> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+            method: 'POST',
+            headers: {
+                accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+
+            // Handle specific status codes
+            if (response.status === 400) {
+                const validationErrors = errorData.errors.map((err: { msg: string }) => err.msg).join(', ');
+                throw new Error(`Validation error: ${validationErrors}`);
+            }
+            if (response.status === 404) {
+                throw new Error(errorData.error || 'User not found.');
+            }
+            if (response.status === 500) {
+                throw new Error(errorData.error || 'Internal Server Error.');
+            }
+
+            throw new Error('An unexpected error occurred.');
+        }
+
+        const data = await response.json();
+        console.log('Password reset token sent successfully:', data);
+        return data.message || 'Password reset token sent successfully.';
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error in forgotPassword:', error.message);
+            throw error;
+        } else {
+            console.error('Unexpected error:', error);
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
+
+export async function changePassword(email: string, token: string, newPassword: string): Promise<string> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/forgot-password/change`, {
+            method: 'POST',
+            headers: {
+                accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, token, newPassword })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+
+            // Handle specific status codes
+            if (response.status === 400) {
+                const validationErrors = errorData.errors.map((err: { msg: string }) => err.msg).join(', ');
+                const tokenError = errorData.error || '';
+                throw new Error(`Validation error: ${validationErrors}${tokenError ? ` (${tokenError})` : ''}`);
+            }
+            if (response.status === 404) {
+                throw new Error(errorData.error || 'User not found.');
+            }
+            if (response.status === 500) {
+                throw new Error(errorData.error || 'Internal Server Error.');
+            }
+
+            throw new Error('An unexpected error occurred.');
+        }
+
+        const data = await response.json();
+        console.log('Password changed successfully:', data);
+        return data.message || 'Password changed successfully.';
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error in changePassword:', error.message);
+            throw error;
+        } else {
+            console.error('Unexpected error:', error);
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}

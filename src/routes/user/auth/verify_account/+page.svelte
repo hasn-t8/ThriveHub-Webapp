@@ -15,6 +15,8 @@
 
 	let codeInputs = ['', '', '', ''];
 
+
+
 	const startTimer = () => {
 		clearInterval(countdown);
 		timeLeft = 59;
@@ -33,6 +35,37 @@
 			}
 		}, 1000);
 	};
+	const getCode = async () => {
+    try {
+        // Show some loading indicator if necessary
+        console.log('Requesting verification code for:', userEmail);
+
+        const response = await fetch(`${API_BASE_URL}/auth/activate-account/get-code`, {
+            method: 'POST',
+            headers: {
+                accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: userEmail, // Pass the user's email
+            }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to send verification code.');
+        }
+
+        const data = await response.json();
+        console.log('Verification code sent:', data);
+        message = data.message || 'Verification code has been sent to your email.';
+    } catch (error) {
+        isError = true;
+        message = error instanceof Error ? error.message : 'An unexpected error occurred while sending the code.';
+        console.error('Error requesting code:', error);
+    }
+};
+
 
 	const handleInput = (index: number, value: string) => {
 		codeInputs[index] = value;
@@ -59,19 +92,28 @@
 		showTimerSection = true;
 	};
 
-	onMount(() => {
-		startTimer();
-		jwtToken = localStorage.getItem('authToken') || '';
-		console.log('JWT_token:', jwtToken);
-    
-		try {
-			const data = decodeJWT(jwtToken);
-			console.log('Decoded JWT Payload:', data.email);
-			userEmail = data.email;
-		} catch (error) {
-			console.error('Error decoding JWT:', (error as any)?.message);
-		}
-	});
+	onMount(async () => {
+    startTimer(); // Start the countdown timer
+    jwtToken = localStorage.getItem('authToken') || '';
+    console.log('JWT_token:', jwtToken);
+
+    try {
+        const data = decodeJWT(jwtToken); // Decode the JWT to extract the email
+        console.log('Decoded JWT Payload:', data.email);
+        userEmail = data.email;
+
+        if (userEmail) {
+            console.log('Sending code to user email...');
+            await getCode(); // Call the API to send the code
+        } else {
+            throw new Error('User email is missing or invalid.');
+        }
+    } catch (error) {
+        console.error('Error during page load:', error);
+        isError = true;
+        message = error instanceof Error ? error.message : 'An error occurred while initializing.';
+    }
+});
 
 	// Function to decode JWT
 	function decodeJWT(token: string) {
