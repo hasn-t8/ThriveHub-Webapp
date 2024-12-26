@@ -357,6 +357,7 @@
 		}
 	}
 	onMount(async () => {
+		fetchProfile();
 		// Fetch key points for both types
 		fetchKeyPoints('feature', 'keyFeatures'); // Fetch features
 		fetchKeyPoints('why-us', 'availableWhyChoose'); // Fetch why-us points
