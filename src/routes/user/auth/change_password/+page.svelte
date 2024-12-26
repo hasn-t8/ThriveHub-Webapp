@@ -1,27 +1,55 @@
 <script lang="ts">
+	import { changePassword } from '$lib/stores/auth';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+
+	let email = ''; // Extract email from query params
+	let token = ''; // Extract token from query params
 	let newPassword = '';
 	let confirmPassword = '';
 	let showNewPassword = false;
 	let showConfirmPassword = false;
 	let passwordError = false;
+	let message = '';
+	let isError = false;
 
 	// Function to toggle visibility of the new password
 	const toggleNewPasswordVisibility = () => {
 		showNewPassword = !showNewPassword;
 	};
+
 	// Function to toggle visibility of the confirm password
 	const toggleConfirmPasswordVisibility = () => {
 		showConfirmPassword = !showConfirmPassword;
 	};
+
+	// Extract query parameters on component mount
+	onMount(() => {
+		const params = new URLSearchParams(window.location.search);
+		email = params.get('email') || '';
+		token = params.get('token') || '';
+	});
+
 	// Function to handle form submission
-	const handleSubmit = (event: Event) => {
+	const handleSubmit = async (event: Event) => {
 		event.preventDefault();
+
 		if (newPassword !== confirmPassword) {
 			passwordError = true;
-		} else {
-			passwordError = false;
-			alert('Passwords matched.');
-			// Add logic to handle password update
+			return;
+		}
+
+		passwordError = false;
+
+		try {
+			message = await changePassword(email, token, newPassword);
+			isError = false;
+
+			// Redirect to login page after successful password change
+			goto('/user/auth/login');
+		} catch (error) {
+			isError = true;
+			message = error instanceof Error ? error.message : 'An unexpected error occurred.';
 		}
 	};
 </script>
@@ -42,11 +70,12 @@
 						class="input rounded"
 						type={showNewPassword ? 'text' : 'password'}
 						placeholder="Enter your new password"
+						required
 					/>
 					<span class="icon is-small is-right" on:click={toggleNewPasswordVisibility}>
 						<i
 							class={showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'}
-							style="pointer-events: auto;  cursor: pointer; color: black;"
+							style="pointer-events: auto; cursor: pointer; color: black;"
 						></i>
 					</span>
 				</div>
@@ -59,6 +88,7 @@
 						class="input rounded"
 						type={showConfirmPassword ? 'text' : 'password'}
 						placeholder="Confirm your new password"
+						required
 					/>
 					<span class="icon is-small is-right" on:click={toggleConfirmPasswordVisibility}>
 						<i
@@ -71,12 +101,17 @@
 			{#if passwordError}
 				<p class="has-text-danger pb-4">Passwords do not match</p>
 			{/if}
+			{#if message}
+				<p class={isError ? 'has-text-danger' : 'has-text-success'}>{message}</p>
+			{/if}
 			<div class="field has-text-centered">
 				<button type="submit" class="is-medium custom-button">Create New Password</button>
 			</div>
 		</form>
 	</div>
 </div>
+
+
 
 <style>
 	.forget-container {
