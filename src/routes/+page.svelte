@@ -79,7 +79,7 @@
 						<div class="is-flex is-flex-direction-column">
 							<h3 class="title is-5 m-0">Tech</h3>
 							<p class="hide-mobile" style="font-size: 12px; color:#4a4a4a; width:60%">
-								Our goal is to help you achieve a balanced lifestyle.
+								Discover innovative solutions for digital tools, services, and software.
 							</p>
 						</div>
 					</div>
@@ -92,7 +92,7 @@
 						<div class="is-flex is-flex-direction-column">
 							<h4 class="title is-5 m-0">Wellness</h4>
 							<p class="hide-mobile" style="font-size: 12px; color:#4a4a4a; width:60%">
-								Our goal is to help you achieve a balanced lifestyle.
+								Enhance your physical and mental well-being with expert solutions.
 							</p>
 						</div>
 					</div>
@@ -106,7 +106,7 @@
 						<div class="is-flex is-flex-direction-column">
 							<h4 class="title is-5 m-0">Finance</h4>
 							<p class="hide-mobile" style="font-size: 12px; color:#4a4a4a; width:60%">
-								Our goal is to help you achieve a balanced lifestyle.
+								Manage and grow your wealth with comprehensive financial services.
 							</p>
 						</div>
 					</div>
@@ -119,7 +119,7 @@
 						<div class="is-flex is-flex-direction-column">
 							<h4 class="title is-5 m-0">Home Electronics</h4>
 							<p class="hide-mobile" style="font-size: 12px; color:#4a4a4a; width:60%">
-								Our goal is to help you achieve a balanced lifestyle.
+								Explore the latest gadgets and devices for everyday tech needs.
 							</p>
 						</div>
 					</div>
