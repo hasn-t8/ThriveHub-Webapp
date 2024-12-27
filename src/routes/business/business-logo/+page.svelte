@@ -1,5 +1,10 @@
 <script>
+    import { uploadBusinessLogo } from '$lib/stores/business'; // Adjust the path if necessary
+
     let fileName = '';
+    // @ts-ignore
+    let selectedFile = null; // To keep track of the selected file
+    const businessProfileId = 123; // Replace with the actual business profile ID
 
     function handleFileClick() {
         // @ts-ignore
@@ -11,6 +16,7 @@
         const file = event.target.files[0];
         if (file) {
             fileName = `File "${file.name}" selected.`;
+            selectedFile = file;
             alert(fileName);
         }
     }
@@ -33,10 +39,79 @@
         const file = event.dataTransfer.files[0];
         if (file) {
             fileName = `File "${file.name}" uploaded.`;
+            selectedFile = file;
             alert(fileName);
         }
     }
+
+    async function handleUpload() {
+        // @ts-ignore
+        if (!selectedFile) {
+            alert('Please select a file before continuing.');
+            return;
+        }
+
+        const success = await uploadBusinessLogo(selectedFile, businessProfileId);
+
+        if (success) {
+            alert('Logo uploaded successfully! Redirecting...');
+            window.location.href = '/business/business-home';
+        } else {
+            alert('Logo upload failed. Please try again.');
+        }
+    }
 </script>
+
+<div class="container">
+    <div class="card">
+        <div class="slider-container">
+            <progress class="progress is-info" value="40" max="100"></progress>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="has-text-centered mb-5">
+            <h2 class="title is-4">Upload your Logo</h2>
+            <p class="subtitle is-6">
+                Upload your logo to represent your brand visually
+            </p>
+        </div>
+
+        <div class="columns is-centered is-variable is-8">
+            <div class="column is-full">
+                <div
+                    id="fileUploadCard"
+                    class="category-card"
+                    on:click={handleFileClick}
+                    on:dragover={handleDragOver}
+                    on:dragleave={handleDragLeave}
+                    on:drop={handleDrop}
+                >
+                    <div class="icon" style="padding-right: 2%;">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <span>Click or drag file to this area to upload</span>
+                    <input type="file" id="fileInput" on:change={handleFileChange} style="display: none;" />
+                </div>
+            </div>
+        </div>
+        <p class="subtitle is-6" style="color: gray;">
+            Formats accepted are .jpg, .png, and .svg
+        </p>
+
+        <div class="has-text-centered">
+            <button
+                id="continue-button"
+                class="button is-primary"
+                style="border-radius: 10px; margin-bottom: 30px; color: white; background-color: #118BF6; width: 214px;"
+                on:click={handleUpload}
+            >
+                Continue
+            </button>
+        </div>
+    </div>
+</div>
+
 
 <style>
     /* Global Styles */
@@ -119,58 +194,3 @@
         color: white;
     }
 </style>
-
-<div class="container">
-    <!-- Slider -->
-    <div class="card">
-        <div class="slider-container">
-            <progress class="progress is-info" value="40" max="100"></progress>
-        </div>
-    </div>
-
-    <div class="card">
-        <!-- Title -->
-        <div class="has-text-centered mb-5">
-            <h2 class="title is-4">Upload your Logo</h2>
-            <p class="subtitle is-6">
-                Upload your logo to represent your brand visually
-            </p>
-        </div>
-
-        <div class="columns is-centered is-variable is-8">
-            <!-- Category Card -->
-            <div class="column is-full">
-                <div
-                    id="fileUploadCard"
-                    class="category-card"
-                    on:click={handleFileClick}
-                    on:dragover={handleDragOver}
-                    on:dragleave={handleDragLeave}
-                    on:drop={handleDrop}
-                >
-                    <div class="icon" style="padding-right: 2%;">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                    </div>
-                    <span>Click or drag file to this area to upload</span>
-                    <input type="file" id="fileInput" on:change={handleFileChange} />
-                </div>
-            </div>
-        </div>
-        <p class="subtitle is-6" style="color: gray;">
-            Formats accepted are .jpg, .png and .svg
-        </p>
-
-        <!-- Continue Button -->
-        <div class="has-text-centered">
-            <a href="/business/business-about">
-            <button
-                id="continue-button"
-                class="button is-primary"
-                style="border-radius: 10px; margin-bottom: 30px; color: white; background-color: #118BF6; width: 214px;"
-            >
-                Continue
-            </button>
-        </a>
-        </div>
-    </div>
-</div>

@@ -1,26 +1,43 @@
-<script>
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { updateBusinessProfile } from '$lib/stores/business';
+
 	/**
 	 * @type {string | null}
 	 */
-	let selectedCategory = null;
+	let selectedCategory: string | null = null;
 
 	/**
+	 * Mocked profile ID for demonstration purposes
+	 */
+	const profileId = 123; // Replace with actual profile ID
+
+	/**
+	 * Selects a category and updates the profile
 	 * @param {string} category
 	 */
-	function selectCategory(category) {
+	async function selectCategory(category: string) {
 		selectedCategory = category;
+
+		try {
+			// Update the business profile with the selected category
+			const success = await updateBusinessProfile(profileId, { category });
+			if (success) {
+				// alert(`Category updated to "${category}" successfully!`);
+				goto('/business/business-about');
+
+			} else {
+				alert('Failed to update category. Please try again.');
+			}
+		} catch (error) {
+			console.error('Error updating category:', error);
+			alert('An error occurred while updating the category.');
+		}
 	}
 </script>
 
 <!-- Main Content -->
 <div class="container">
-	<!-- Slider -->
-	<div class="card">
-		<div class="slider-container">
-			<progress class="progress is-info" value="20" max="100"></progress>
-		</div>
-	</div>
-
 	<div class="card">
 		<!-- Title -->
 		<div class="has-text-centered mb-5">
@@ -34,7 +51,6 @@
 
 		<!-- Category Options -->
 		<div class="columns is-centered is-variable is-8">
-			<!-- Row 1 -->
 			<div class="column is-half">
 				<div
 					class="category-card"
@@ -66,7 +82,6 @@
 		</div>
 
 		<div class="columns is-centered is-variable is-8">
-			<!-- Row 2 -->
 			<div class="column is-half">
 				<div
 					class="category-card"
@@ -110,7 +125,7 @@
 					style="border-radius: 10px; margin-bottom: 30px; color: white; background-color: #118BF6; width: 214px;"
 					disabled={!selectedCategory}
 				>
-					Continue
+					go on
 				</button>
 			</a>
 		</div>

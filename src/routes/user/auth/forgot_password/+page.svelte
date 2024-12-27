@@ -1,5 +1,6 @@
 
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { forgotPassword } from '$lib/stores/auth';
 	// import { goto } from 'svelte-routing'; // Adjust import based on your routing library
 
@@ -15,7 +16,7 @@
 			isError = false;
 
 			// Redirect to change password screen on success
-			// goto('/user/auth/change_password'); // Update this path to your actual change password route
+			goto(`/user/auth/change_password?email=${encodeURIComponent(email)}`);
 		} catch (error) {
 			isError = true;
 			message = error instanceof Error ? error.message : 'An unexpected error occurred.';

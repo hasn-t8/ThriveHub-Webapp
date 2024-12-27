@@ -2,24 +2,21 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { API_BASE_URL } from '$lib/config';
-	import { userEmail } from '$lib/stores/auth'; // Assuming this is a writable store
+	import { userEmail } from '$lib/stores/auth';
+
+	let email = '';
+	let codeInputs = ['', '', '', ''];
+	let message = '';
+	let isError = false;
 
 	let timer = '00:59';
 	let timeLeft = 59;
 	let countdown: NodeJS.Timeout;
 	let showTimerSection = true;
-	let isError = false;
-	let message = '';
-	let email: string = '';
-	let codeInputs = ['', '', '', ''];
 
-	let jwtToken = '';
-
-	// Subscribe to the userEmail store
 	userEmail.subscribe((value) => {
-		email = value;
+		email = value || localStorage.getItem('email') || '';
 	});
-
 	const startTimer = () => {
 		clearInterval(countdown);
 		timeLeft = 59;
@@ -39,75 +36,35 @@
 		}, 1000);
 	};
 
-	const handleInput = (index: number, value: string) => {
-		codeInputs[index] = value;
-
-		if (value.length === 1 && index < codeInputs.length - 1) {
-			const nextInput = document.getElementById(`code-${index + 2}`);
-			if (nextInput) nextInput.focus();
+	onMount(() => {
+		if (!email) {
+			alert('Email missing. Redirecting to sign-up page.');
+			goto('/user/auth/sign-up');
 		}
-	};
 
-	const handleBackspace = (index: number, value: string) => {
-		if (value === '' && index > 0) {
-			const prevInput = document.getElementById(`code-${index}`);
-			if (prevInput) prevInput.focus();
-		}
-	};
-
-	const changeEmail = () => {
-		alert('Change email functionality will be implemented here.');
-	};
-
-	const resendCode = async () => {
 		startTimer();
-		showTimerSection = true;
-		try {
-			const response = await fetch(
-				`${API_BASE_URL}/auth/activate-account/get-code`,
-				{
-					method: 'POST',
-					headers: {
-						accept: 'application/json',
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({ email })
-				}
-			);
+	});
 
-			if (!response.ok) {
-				const errorData = await response.json();
-				throw new Error(
-					errorData.error || 'Failed to resend verification code.'
-				);
+	const handleInput = (index: number, value: string) => {
+		const input = document.getElementById(
+			`code-${index + 1}`
+		) as HTMLInputElement | null;
+		if (input) {
+			input.value = value;
+			codeInputs[index] = value;
+			if (value.length === 1 && index < codeInputs.length - 1) {
+				const nextInput = document.getElementById(
+					`code-${index + 2}`
+				) as HTMLInputElement | null;
+				nextInput?.focus();
 			}
-
-			const data = await response.json();
-			message = data.message || 'Verification code resent successfully!';
-			isError = false;
-		} catch (error) {
-			isError = true;
-			message =
-				error instanceof Error
-					? error.message
-					: 'An unexpected error occurred.';
 		}
 	};
 
-	const handleVerifyAccount = async (event: Event) => {
-		event.preventDefault();
-
+	const handleVerifyAccount = async () => {
 		const code = codeInputs.join('');
 		if (code.length < 4) {
-			alert('Please enter the verification code.');
-			return;
-		}
-
-		console.log('Verification code:', code);
-		console.log('Email being sent:', email); // Debug log
-
-		if (!email) {
-			alert('Email is not set. Please return to the sign-up page.');
+			alert('Enter a valid 4-digit code.');
 			return;
 		}
 
@@ -117,8 +74,8 @@
 				{
 					method: 'POST',
 					headers: {
-						accept: 'application/json',
-						'Content-Type': 'application/json'
+						'Content-Type': 'application/json',
+						Accept: 'application/json'
 					},
 					body: JSON.stringify({ email, code })
 				}
@@ -126,48 +83,34 @@
 
 			if (!response.ok) {
 				const errorData = await response.json();
-				throw new Error(errorData.error || 'Failed to verify account.');
+				throw new Error(errorData.error || 'Verification failed.');
 			}
 
 			const data = await response.json();
-			console.log('Account verified:', data);
 			isError = false;
-			message = data.message || 'Account verified successfully!';
+			message = data.message || 'Verification successful!';
 			goto('/user/home');
 		} catch (error) {
 			isError = true;
 			message =
-				error instanceof Error
-					? error.message
-					: 'An unexpected error occurred.';
+				error instanceof Error ? error.message : 'Unexpected error occurred.';
 		}
 	};
 
-	onMount(() => {
-		startTimer();
-		jwtToken = localStorage.getItem('authToken') || '';
-		console.log('JWT_token:', jwtToken);
+	function handleBackspace(index: number, value: string): any {
+		throw new Error('Function not implemented.');
+	}
 
-		try {
-			const data = decodeJWT(jwtToken);
-			console.log('Decoded JWT Payload:', data.email);
-			email = data.email || email; // Use email from JWT if not already set
-		} catch (error) {
-			console.error('Error decoding JWT:', (error as any)?.message);
-		}
-	});
+	function changeEmail(
+		event: MouseEvent & { currentTarget: EventTarget & HTMLAnchorElement }
+	) {
+		throw new Error('Function not implemented.');
+	}
 
-	// Function to decode JWT
-	function decodeJWT(token: string) {
-		const parts = token.split('.');
-
-		if (parts.length !== 3) {
-			throw new Error('Invalid JWT token');
-		}
-
-		const payload = parts[1];
-		const decodedPayload = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-		return JSON.parse(decodedPayload);
+	function resendCode(
+		event: MouseEvent & { currentTarget: EventTarget & HTMLAnchorElement }
+	) {
+		throw new Error('Function not implemented.');
 	}
 </script>
 
@@ -180,16 +123,18 @@
 			>. Enter the code to verify your account.
 		</p>
 
-		<!-- <h2 class="subtitle is-6 has-text-centered custom-subheading">
+		<h2 class="subtitle is-6 has-text-centered custom-subheading">
 			<a
 				id="change-email-link"
 				role="button"
 				href="javascript:void(0)"
 				class="has-text-black"
 				style="text-decoration: underline;"
-				on:click={changeEmail}>Change Email</a
+				onclick={changeEmail}
 			>
-		</h2> -->
+				Change Email
+			</a>
+		</h2>
 
 		<form id="verify-form">
 			<div class="field is-flex is-justify-content-center mb-4">
@@ -200,10 +145,10 @@
 						type="text"
 						maxlength="1"
 						bind:value={codeInputs[index]}
-						on:input={(e) =>
+						oninput={(e) =>
 							e.target &&
 							handleInput(index, (e.target as HTMLInputElement).value)}
-						on:keydown={(e) =>
+						onkeydown={(e) =>
 							e.key === 'Backspace' &&
 							handleBackspace(index, (e.target as HTMLInputElement).value)}
 					/>
@@ -215,17 +160,19 @@
 					Code expires in <span id="timer">{timer}</span>
 				</p>
 			{/if}
+
 			<div class="field has-text-centered mb-4">
-				<button on:click={handleVerifyAccount} class="is-medium custom-button"
-					>Submit</button
-				>
+				<button onclick={handleVerifyAccount} class="is-medium custom-button">
+					Submit
+				</button>
 			</div>
+
 			<div class="field has-text-centered">
 				<p>
 					Didn't receive the code?
-					<a class="has-text-link" on:click|preventDefault={resendCode}
-						>Resend now</a
-					>
+					<a class="has-text-link" onclick={resendCode}>
+						Resend now
+					</a>
 				</p>
 			</div>
 

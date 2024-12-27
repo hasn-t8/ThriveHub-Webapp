@@ -5,6 +5,7 @@
 
 	let email = ''; // Extract email from query params
 	let token = ''; // Extract token from query params
+	let code = ''; // Code entered by the user
 	let newPassword = '';
 	let confirmPassword = '';
 	let showNewPassword = false;
@@ -42,11 +43,12 @@
 		passwordError = false;
 
 		try {
-			message = await changePassword(email, token, newPassword);
+			message = await changePassword(email, code, newPassword );
 			isError = false;
+			alert('Password reset sucessfully');
 
 			// Redirect to login page after successful password change
-			goto('/user/auth/login');
+			goto('/user/auth/sign-in');
 		} catch (error) {
 			isError = true;
 			message = error instanceof Error ? error.message : 'An unexpected error occurred.';
@@ -62,6 +64,18 @@
 			in.
 		</p>
 		<form on:submit={handleSubmit}>
+			<div class="field">
+				<label class="label">Code</label>
+				<div class="control">
+					<input
+						bind:value={code}
+						class="input rounded"
+						type="text"
+						placeholder="Enter the code sent to your email"
+						required
+					/>
+				</div>
+			</div>
 			<div class="field">
 				<label class="label">Password</label>
 				<div class="control has-icons-right">
@@ -110,6 +124,7 @@
 		</form>
 	</div>
 </div>
+
 
 
 
