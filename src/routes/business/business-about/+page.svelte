@@ -1,6 +1,34 @@
-<script>
+<script lang="ts">
+  import { updateBusinessProfile } from '$lib/stores/business';
+
   let textInput = "";
+  const profileId = 123; // Replace with the actual profile ID
+
+  /**
+   * Handles updating the business description via the API
+   */
+  async function handleContinue() {
+    if (!textInput.trim()) {
+      alert("Please provide a valid business description.");
+      return;
+    }
+
+    try {
+      const success = await updateBusinessProfile(profileId, { about_business: textInput.trim() });
+      if (success) {
+        alert("Business description updated successfully!");
+        // Redirect to the next step
+        window.location.href = "/business/business-logo";
+      } else {
+        alert("Failed to update the business description. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error updating business description:", error);
+      alert("An error occurred while updating the business description.");
+    }
+  }
 </script>
+
 
 <!-- Main Content -->
 <div class="container">
@@ -20,7 +48,7 @@
       </p>
     </div>
     <div class="columns is-centered is-variable is-8">
-      <!-- Category Card -->
+      <!-- Input for Business Description -->
       <div class="column is-full">
         <div>
           <textarea
@@ -35,16 +63,14 @@
 
     <!-- Continue Button -->
     <div class="has-text-centered">
-     <a href="/business/business-verify">
       <button
         id="continue-button"
         class="button is-primary"
         style="border-radius: 10px; margin-bottom: 30px; color: white; background-color: #118BF6; width: 214px;"
-        on:click={() => alert('Continuing with input: ' + textInput)}
+        on:click={handleContinue}
       >
         Continue
       </button>
-      </a>
     </div>
   </div>
 </div>

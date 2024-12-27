@@ -1,81 +1,78 @@
-<script>
-  import { onMount } from "svelte";
-  	// @ts-ignore
-  	import { API_BASE_URL } from '$lib/config'; // Assuming you have this in your config.ts
+<script lang="ts">
+  import { goto } from '$app/navigation';
+  import { API_BASE_URL } from '$lib/config';
+  import { Email } from '$lib/stores/business';
 
-  let website = "";
-  let companyName = "";
-  let fullName = "";
-  let jobTitle = "";
-  let email = "";
-  let password = "";
+
+
+  let fullName = '';
+  let companyName = '';
+  let website = '';
+  let jobTitle = '';
+  let email = '';
+  let password = '';
   let isButtonDisabled = true;
-  let isLoading = false; // Tracks the loading state
-  let errorMessage = ""; // Tracks errors during API call
+  let message = '';
+  let isError = false;
 
-  function validateForm() {
-    isButtonDisabled = !website || !companyName || !fullName || !jobTitle || !email || !password;
-  }
+  // Reactive validation for enabling/disabling the submit button
+  $: isButtonDisabled = !(fullName.trim() && companyName.trim() && website.trim() && jobTitle.trim() && email.trim() && password.trim());
 
-  async function createBusinessAccount() {
-    // Clear previous error
-    errorMessage = "";
+  // Handle form submission
+  async function handleBusinessSignUp(event: Event) {
+      event.preventDefault();
+      console.log('Form submitted:', { fullName, companyName, website, jobTitle, email, password });
 
-    // Set loading state
-    isLoading = true;
-    const types = ['business-owner'];
-     // Redirect to dashboard or another page
-     window.location.href = "/business/business-category";
-    try {
-      // API request payload
-      const payload = {
-        website,
-        companyName,
-        fullName,
-        jobTitle,
-        email,
-        password,
-        types,
-      };
-      
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-      
+      const types = ['business-owner'];
 
-      // Handle response
-      if (!response.ok) {
-        throw new Error("Failed to create account. Please try again.");
+      try {
+          const response = await fetch(`${API_BASE_URL}/auth/register`, {
+              method: 'POST',
+              headers: {
+                  accept: 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  email,
+                  password,
+                  types,
+                  full_name: fullName,
+                  org_name: companyName,
+                  job_title: jobTitle,
+                  business_website_url: website
+              })
+          });
+
+          if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.error || 'Failed to create account.');
+          }
+
+          const data = await response.json();
+          console.log('Business account created:', data);
+
+          isError = false;
+          message = data.message || 'Business account created successfully!';
+
+          // Clear form fields
+          fullName = '';
+          companyName = '';
+          website = '';
+          jobTitle = '';
+          // email = '';
+          password = '';
+// Update the writable store
+Email.set(email);
+goto('/business/business-verify');
+          // Redirect to the business dashboard
+          // goto('/business/business-otp');
+      } catch (error) {
+          isError = true;
+          message = error instanceof Error ? error.message : 'An unexpected error occurred.';
       }
-
-      const data = await response.json();
-
-      // Store token in local storage
-      if (data.token) {
-        localStorage.setItem("authToken", data.token);
-
-        // Redirect to dashboard or another page
-        window.location.href = "/dashboard";
-      } else {
-        throw new Error("Authentication token not found in response.");
-      }
-    } catch (error) {
-      // @ts-ignore
-      errorMessage = error.message;
-    } finally {
-      // Reset loading state
-      isLoading = false;
-    }
   }
-
-  onMount(() => {
-    validateForm();
-  });
 </script>
+
 
 <!-- Main Content -->
 <div class="container">
@@ -120,101 +117,93 @@
     <!-- Right Section -->
     <div class="column is-half">
       <div class="login-card">
-        <h3 class="title is-4">Create Account</h3>
-        <form on:submit|preventDefault={createBusinessAccount}>
-          <div class="field">
-            <label class="label">Business Website URL</label>
-            <div class="control">
-              <input
-                class="input"
-                type="url"
-                bind:value={website}
-                placeholder="Website"
-                on:input={validateForm}
-              />
+        <h3 class="title is-4">Create Business Account</h3>
+        <form on:submit={handleBusinessSignUp}>
+            <div class="field">
+                <label class="label has-text-weight-medium" for="fullName">Full Name</label>
+                <div class="control">
+                    <input
+                        class="input custom-input"
+                        type="text"
+                        id="fullName"
+                        placeholder="Enter your full name"
+                        bind:value={fullName}
+                    />
+                </div>
             </div>
-          </div>
-          <div class="field">
-            <label class="label">Company Name</label>
-            <div class="control">
-              <input
-                class="input"
-                type="text"
-                bind:value={companyName}
-                placeholder="Enter your company name"
-                on:input={validateForm}
-              />
+            <div class="field">
+                <label class="label has-text-weight-medium" for="companyName">Company Name</label>
+                <div class="control">
+                    <input
+                        class="input custom-input"
+                        type="text"
+                        id="companyName"
+                        placeholder="Enter your company name"
+                        bind:value={companyName}
+                    />
+                </div>
             </div>
-          </div>
-          <div class="field">
-            <label class="label">Full Name</label>
-            <div class="control">
-              <input
-                class="input"
-                type="text"
-                bind:value={fullName}
-                placeholder="Enter your full name"
-                on:input={validateForm}
-              />
+            <div class="field">
+                <label class="label has-text-weight-medium" for="website">Website</label>
+                <div class="control">
+                    <input
+                        class="input custom-input"
+                        type="url"
+                        id="website"
+                        placeholder="Enter your business website"
+                        bind:value={website}
+                    />
+                </div>
             </div>
-          </div>
-          <div class="field">
-            <label class="label">Job Title</label>
-            <div class="control">
-              <input
-                class="input"
-                type="text"
-                bind:value={jobTitle}
-                placeholder="Enter your job title"
-                on:input={validateForm}
-              />
+            <div class="field">
+                <label class="label has-text-weight-medium" for="jobTitle">Job Title</label>
+                <div class="control">
+                    <input
+                        class="input custom-input"
+                        type="text"
+                        id="jobTitle"
+                        placeholder="Enter your job title"
+                        bind:value={jobTitle}
+                    />
+                </div>
             </div>
-          </div>
-          <div class="field">
-            <label class="label">Work Email</label>
-            <div class="control">
-              <input
-                class="input"
-                type="email"
-                bind:value={email}
-                id="email"
-                placeholder="Enter your email"
-                on:input={validateForm}
-              />
+            <div class="field">
+                <label class="label has-text-weight-medium" for="email">Email</label>
+                <div class="control">
+                    <input
+                        class="input custom-input"
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        bind:value={email}
+                    />
+                </div>
             </div>
-          </div>
-          <div class="field">
-            <label class="label">Password</label>
-            <div class="control">
-              <input
-                class="input"
-                type="password"
-                bind:value={password}
-                id="password"
-                placeholder="Enter your password"
-              />
+            <div class="field">
+                <label class="label has-text-weight-medium" for="password">Password</label>
+                <div class="control">
+                    <input
+                        class="input custom-input"
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        bind:value={password}
+                    />
+                </div>
             </div>
-          </div>
-          <button
-            id="login-button"
-            class="button is-fullwidth is-primary"
-            style="color: white; background-color: #118BF6;"
-            disabled={isButtonDisabled || isLoading}
-          >
-            {#if isLoading}
-              <span class="loader"></span>
-            {:else}
-              Create Business Account
+            <button
+                class="button is-primary is-medium is-fullwidth"
+                disabled={isButtonDisabled}
+            >
+                Create Business Account
+            </button>
+            {#if message}
+                <p class="has-text-centered {isError ? 'has-text-danger' : 'has-text-success'}">
+                    {message}
+                </p>
             {/if}
-          </button>
         </form>
-        {#if errorMessage}
-          <p class="has-text-danger">{errorMessage}</p>
-        {/if}
-        <p class="has-text-centered">
-          Already have an account? <a href="/user/auth/sign-in">Log In</a>
-        </p>
-      </div>
+    </div>
     </div>
   </div>
 </div>
