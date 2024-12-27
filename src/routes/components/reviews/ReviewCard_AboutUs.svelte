@@ -9,7 +9,6 @@
 		likes: 0,
 		avatar: '/assets/avatar.png'
 	};
-	console.log('Review:', review);
 </script>
 
 <div class="card review-card">
