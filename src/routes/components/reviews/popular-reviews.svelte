@@ -1,5 +1,94 @@
 <script>
 	import { onMount } from 'svelte';
+	import ReviewCard from './ReviewCard.svelte';
+
+	
+	let reviews_one = [
+	{
+		name: 'Jessica Garcia',
+		rating: 4.5,
+		location: 'USA',
+		date: '2 days ago',
+		title: 'Microsoft OneDrive',
+		text: 'OneDrive has been a lifesaver for my productivity. The automatic syncing across my devices ensures I always have the latest version of my files. The integration with Microsoft Office is fantastic, making collaboration with colleagues a breeze.',
+		likes: 25,
+		avatar: '/assets/avatars/a-avatar-fc.png'
+	},
+	{
+		name: 'Sarah Jones',
+		rating: 5.0,
+		location: 'USA',
+		date: '1 day ago',
+		title: 'Norton',
+		text: "I've been using Norton for years now, and I've never had a virus or any other problems. They continue to add and update their systems and offer better coverage and better protection.",
+		likes: 30,
+		avatar: '/assets/avatar.png'
+	},
+	{
+		name: 'William Lee',
+		rating: 4.8,
+		location: 'Canada',
+		date: '3 days ago',
+		title: 'McAfee',
+		text: 'McAfee has been my go-to antivirus software for years. It keeps my devices safe from viruses and malware, and I appreciate the real-time protection feature. The customer support has also been helpful whenever I\'ve needed assistance.',
+		likes: 28,
+		avatar: '/assets/avatars/a-avatar-fm.png'
+	},
+	{
+		name: 'Lisa Rodriguez',
+		rating: 4.9,
+		location: 'USA',
+		date: '1 week ago',
+		title: 'Bitdefender',
+		text: 'Bitdefender has been my go-to antivirus software for years. It consistently ranks high in independent testing, and I\'ve never had a virus infection on any of my devices protected by Bitdefender. Their customer support is also excellent.',
+		likes: 35,
+		avatar: '/assets/avatar.png'
+	}
+];
+
+let reviews_two = [
+	{
+		name: 'Ella Simmons',
+		rating: 4.7,
+		location: 'UK',
+		date: '5 days ago',
+		title: 'Kaspersky',
+		text: 'Kaspersky has been my go-to antivirus software for years. It consistently detects and blocks threats, keeping my devices safe and my mind at ease.',
+		likes: 22,
+		avatar: '/assets/avatars/a-avatar-fc.png'
+	},
+	{
+		name: 'Sebastian Adams',
+		rating: 4.8,
+		location: 'Germany',
+		date: '3 days ago',
+		title: 'ExpressVPN',
+		text: 'ExpressVPN has been a game-changer for me. The user-friendly interface, blazing-fast speeds, and robust security features allow me to browse and stream content freely and securely.',
+		likes: 27,
+		avatar: '/assets/avatars/a-avatar-m.png'
+	},
+	{
+		name: 'Isabella Foster',
+		rating: 4.9,
+		location: 'USA',
+		date: '2 weeks ago',
+		title: 'NordVPN',
+		text: 'NordVPN has been a lifesaver for my online privacy. The advanced security features, user-friendly apps, and excellent customer support give me peace of mind.',
+		likes: 33,
+		avatar: '/assets/avatars/a-avatar-fc.png'
+	},
+	{
+		name: 'Savannah Clark',
+		rating: 4.6,
+		location: 'USA',
+		date: '1 week ago',
+		title: 'Trello',
+		text: 'Trello has been a lifesaver for my personal organization. The visual board interface makes it easy for me to manage tasks and stay on top of my goals.',
+		likes: 20,
+		avatar: '/assets/avatars/a-avatar-fm.png'
+	}
+];
+
 
 	// Function to make horizontal scroll draggable
 	// @ts-ignore
@@ -419,389 +508,18 @@
 			<!-- Second Column (Scroll Container 1) -->
 			<div class="column">
 				<div class="scroll-container custom-padding-right">
-					<!-- Card 1 -->
-					<div class="card review-card">
-						<div class="card-content review-card-content">
-							<div class="review-header">
-								<div class="review-user">
-									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
-									<div class="user-info">
-										<!-- User Name and Rating -->
-										<h5 class="name">Alice Palmer</h5>
-										<p class="rating">
-											4.9 <span class="star">★</span>
-										</p>
-									</div>
-								</div>
-								<div class="meta-info">
-									<!-- Location Icon -->
-									<i class="fa fa-map-marker-alt location-icon"></i>
-									<span class="meta-location">USA</span>
-									<!-- Date Below -->
-									<p class="meta-date">1 day ago</p>
-								</div>
-							</div>
-							<div class="is-divider"></div>
-							<!-- Review Title -->
-							<h4 class="review-title">GoDaddy</h4>
-							<!-- Review Text -->
-							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
-							</p>
-							<div class="review-footer">
-								<p class="likes">
-									<i class="fas fa-heart"></i>
-									<span>23</span>
-								</p>
-								<p class="share">
-									<i class="fas fa-share-alt"></i>
-								</p>
-							</div>
-						</div>
-					</div>
-					<!-- Add more cards as needed -->
-
-					<div class="card review-card">
-						<div class="card-content review-card-content">
-							<div class="review-header">
-								<div class="review-user">
-									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
-									<div class="user-info">
-										<!-- User Name and Rating -->
-										<h5 class="name">Alice Palmer</h5>
-										<p class="rating">
-											4.9 <span class="star">★</span>
-										</p>
-									</div>
-								</div>
-								<div class="meta-info">
-									<!-- Location Icon -->
-									<i class="fa fa-map-marker-alt location-icon"></i>
-									<span class="meta-location">USA</span>
-									<!-- Date Below -->
-									<p class="meta-date">1 day ago</p>
-								</div>
-							</div>
-							<div class="is-divider"></div>
-							<!-- Review Title -->
-							<h4 class="review-title">GoDaddy</h4>
-							<!-- Review Text -->
-							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
-							</p>
-							<div class="review-footer">
-								<p class="likes">
-									<i class="fas fa-heart"></i>
-									<span>23</span>
-								</p>
-								<p class="share">
-									<i class="fas fa-share-alt"></i>
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div class="card review-card">
-						<div class="card-content review-card-content">
-							<div class="review-header">
-								<div class="review-user">
-									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
-									<div class="user-info">
-										<!-- User Name and Rating -->
-										<h5 class="name">Alice Palmer</h5>
-										<p class="rating">
-											4.9 <span class="star">★</span>
-										</p>
-									</div>
-								</div>
-								<div class="meta-info">
-									<!-- Location Icon -->
-									<i class="fa fa-map-marker-alt location-icon"></i>
-									<span class="meta-location">USA</span>
-									<!-- Date Below -->
-									<p class="meta-date">1 day ago</p>
-								</div>
-							</div>
-							<div class="is-divider"></div>
-							<!-- Review Title -->
-							<h4 class="review-title">GoDaddy</h4>
-							<!-- Review Text -->
-							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
-							</p>
-							<div class="review-footer">
-								<p class="likes">
-									<i class="fas fa-heart"></i>
-									<span>23</span>
-								</p>
-								<p class="share">
-									<i class="fas fa-share-alt"></i>
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div class="card review-card">
-						<div class="card-content review-card-content">
-							<div class="review-header">
-								<div class="review-user">
-									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
-									<div class="user-info">
-										<!-- User Name and Rating -->
-										<h5 class="name">Alice Palmer</h5>
-										<p class="rating">
-											4.9 <span class="star">★</span>
-										</p>
-									</div>
-								</div>
-								<div class="meta-info">
-									<!-- Location Icon -->
-									<i class="fa fa-map-marker-alt location-icon"></i>
-									<span class="meta-location">USA</span>
-									<!-- Date Below -->
-									<p class="meta-date">1 day ago</p>
-								</div>
-							</div>
-							<div class="is-divider"></div>
-							<!-- Review Title -->
-							<h4 class="review-title">GoDaddy</h4>
-							<!-- Review Text -->
-							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
-							</p>
-							<div class="review-footer">
-								<p class="likes">
-									<i class="fas fa-heart"></i>
-									<span>23</span>
-								</p>
-								<p class="share">
-									<i class="fas fa-share-alt"></i>
-								</p>
-							</div>
-						</div>
-					</div>
+					{#each reviews_one as review}
+						<ReviewCard {review} />
+					{/each}
 				</div>
 			</div>
 
 			<!-- Third Column (Scroll Container 2) -->
 			<div class="column">
 				<div class="scroll-container custom-padding-left">
-					<!-- Card 1 -->
-					<div class="card review-card">
-						<div class="card-content review-card-content">
-							<div class="review-header">
-								<div class="review-user">
-									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
-									<div class="user-info">
-										<!-- User Name and Rating -->
-										<h5 class="name">Alice Palmer</h5>
-										<p class="rating">
-											4.9 <span class="star">★</span>
-										</p>
-									</div>
-								</div>
-								<div class="meta-info">
-									<!-- Location Icon -->
-									<i class="fa fa-map-marker-alt location-icon"></i>
-									<span class="meta-location">USA</span>
-									<!-- Date Below -->
-									<p class="meta-date">1 day ago</p>
-								</div>
-							</div>
-							<div class="is-divider"></div>
-							<!-- Review Title -->
-							<h4 class="review-title">GoDaddy</h4>
-							<!-- Review Text -->
-							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
-							</p>
-							<div class="review-footer">
-								<p class="likes">
-									<i class="fas fa-heart"></i>
-									<span>23</span>
-								</p>
-								<p class="share">
-									<i class="fas fa-share-alt"></i>
-								</p>
-							</div>
-						</div>
-					</div>
-					<!-- Add more cards as needed -->
-
-					<div class="card review-card">
-						<div class="card-content review-card-content">
-							<div class="review-header">
-								<div class="review-user">
-									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
-									<div class="user-info">
-										<!-- User Name and Rating -->
-										<h5 class="name">Alice Palmer</h5>
-										<p class="rating">
-											4.9 <span class="star">★</span>
-										</p>
-									</div>
-								</div>
-								<div class="meta-info">
-									<!-- Location Icon -->
-									<i class="fa fa-map-marker-alt location-icon"></i>
-									<span class="meta-location">USA</span>
-									<!-- Date Below -->
-									<p class="meta-date">1 day ago</p>
-								</div>
-							</div>
-							<div class="is-divider"></div>
-							<!-- Review Title -->
-							<h4 class="review-title">GoDaddy</h4>
-							<!-- Review Text -->
-							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
-							</p>
-							<div class="review-footer">
-								<p class="likes">
-									<i class="fas fa-heart"></i>
-									<span>23</span>
-								</p>
-								<p class="share">
-									<i class="fas fa-share-alt"></i>
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="card review-card">
-						<div class="card-content review-card-content">
-							<div class="review-header">
-								<div class="review-user">
-									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
-									<div class="user-info">
-										<!-- User Name and Rating -->
-										<h5 class="name">Alice Palmer</h5>
-										<p class="rating">
-											4.9 <span class="star">★</span>
-										</p>
-									</div>
-								</div>
-								<div class="meta-info">
-									<!-- Location Icon -->
-									<i class="fa fa-map-marker-alt location-icon"></i>
-									<span class="meta-location">USA</span>
-									<!-- Date Below -->
-									<p class="meta-date">1 day ago</p>
-								</div>
-							</div>
-							<div class="is-divider"></div>
-							<!-- Review Title -->
-							<h4 class="review-title">GoDaddy</h4>
-							<!-- Review Text -->
-							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
-							</p>
-							<div class="review-footer">
-								<p class="likes">
-									<i class="fas fa-heart"></i>
-									<span>23</span>
-								</p>
-								<p class="share">
-									<i class="fas fa-share-alt"></i>
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div class="card review-card">
-						<div class="card-content review-card-content">
-							<div class="review-header">
-								<div class="review-user">
-									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
-									<div class="user-info">
-										<!-- User Name and Rating -->
-										<h5 class="name">Alice Palmer</h5>
-										<p class="rating">
-											4.9 <span class="star">★</span>
-										</p>
-									</div>
-								</div>
-								<div class="meta-info">
-									<!-- Location Icon -->
-									<i class="fa fa-map-marker-alt location-icon"></i>
-									<span class="meta-location">USA</span>
-									<!-- Date Below -->
-									<p class="meta-date">1 day ago</p>
-								</div>
-							</div>
-							<div class="is-divider"></div>
-							<!-- Review Title -->
-							<h4 class="review-title">GoDaddy</h4>
-							<!-- Review Text -->
-							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
-							</p>
-							<div class="review-footer">
-								<p class="likes">
-									<i class="fas fa-heart"></i>
-									<span>23</span>
-								</p>
-								<p class="share">
-									<i class="fas fa-share-alt"></i>
-								</p>
-							</div>
-						</div>
-					</div>
+					{#each reviews_two as review}
+						<ReviewCard {review} />
+					{/each}
 				</div>
 			</div>
 		</div>
