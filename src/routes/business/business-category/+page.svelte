@@ -23,7 +23,7 @@
 			// Update the business profile with the selected category
 			const success = await updateBusinessProfile(profileId, { category });
 			if (success) {
-				alert(`Category updated to "${category}" successfully!`);
+				// alert(`Category updated to "${category}" successfully!`);
 				goto('/business/business-about');
 
 			} else {
