@@ -43,8 +43,9 @@
 		<div class="has-text-centered mb-5">
 			<h2 class="title is-4">Choose your Category</h2>
 			<p class="subtitle is-6">
-				Lorem ipsum dolor sit amet consectetur. Quisque aenean eu nunc tempor iaculis. Ut lorem est
-				vitae erat urna enim turpis varius tellus.
+				Get discovered by your ideal customers. Choose the category that best
+				describes your business. Selecting the right category will increase your
+				visibility and attract more potential customers.
 			</p>
 		</div>
 
@@ -69,7 +70,11 @@
 					class:selected={selectedCategory === 'Wellness'}
 				>
 					<div class="card-content">
-						<img src="/assets/wellness.png" alt="Wellness Icon" class="category-icon" />
+						<img
+							src="/assets/wellness.png"
+							alt="Wellness Icon"
+							class="category-icon"
+						/>
 						<h4 class="category-title">Wellness</h4>
 					</div>
 				</div>
@@ -84,7 +89,11 @@
 					class:selected={selectedCategory === 'Finance'}
 				>
 					<div class="card-content">
-						<img src="/assets/finance.png" alt="Finance Icon" class="category-icon" />
+						<img
+							src="/assets/finance.png"
+							alt="Finance Icon"
+							class="category-icon"
+						/>
 						<h4 class="category-title">Finance</h4>
 					</div>
 				</div>
