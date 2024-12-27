@@ -1,21 +1,50 @@
-<script>
-    let email = '';
-    let emailError = '';
-  
-    // Function to validate email
-    function validateEmail() {
+<script lang="ts">
+	import { goto } from '$app/navigation';
+  import { API_BASE_URL } from '$lib/config';
+
+  let email = '';
+  let emailError = '';
+
+  function validateEmail() {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       emailError = email && !emailPattern.test(email) ? 'Please enter a valid email address.' : '';
-    }
-  
-    function sendCode() {
+  }
+
+  async function sendCode() {
       if (!email) {
-        emailError = 'Email is required.';
-      } else if (!emailError) {
-        alert(`Verification code sent to ${email}`);
+          emailError = 'Email is required.';
+          return;
       }
-    }
-  </script>
+
+      if (emailError) {
+          return;
+      }
+
+      try {
+          const response = await fetch(`${API_BASE_URL}/auth/activate-account/get-code`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email }),
+          });
+
+          if (response.ok) {
+              const data = await response.json();
+              alert(`Verification code sent successfully! Code: ${data.verificationCode}`);
+              // Store the email for the next step
+              localStorage.setItem('email', email);
+              goto('/business/business-otp');
+
+          } else {
+              const errorData = await response.json();
+              emailError = errorData.errors?.[0]?.msg || 'An error occurred.';
+          }
+      } catch (error) {
+          console.error('Error:', error);
+          emailError = 'Failed to send verification code.';
+      }
+  }
+</script>
+
 
 
 <style>
