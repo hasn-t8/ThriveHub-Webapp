@@ -16,7 +16,7 @@
     try {
       const success = await updateBusinessProfile(profileId, { about_business: textInput.trim() });
       if (success) {
-        alert("Business description updated successfully!");
+        // alert("Business description updated successfully!");
         // Redirect to the next step
         window.location.href = "/business/business-logo";
       } else {
