@@ -1125,8 +1125,8 @@
 	<div class="box mb-4">
 		<article class="media">
 			<figure class="media-left">
-			<p class="image" style="width: 100%; height: auto;">
-				<img src="{item.logo_url ?? "/assets/no_image.jpg"}" alt="Company logo">
+			<p class="image" style="width: 100%; height: auto; padding:0;">
+				<img style="max-width: 14rem;" src="{item.logo_url ?? "/assets/no_image.jpg"}" alt="Company logo">
 			</p>
 			</figure>
 			<div class="media-content">
@@ -1261,6 +1261,11 @@
     .hide-mobile {
         display: none!important;
     }
+}
+
+
+.media-left{
+    align-self: center;
 }
 
 
@@ -1627,6 +1632,7 @@
     max-width: 115px;
     border-radius: 15px;
     font-size: 0.8em;
+    user-select: none;
 }
 
 .stars .icon {
