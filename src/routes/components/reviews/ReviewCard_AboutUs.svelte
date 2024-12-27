@@ -1,13 +1,15 @@
 <script>
 	export let review = {
-		name: 'Alice P.',
-		rating: 4.9,
-		location: 'USA',
-		date: '1 day ago',
-		text: 'Thrive Hub has completely changed how I shop! The AI-powered reviews are so helpful, and I can easily make confident decisions. I trust this app for every purchase.',
-		likes: 23,
-		avatar: '/assets/avatar.png' // Optional, if an avatar is needed later
+		name: 'Unknown Reviewer',
+		title: 'No Title',
+		location: 'Unknown Location',
+		rating: 0,
+		date: 'Unknown Date',
+		text: 'No review text available.',
+		likes: 0,
+		avatar: '/assets/avatar.png'
 	};
+	console.log('Review:', review);
 </script>
 
 <div class="card review-card">
@@ -15,7 +17,6 @@
 		<div class="review-header">
 			<div class="review-user">
 				<div class="user-info">
-					<!-- User Name and Rating -->
 					<h5 class="name">{review.name}</h5>
 					<p class="rating">
 						{review.rating} <span class="star">★</span>
@@ -23,15 +24,15 @@
 				</div>
 			</div>
 			<div class="meta-info">
-				<!-- Location and Date -->
 				<i class="fa fa-map-marker-alt location-icon"></i>
 				<span class="meta-location">{review.location}</span>
 				<p class="meta-date">{review.date}</p>
 			</div>
 		</div>
 		<div class="is-divider"></div>
-		<!-- Review Text -->
-		<p class="review-text">{review.text}</p>
+		<p class="review-text">
+			{review.text}
+		</p>
 		<div class="review-footer">
 			<p class="likes">
 				<i class="fas fa-heart"></i>
@@ -44,6 +45,38 @@
 	</div>
 </div>
 
+<!-- <div class="card review-card">
+	<div class="card-content review-card-content">
+		<div class="review-header">
+			<div class="review-user">
+				<img class="avatar" src={review.avatar} alt={`${review.name}'s Avatar`} />
+				<div class="user-info">
+					<h5 class="name">{review.name}</h5>
+					<p class="title">{review.title}</p>
+					<p class="rating">
+						{review.rating} <span class="star">★</span>
+					</p>
+				</div>
+			</div>
+			<div class="meta-info">
+				<i class="fa fa-map-marker-alt location-icon"></i>
+				<span class="meta-location">{review.location}</span>
+				<p class="meta-date">{review.date}</p>
+			</div>
+		</div>
+		<div class="is-divider"></div>
+		<p class="review-text">{review.text}</p>
+		<div class="review-footer">
+			<p class="likes">
+				<i class="fas fa-heart"></i>
+				<span>{review.likes}</span>
+			</p>
+			<p class="share">
+				<i class="fas fa-share-alt"></i>
+			</p>
+		</div>
+	</div>
+</div> -->
 
 <style>
 	/* ========================================

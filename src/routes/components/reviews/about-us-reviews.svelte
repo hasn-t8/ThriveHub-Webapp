@@ -1,47 +1,47 @@
 <script>
 	import { onMount } from 'svelte';
-	import ReviewCard from './ReviewCard_AboutUs.svelte';
+	import AboutUsReviews from './ReviewCard_AboutUs.svelte';
 
 	let reviews = [
 		{
 			name: 'Jessica L.',
 			title: 'Frequent Shopper',
 			location: 'USA',
-			rating: 4.9,
+			rating: 5,
 			date: '2 days ago',
 			text: 'Thrive Hub has completely changed how I shop! The AI-powered reviews are so helpful, and I can easily make confident decisions. I trust this app for every purchase.',
 			likes: 25,
-			avatar: '/assets/avatar1.png'
+			avatar: '/assets/avatar.png'
 		},
 		{
 			name: 'Mark T.',
 			title: 'Entrepreneur',
 			location: 'Canada',
-			rating: 4.8,
+			rating: 5,
 			date: '3 days ago',
 			text: 'As a business owner, Thrive Hub has been a game-changer. The platform helped me connect with customers and showcase authentic reviews, making my brand more trustworthy.',
 			likes: 18,
-			avatar: '/assets/avatar2.png'
+			avatar: '/assets/avatar.png'
 		},
 		{
 			name: 'David R.',
 			title: 'Tech Enthusiast',
 			location: 'UK',
-			rating: 4.7,
+			rating: 4.9,
 			date: '1 week ago',
 			text: "I love how Thrive Hub simplifies the review process. It's so easy to find genuine feedback, and I always feel confident in my decisions. Highly recommend!",
 			likes: 22,
-			avatar: '/assets/avatar3.png'
+			avatar: '/assets/avatar.png'
 		},
 		{
 			name: 'Emily W.',
 			title: 'Fitness Enthusiast',
 			location: 'Australia',
-			rating: 4.6,
+			rating: 4.5,
 			date: '5 days ago',
 			text: 'Thrive Hub has made it so easy to find the best products for my fitness goals. The reviews are honest and reliable, saving me so much time and effort.',
 			likes: 19,
-			avatar: '/assets/avatar4.png'
+			avatar: '/assets/avatar.png'
 		},
 		{
 			name: 'Michael B.',
@@ -51,7 +51,7 @@
 			date: '4 days ago',
 			text: 'I travel a lot, and Thrive Hub has become my go-to for checking hotel and service reviews. The detailed feedback helps me make better choices every time.',
 			likes: 24,
-			avatar: '/assets/avatar5.png'
+			avatar: '/assets/avatar.png'
 		}
 	];
 
@@ -174,7 +174,7 @@
 				<h3 class="title is-3 has-text-left pt-6">Reviews about us</h3>
 				<div class="horizontal-scroll-container">
 					{#each reviews as review}
-						<ReviewCard {review} />
+						<AboutUsReviews {review} />
 					{/each}
 				</div>
 			</div>

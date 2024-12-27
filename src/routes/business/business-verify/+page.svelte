@@ -143,7 +143,7 @@
           style="border-radius: 10px; margin-bottom: 30px; color: white; background-color: #118BF6; width: 214px;"
           on:click={sendCode}
         >
-          Send code
+          Submit
         </button>
     </a>
       </div>
