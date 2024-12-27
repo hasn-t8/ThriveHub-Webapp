@@ -3,8 +3,15 @@
     import { API_BASE_URL } from '$lib/config';
     import { userEmail } from '$lib/stores/auth'; // Assuming this is a writable store
 
+	let email = '';
+    let emailError = '';
+
+    function validateEmail() {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        emailError = email && !emailPattern.test(email) ? 'Please enter a valid email address.' : '';
+    }
+
     let fullName = '';
-    let email = '';
     let password = '';
     let isButtonDisabled = true;
     let message = '';
@@ -41,6 +48,9 @@
             // Update the userEmail store
             userEmail.set(email);
 
+            // Store the email in localStorage
+            localStorage.setItem('email', email);
+
             isError = false;
             message = data.message || 'Account created successfully!';
 
@@ -49,14 +59,15 @@
             email = '';
             password = '';
 
-            // Redirect to the verification page
-            goto('/user/auth/verify_account');
+            // Redirect to the verification page, passing email as a query parameter
+            goto(`/user/auth/verify_account?email=${encodeURIComponent(email)}`);
         } catch (error) {
             isError = true;
             message = error instanceof Error ? error.message : 'An unexpected error occurred.';
         }
     }
 </script>
+
 
 <!-- Main Content -->
 <div class="container">
@@ -172,7 +183,7 @@
 	</div>
 </div>
 
-<style>
+<style> 
 	.container {
 		max-width: 1200px;
 		margin: auto;
