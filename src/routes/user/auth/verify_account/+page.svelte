@@ -176,11 +176,11 @@
 		<h1 class="title is-4 has-text-centered custom-heading">Verify Account</h1>
 		<p class="custom-description has-text-centered mb-5">
 			A verification code has been sent to <span class="has-text-weight-bold"
-				>victoriamurrey@gmail.com</span
+				>{email}</span
 			>. Enter the code to verify your account.
 		</p>
 
-		<h2 class="subtitle is-6 has-text-centered custom-subheading">
+		<!-- <h2 class="subtitle is-6 has-text-centered custom-subheading">
 			<a
 				id="change-email-link"
 				role="button"
@@ -189,7 +189,7 @@
 				style="text-decoration: underline;"
 				on:click={changeEmail}>Change Email</a
 			>
-		</h2>
+		</h2> -->
 
 		<form id="verify-form">
 			<div class="field is-flex is-justify-content-center mb-4">
