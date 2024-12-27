@@ -49,25 +49,26 @@
 							<div class="description">Let's open up more opportunities for your business</div>
 							<button class="button active">Your current plan</button>
 							<div class="icons">
+								
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-eye"></i></span>
-									<strong>Views</strong>
-									<div class="info">Unlimited access to view all reviews about your company.</div>
-								</div>
-								<div class="icon-item">
-									<span class="icon"><i class="fas fa-star"></i></span>
+									<span class="icon"><i class="far fa-star"></i></span>
 									<strong>Reviews</strong>
 									<div class="info">Ability to respond to 5 reviews per month.</div>
 								</div>
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-bell"></i></span>
+									<span class="icon"><i class="far fa-eye"></i></span>
+									<strong>Views</strong>
+									<div class="info">Unlimited access to view all reviews about your company.</div>
+								</div>
+								<div class="icon-item">
+									<span class="icon"><i class="far fa-bell"></i></span>
 									<strong>Notifications</strong>
 									<div class="info">
 										Receive notifications about new reviews and mentions of the company.
 									</div>
 								</div>
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-chart-line"></i></span>
+									<span class="icon"><i class="far fa-chart-line"></i></span>
 									<strong>Analytics</strong>
 									<div class="info">Access basic analytics about reviews.</div>
 								</div>
@@ -85,29 +86,30 @@
 							<!-- <div class="recommended-badge">Recommended</div> -->
 							<div class="card-content">
 								<div class="package-name">Basic</div>
-								<div class="price">$19<span>/m</span></div>
+								<div class="price">$20<span>/m</span></div>
 								<div class="description">Let's open up more opportunities for your business</div>
 								<button class="button">Get Basic</button>
 								<div class="icons">
+									
 									<div class="icon-item">
-										<span class="icon"><i class="fas fa-eye"></i></span>
-										<strong>Views</strong>
-										<div class="info">Unlimited access to view all reviews about your company.</div>
-									</div>
-									<div class="icon-item">
-										<span class="icon"><i class="fas fa-star"></i></span>
+										<span class="icon"><i class="far fa-star"></i></span>
 										<strong>Reviews</strong>
 										<div class="info">Ability to respond to 20 reviews per month.</div>
 									</div>
 									<div class="icon-item">
-										<span class="icon"><i class="fas fa-bell"></i></span>
+										<span class="icon"><i class="far fa-eye"></i></span>
+										<strong>Views</strong>
+										<div class="info">Unlimited access to view all reviews about your company.</div>
+									</div>
+									<div class="icon-item">
+										<span class="icon"><i class="far fa-bell"></i></span>
 										<strong>Notifications</strong>
 										<div class="info">
 											Receive notifications about new reviews and mentions of the company.
 										</div>
 									</div>
 									<div class="icon-item">
-										<span class="icon"><i class="fas fa-chart-line"></i></span>
+										<span class="icon"><i class="far fa-chart-line"></i></span>
 										<strong>Analytics</strong>
 										<div class="info">Access detailed analytics about reviews.</div>
 									</div>
@@ -121,29 +123,30 @@
 					<div class="card">
 						<div class="card-content">
 							<div class="package-name">Premium</div>
-							<div class="price">$49<span>/m</span></div>
+							<div class="price">$50<span>/m</span></div>
 							<div class="description">Let's open up more opportunities for your business</div>
 							<button class="button">Get Premium</button>
 							<div class="icons">
+								
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-eye"></i></span>
-									<strong>Views</strong>
-									<div class="info">Unlimited access to view all reviews about your company.</div>
-								</div>
-								<div class="icon-item">
-									<span class="icon"><i class="fas fa-star"></i></span>
+									<span class="icon"><i class="far fa-star"></i></span>
 									<strong>Reviews</strong>
 									<div class="info">Unlimited responses to reviews.</div>
 								</div>
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-bell"></i></span>
+									<span class="icon"><i class="far fa-eye"></i></span>
+									<strong>Views</strong>
+									<div class="info">Unlimited access to view all reviews about your company.</div>
+								</div>
+								<div class="icon-item">
+									<span class="icon"><i class="far fa-bell"></i></span>
 									<strong>Notifications</strong>
 									<div class="info">
 										Receive priority notifications about new reviews and mentions of the company.
 									</div>
 								</div>
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-chart-line"></i></span>
+									<span class="icon"><i class="far fa-chart-line"></i></span>
 									<strong>Analytics</strong>
 									<div class="info">Access advanced analytics and insights about reviews.</div>
 								</div>
@@ -167,25 +170,26 @@
 							<div class="description">Let's open up more opportunities for your business</div>
 							<button class="button active">Your current plan</button>
 							<div class="icons">
+								
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-eye"></i></span>
-									<strong>Views</strong>
-									<div class="info">Unlimited access to view all reviews about your company.</div>
-								</div>
-								<div class="icon-item">
-									<span class="icon"><i class="fas fa-star"></i></span>
+									<span class="icon"><i class="far fa-star"></i></span>
 									<strong>Reviews</strong>
 									<div class="info">Ability to respond to 5 reviews per month.</div>
 								</div>
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-bell"></i></span>
+									<span class="icon"><i class="far fa-eye"></i></span>
+									<strong>Views</strong>
+									<div class="info">Unlimited access to view all reviews about your company.</div>
+								</div>
+								<div class="icon-item">
+									<span class="icon"><i class="far fa-bell"></i></span>
 									<strong>Notifications</strong>
 									<div class="info">
 										Receive notifications about new reviews and mentions of the company.
 									</div>
 								</div>
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-chart-line"></i></span>
+									<span class="icon"><i class="far fa-chart-line"></i></span>
 									<strong>Analytics</strong>
 									<div class="info">Access basic analytics about reviews.</div>
 								</div>
@@ -203,29 +207,30 @@
 							<!-- <div class="recommended-badge">Recommended</div> -->
 							<div class="card-content">
 								<div class="package-name">Basic</div>
-								<div class="price">$190<span>/y</span></div>
+								<div class="price">$199<span>/y</span></div>
 								<div class="description">Let's open up more opportunities for your business</div>
 								<button class="button">Get Basic</button>
 								<div class="icons">
+									
 									<div class="icon-item">
-										<span class="icon"><i class="fas fa-eye"></i></span>
-										<strong>Views</strong>
-										<div class="info">Unlimited access to view all reviews about your company.</div>
-									</div>
-									<div class="icon-item">
-										<span class="icon"><i class="fas fa-star"></i></span>
+										<span class="icon"><i class="far fa-star"></i></span>
 										<strong>Reviews</strong>
 										<div class="info">Ability to respond to 20 reviews per month.</div>
 									</div>
 									<div class="icon-item">
-										<span class="icon"><i class="fas fa-bell"></i></span>
+										<span class="icon"><i class="far fa-eye"></i></span>
+										<strong>Views</strong>
+										<div class="info">Unlimited access to view all reviews about your company.</div>
+									</div>
+									<div class="icon-item">
+										<span class="icon"><i class="far fa-bell"></i></span>
 										<strong>Notifications</strong>
 										<div class="info">
 											Receive notifications about new reviews and mentions of the company.
 										</div>
 									</div>
 									<div class="icon-item">
-										<span class="icon"><i class="fas fa-chart-line"></i></span>
+										<span class="icon"><i class="far fa-chart-line"></i></span>
 										<strong>Analytics</strong>
 										<div class="info">Access detailed analytics about reviews.</div>
 									</div>
@@ -239,29 +244,30 @@
 					<div class="card">
 						<div class="card-content">
 							<div class="package-name">Premium</div>
-							<div class="price">$490<span>/y</span></div>
+							<div class="price">$499<span>/y</span></div>
 							<div class="description">Let's open up more opportunities for your business</div>
 							<button class="button">Get Premium</button>
 							<div class="icons">
+								
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-eye"></i></span>
-									<strong>Views</strong>
-									<div class="info">Unlimited access to view all reviews about your company.</div>
-								</div>
-								<div class="icon-item">
-									<span class="icon"><i class="fas fa-star"></i></span>
+									<span class="icon"><i class="far fa-star"></i></span>
 									<strong>Reviews</strong>
 									<div class="info">Unlimited responses to reviews.</div>
 								</div>
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-bell"></i></span>
+									<span class="icon"><i class="far fa-eye"></i></span>
+									<strong>Views</strong>
+									<div class="info">Unlimited access to view all reviews about your company.</div>
+								</div>
+								<div class="icon-item">
+									<span class="icon"><i class="far fa-bell"></i></span>
 									<strong>Notifications</strong>
 									<div class="info">
 										Receive priority notifications about new reviews and mentions of the company.
 									</div>
 								</div>
 								<div class="icon-item">
-									<span class="icon"><i class="fas fa-chart-line"></i></span>
+									<span class="icon"><i class="far fa-chart-line"></i></span>
 									<strong>Analytics</strong>
 									<div class="info">Access advanced analytics and insights about reviews.</div>
 								</div>
@@ -275,6 +281,7 @@
 </div>
 
 <style>
+	
 	.analytics-header {
 		padding: 20px;
 		/* background-color: #f4faff; */
@@ -299,10 +306,11 @@
 		margin: 20px 0;
 	}
 	.heading {
-		font-size: x-large;
+		font-size: 36px;
 		font-weight: 700;
 		text-align: center;
 		margin-bottom: 15px;
+		color: #000
 	}
 
 	.toggle-wrapper {
@@ -328,6 +336,7 @@
 
 	.toggle-button {
 		flex: 1;
+		background-color: transparent;
 		text-align: center;
 		line-height: 30px; /* Vertically centers the text */
 		font-size: 0.9rem;
@@ -335,7 +344,7 @@
 		transition:
 			background-color 0.3s ease,
 			color 0.3s ease;
-		border-radius: 25px; /* Ensures the active button looks rounded */
+		border-radius: 25px; 
 		padding: 0; /* Removes padding for exact centering */
 	}
 
@@ -378,6 +387,7 @@
 	.info {
 		padding-left: 30px;
 		padding-bottom: -3px;
+		color: #4D4D4D;
 		/* letter-spacing: 0px; */
 		/* text-align: justify; */
 		/* padding: 14px; */
@@ -386,7 +396,7 @@
 		padding: 10px;
 	}
 	button.button.active {
-		background-color: grey;
+		background-color: #B7B7B7;
 	}
 
 	.recommended {
@@ -434,6 +444,7 @@
 		font-size: 28px;
 		text-align: center;
 		font-weight: 600;
+		margin-top: 10px;
 	}
 
 	.package-name {
@@ -493,7 +504,7 @@
 	}
 
 	.icon {
-		color: #3273dc;
+		color: #000000;
 	}
 
 	strong {
