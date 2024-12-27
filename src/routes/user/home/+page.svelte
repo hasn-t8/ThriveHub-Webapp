@@ -217,11 +217,12 @@
 							<img src="/assets/testimonial1.png" alt="Jan S." />
 						</figure>
 						<p class="quote">
-							Found my dream job thanks to <strong>Your Staffing Firm.</strong> Exceptional
-							service and support throughout. Highly recommended!
+							"Thrive Hub transformed our online presence! The authentic reviews
+							boosted our credibility and helped us build trust with new
+							clients. It's been a game-changer for our business growth.""
 						</p>
-						<p class="name">Jan S.</p>
-						<p class="role">Global Applications Representative</p>
+						<p class="name">Sarah M.</p>
+						<p class="role">Marketing Specialist</p>
 					</div>
 
 					<!-- Testimonial 2 -->
@@ -230,11 +231,12 @@
 							<img src="/assets/testimonial2.png" alt="Eric D." />
 						</figure>
 						<p class="quote">
-							<strong>Your Staffing Firm</strong> made hunting a breeze! Top-notch
-							experience and unmatched support. Will use this in my new role.
+							"Joining Thrive Hub was the best decision I made. The customer
+							reviews helped me stand out in a crowded market and attract more
+							clients than ever before!"
 						</p>
-						<p class="name">Eric D.</p>
-						<p class="role">IT Specialist</p>
+						<p class="name">John R., </p>
+						<p class="role">Entrepreneur</p>
 					</div>
 				</div>
 				<!-- <button class="button is-primary cta-button-mobile">Build your brand</button> -->
