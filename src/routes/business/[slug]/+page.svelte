@@ -1,3 +1,42 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { getProfileById } from '$lib/stores/business';
+	import { page } from '$app/stores';
+	import { writable } from 'svelte/store';
+	import type { ProfileData } from '$lib/types/Profile';
+	
+	let theProfile = writable<ProfileData>({
+		org_name: '',
+		job_title: '',
+		work_email: '',
+		about_business: '',
+		full_name: '',
+		industry: '',
+		business_website_url: '',
+		business_website_title: '',
+		business_profile_id: null,
+		profile_type: '',
+		category: '',
+		id: '',
+		logo_url: ''
+	});
+
+	async function fetchProfile(): Promise<void> {
+		try {
+			const slug = Number($page.params.slug);
+			const profile: ProfileData = await getProfileById(slug);
+			theProfile.set(profile);
+		} catch (error) {
+			console.error('Error fetching profiles:', error);
+		}
+	}
+
+	onMount(() => {
+		
+		fetchProfile()
+	});
+</script>
+
 <section class="page-header">
 	<h1>Bluehost</h1>
 </section>
@@ -7,12 +46,9 @@
 		<!-- About Section -->
 		<div class="column is-two-thirds">
 			<div class="card">
-				<h2>About Bluehost</h2>
+				<h2>About {$theProfile.org_name}</h2>
 				<p>
-					Bluehost is the best web hosting provider that offers reliable and affordable website
-					hosting services. With 24/7 customer support, domain name registration, and advanced
-					tools, Bluehost is dedicated to helping customers build and grow their websites. As a
-					leader in the web hosting industry, Bluehost remains a trusted and innovative brand.
+					{$theProfile.about_business}
 				</p>
 			</div>
 			<div class="card">
@@ -27,8 +63,14 @@
 				<h3>Contact Information</h3>
 				<p class="contact-item">
 					<span class="link-container">
-						<img src="/assets/internet-icon.png" alt="WWW Icon" class="www-icon" />
-						<a href="https://sam.ai" target="_blank" class="website-link">Sam.ai</a>
+						<img
+							src="/assets/internet-icon.png"
+							alt="WWW Icon"
+							class="www-icon"
+						/>
+						<a href="{$theProfile.business_website_url}" target="_blank" class="website-link"
+							>Go to Website</a
+						>
 						<span class="arrow">↗</span>
 					</span>
 				</p>
@@ -42,7 +84,11 @@
 					+1 123-456-7890
 				</p>
 				<p class="contact-item">
-					<img src="/assets/Frame 1321316461.png" alt="Address Icon" class="icon" />
+					<img
+						src="/assets/Frame 1321316461.png"
+						alt="Address Icon"
+						class="icon"
+					/>
 					123 Example St, Suite 22, Los Angeles, CA 90001
 				</p>
 				<div class="map-container">

@@ -42,34 +42,13 @@
 		logo_url: ''
 	});
 
-	// State management
 	let isEditable = false; // Default to read-only
-	// let logoUrl: string = '';
-	// theProfile.subscribe((profile) => {
-	// 	logoUrl = profile.logo_url; // Update logoUrl whenever the profile changes
-	// });
-
-	// function updateLogoUrl(url) {
-	// 	theProfile.update((profile) => {
-	// 		return { ...profile, logo_url: url };
-	// 	});
-	// }
-
+	
 	// Additional Form Variables
 	let companyLogoPreview = '';
 	let selectedFileName = 'No file selected';
-	// let keyFeatures = [];
 	let whyChoosePoints: any[] = [];
-	// Key Features
-	// let availableKeyFeatures = [
-	// 	'High Reliable Uptime',
-	// 	'Affordable Plans',
-	// 	'Easy-to-Use Control Panel',
-	// 	'Scalability',
-	// 	'Free Domain Name',
-	// 	'Security Features',
-	// 	'24/7 Customer Support'
-	// ];
+
 	let keyFeatureTitle = '';
 	let customKeyFeatureTitle = '';
 	let keyFeatureDescription = '';
