@@ -6,6 +6,7 @@ export type ProfileData = {
 	industry?: string;
 	profile_type: string;
 	category?: string;
+	business_website_title?: string;
 	business_website_url?: string;
 	profile_id?: string | number;
 	business_profile_id?: string | number | null;
