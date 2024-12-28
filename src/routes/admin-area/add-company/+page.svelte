@@ -10,6 +10,7 @@
 		about_business: '',
 		full_name: '',
 		industry: '',
+		business_website_title: '',
 		business_website_url: '',
 		profile_type: '',
 		category: '',
@@ -48,6 +49,7 @@
 			about_business: '',
 			full_name: '',
 			industry: '',
+			business_website_title: '',
 			business_website_url: '',
 			profile_type: '',
 			category: '',
@@ -87,6 +89,16 @@
 
 					<div class="column is-half">
 						<label class="label">Business Website URL</label>
+						<input
+							class="input"
+							type="text"
+							bind:value={$businessProfile.business_website_title}
+							placeholder="www.company.com"
+						/>
+					</div>
+
+					<div class="column is-half">
+						<label class="label">Affiliate Link</label>
 						<input
 							class="input"
 							type="text"

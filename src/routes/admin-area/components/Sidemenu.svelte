@@ -1,36 +1,49 @@
 <script>
+	import { goto } from "$app/navigation";
+
+	// import { goto } from "$app/navigation";
+	import { logout } from "$lib/stores/auth";
+
 	let isDropdownOpen = false;
+
+	function logoutHandler() {
+		logout();
+		goto('/');
+	}
 </script>
 
 <div class="side-menu" style="min-height:100vh">
 
 	<!-- Menu Items -->
 	<ul class="menu-list" style="margin-top: 100px;">
-		<a href="#home" class="menu-item active">
-			<i class="fas fa-home"></i> Home
+		<a href="/" class="menu-item">
+			<i class="icon fas fa-home"></i> Home
 		</a>
-		<a href="#reviews" class="menu-item">
-			<i class="fas fa-star"></i> Reviews
+		<!-- <a href="#reviews" class="menu-item">
+			<i class="icon fas fa-star"></i> Reviews
 		</a>
 		<a href="/admin-area/analytics" class="menu-item">
-			<i class="fas fa-chart-bar"></i> Analytics
+			<i class="icon fas fa-chart-bar"></i> Analytics
 		</a>
 		<a href="#notifications" class="menu-item">
-			<i class="fas fa-bell"></i> Notifications
+			<i class="icon fas fa-bell"></i> Notifications
 		</a>
 		<a href="#support" class="menu-item">
-			<i class="fas fa-life-ring"></i> Support Center
+			<i class="icon fas fa-life-ring"></i> Support Center
 		</a>
-		<hr />
+		<hr /> -->
 		<a href="/admin-area/business-list" class="menu-item">
-			<i class="fas fa-briefcase"></i> Business List
+			<i class="icon fas fa-briefcase"></i> Business List
 		</a>
 		<a href="/admin-area/add-company" class="menu-item"
-			><i class="fas fa-briefcase"></i>Add business</a
+			><i class="icon fas fa-briefcase"></i>Add business</a
 		>
 		<hr />
-		<a href="/business/business-setting/setting" class="menu-item">
-			<i class="fas fa-cog"></i> Settings
+		<!-- <a href="/business/business-setting/setting" class="menu-item">
+			<i class="icon fas fa-cog"></i> Settings
+		</a> -->
+		<a href="#" class="menu-item" onclick={logoutHandler}>
+			<i class="icon fa fa-door-open"></i> Logout
 		</a>
 	</ul>
 
@@ -47,6 +60,14 @@
 <div class="main-content"></div>
 
 <style>
+	.icon {
+		margin-right: 5px
+	}
+
+	.menu-item:hover {
+		color: white;
+	}
+
 	.side-menu {
 		width: 250px;
 		height: auto;

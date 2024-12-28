@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { uploadBusinessLogo } from '$lib/stores/business';
+	import { uploadBusinessLogo } from '$lib/stores/business';
 	let {
 		value = $bindable(),
-        businessProfileId = null,
+		businessProfileId = null,
 		selectedFileName = 'No file selected',
 		companyLogoPreview,
 		...props
@@ -48,16 +48,18 @@
 	async function uploadLogo() {
 		if (companyLogoPreview) {
 			// alert(`Logo "${selectedFileName}" uploaded successfully!`);
-			const inputFile = document.querySelector('input[type="file"]') as HTMLInputElement;
-            const file = inputFile?.files?.[0];
+			const inputFile = document.querySelector(
+				'input[type="file"]'
+			) as HTMLInputElement;
+			const file = inputFile?.files?.[0];
 
-            if (!file) {
-            alert('Please select a file first!');
-            return;
-            }
+			if (!file) {
+				alert('Please select a file first!');
+				return;
+			}
 
-            const success = await uploadBusinessLogo(file, businessProfileId);
-            //TODO: Handle success and error
+			const success = await uploadBusinessLogo(file, businessProfileId);
+			//TODO: Handle success and error
 		} else {
 			alert('Please select a file first!');
 		}
@@ -76,6 +78,11 @@
 			<h1 class="title">Logo</h1>
 
 			<!-- <input bind:value={value} {...props} /> -->
+
+			{#if value}
+				<img style="width: 100px;" src="{value}?cacheBust=${Date.now()}"/>
+				<hr />
+			{/if}
 
 			<!-- File Input -->
 			<div class="file has-name is-boxed">
