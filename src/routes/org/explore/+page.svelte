@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import type { ProfileData } from '$lib/types/Profile';
+	import { goto } from '$app/navigation';
 
 	let businessProfile: Writable<ProfileData[]> = writable([]);
 	let currentPage = 1;
@@ -30,8 +31,9 @@
 		}
 	}
 
-
-
+    function redirectToBusinessProfile(id: string) {
+        goto(`/business/${id}`);
+    }
 
     // Function to make horizontal scroll draggable
     // @ts-ignore
@@ -1124,13 +1126,15 @@
 {#snippet organizationTab(item: ProfileData)}
 	<div class="box mb-4">
 		<article class="media">
-			<figure class="media-left">
-			<p class="image" style="width: 100%; height: auto; padding:0;">
-				<img style="width: 4rem;" src="{item.logo_url ?? "/assets/no_image.jpg"}?cacheBust=${Date.now()}" alt="Company logo">
-			</p>
-			</figure>
+            <div class="media-left media-left-link" on:click="{() => item.id && redirectToBusinessProfile(item.id.toString())}" on:keydown="{(e) => e.key === 'Enter' && item.id && redirectToBusinessProfile(item.id.toString())}">
+                <figure class="media-left">
+                    <p class="image" style="width: 100%; height: auto; padding:0;">
+                        <img style="width: 4rem;" src="{item.logo_url ?? "/assets/no_image.jpg"}?cacheBust=${Date.now()}" alt="Company logo">
+                    </p>
+                    </figure>
+            </div>
 			<div class="media-content">
-			<div class="content">
+            <div class="content content-link" role="button" tabindex="0" on:click="{() => item.id && redirectToBusinessProfile(item.id.toString())}" on:keydown="{(e) => e.key === 'Enter' && item.id && redirectToBusinessProfile(item.id.toString())}">
 				<strong style="font-size: 24px;">{item.org_name}</strong>
 				<p style="color: #949494; font-size:1rem;">4.8 <span class="category-star ml-0">★</span>  | 1.2k Reviews</p>
 				<p style="font-weight:400;font-size:0.9rem;">{item.about_business ?? "No Data"}</p>
@@ -1141,7 +1145,7 @@
 			</div>
 			</div>
 			<div class="media-right">
-				<a href="/write-review" class="review-text-btn">
+				<a href="/user/review" class="review-text-btn">
 					Write Review
 					<img
 						src="/assets/edit.png"
@@ -1156,39 +1160,10 @@
 
 
 <style>
-	/* Global Styles */
-	body {
-		font-family: 'Inter', sans-serif;
-		background-color: #e7f3fe;
-		height: auto;
-	}
-
-	/* Page Header Section */
-	.page-header {
-		background-color: #1e90ff;
-		color: white;
-		padding: 50px 20px;
-		text-align: center;
-	}
-
-	.page-header h1 {
-		font-size: 2.5rem;
-		font-weight: 700;
-	}
-
-	.columns.is-variable > .column {
-		padding: 1%;
-	}
-
-	p {
-		padding-bottom: 10px;
-	}
-
-
-
-
-
-
+    
+    .content-link, .media-left-link{
+        cursor: pointer;
+    }
 
 /* ========================================
    General CSS Starts Here
