@@ -51,21 +51,11 @@ export async function uploadBusinessLogo(file: File, businessProfileId: number):
 }
 
 export async function getProfileById(profilId: number) {
-	const JWT = getJWT();
-	console.log(JWT);
-
-	if (!JWT) {
-		goto('/user/auth/sign-in');
-		return false;
-	}
 
 	const response = await fetch(`${API_BASE_URL}/businessprofiles/${profilId}`, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${JWT}`
-		}
+		method: 'GET'
 	});
-	// console.log('response from business-prof.ts:', response);
+	console.log('response from business-prof.ts:', response);
 
 	if (!response.ok) {
 		if (response.status === 401) {
