@@ -41,7 +41,7 @@ export async function uploadBusinessLogo(file: File, businessProfileId: number):
 
 		const result = await response.json();
 		console.log('Logo uploaded successfully:', result);
-		alert('Logo uploaded successfully!');
+		// alert('Logo uploaded successfully!');
 		return true;
 	} catch (error) {
 		console.error('Error uploading logo:', error);

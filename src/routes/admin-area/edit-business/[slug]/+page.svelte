@@ -176,7 +176,7 @@
 			console.log('Payload for addKeypointName:', keypointData);
 
 			const response = await addKeypointname(keypointData);
-			alert('Key-point name added successfully');
+			// alert('Key-point name added successfully');
 			window.location.reload();
 		} catch (error) {
 			console.error('Error in addKeypointName:', error);
@@ -220,7 +220,7 @@
 
 			if (response) {
 				console.log('Feature added successfully!', response);
-				alert('Keypoint added successfully!');
+				// alert('Keypoint added successfully!');
 
 				// Reload the keypoints list after successful addition
 				await reloadKeypointsList();
@@ -242,7 +242,7 @@
 	) {
 		try {
 			// Fetch the updated keypoints list for the specified type
-			const updatedKeypoints = await fetchKeyPoints(type); // Fetch points for 'feature' or 'why-us'
+			const updatedKeypoints = await fetchKeyPoints(type, 'feature');
 
 			// Update the UI directly
 			const keypointsListElement = document.getElementById(listElementId); // Dynamic element assignment
@@ -333,7 +333,7 @@
 				} else if (target === 'whyChoosePoints') {
 					whyChoosePoints = whyChoosePoints.filter((_, i) => i !== index);
 				}
-				alert('Key point successfully deleted.');
+				// alert('Key point successfully deleted.');
 			} else {
 				alert('Failed to delete the key point. Please try again.');
 			}
@@ -506,7 +506,7 @@
 		</div>
 
 		<!-- Logo Section -->
-		{$theProfile.logo_url}
+		<!-- {$theProfile.logo_url} -->
 		<LogoUpload
 			bind:value={$theProfile.logo_url}
 			businessProfileId={$theProfile.business_profile_id}

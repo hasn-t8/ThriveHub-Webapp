@@ -1126,7 +1126,7 @@
 		<article class="media">
 			<figure class="media-left">
 			<p class="image" style="width: 100%; height: auto; padding:0;">
-				<img style="max-width: 14rem;" src="{item.logo_url ?? "/assets/no_image.jpg"}" alt="Company logo">
+				<img style="width: 4rem;" src="{item.logo_url ?? "/assets/no_image.jpg"}?cacheBust=${Date.now()}" alt="Company logo">
 			</p>
 			</figure>
 			<div class="media-content">
