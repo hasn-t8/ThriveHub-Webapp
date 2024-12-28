@@ -1,37 +1,14 @@
-// import { writable } from 'svelte/store';
-
-// // Check if running in a browser (client-side only)
-// const isBrowser = typeof window !== 'undefined';
-
-// // Initialize authToken store with a value from localStorage (only if in a browser)
-// export const authToken = writable(isBrowser ? localStorage.getItem('authToken') : null);
-
-// // Sync authToken changes with localStorage
-// if (isBrowser) {
-//     authToken.subscribe((value) => {
-//         if (value) {
-//             localStorage.setItem('authToken', value);
-//         } else {
-//             localStorage.removeItem('authToken');
-//         }
-//     });
-
-//     // Optional: Listen for storage events to sync across tabs
-//     window.addEventListener('storage', (event) => {
-//         if (event.key === 'authToken') {
-//             authToken.set(event.newValue);
-//         }
-//     });
-// }
-
-// const authToken = typeof window !== 'undefined' ? localStorage.Item('authToken') || '' : '';
-// const loggedInStatus = writable(!!authToken);
-// src/lib/store.js
-
 import { API_BASE_URL } from '$lib/config';
 import { writable } from 'svelte/store';
 
 export const userEmail = writable('');
+type User = {
+    userTypes: string[];
+    [key: string]: unknown;
+};
+
+export const theUser = writable<User>({ userTypes: [] });
+export const isAdmin = writable(false);
 
 type JWTHeader = {
 	alg: string;
@@ -106,6 +83,23 @@ export function refreshJWT() {
 		}
 	}
 	return false;
+}
+
+export function setUserAndType() {
+    const jwtToken = localStorage.getItem('authToken');
+
+    if (jwtToken) {
+        const { payload } = decodeJWT(jwtToken);
+        console.log('payload:', payload);
+
+        const isValid = isTokenValid(jwtToken);
+        if (isValid) {
+            theUser.set(payload as User);
+            if ((payload as User).userTypes.includes('admin')) {
+                isAdmin.set(true);
+            }
+        }
+    }
 }
 
 /*********** JWT Helper Functions ***********/
