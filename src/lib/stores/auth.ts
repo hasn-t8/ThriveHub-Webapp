@@ -1,3 +1,4 @@
+import { goto } from '$app/navigation';
 import { API_BASE_URL } from '$lib/config';
 import { writable } from 'svelte/store';
 
@@ -37,13 +38,14 @@ export function login(token: string) {
 
 	localStorage.setItem('authToken', token);
 	loggedInStatus.set(true);
+    isAdmin.set(false);
+    theUser.set({ userTypes: [] });
 }
 
 export function logout() {
-	console.log('logout');
-
 	localStorage.removeItem('authToken');
 	loggedInStatus.set(false);
+    goto('/');
 }
 
 export function getJWT() {

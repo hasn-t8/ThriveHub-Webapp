@@ -41,7 +41,7 @@
 	<Sidemenu />
 	<div class="analytics-header">
 		<div class="header-top">
-			<h1>Organizations</h1>
+			<span style="font-size:1.5rem">Organizations</span>
 		</div>
 		<hr class="divider" />
 	</div>
