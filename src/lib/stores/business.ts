@@ -107,9 +107,9 @@ export async function getProfilesPublic(): Promise<any> {
             };
         }
 
-        const data = await response.json();
-        console.log('Profiles fetched:', data);
-        return data;
+        const profilesData = await response.json();
+        console.log('Profiles fetched:', profilesData.data);
+        return profilesData.data;
     } catch (error) {
         console.error('Error fetching profiles:', error);
         return { error: 'An unexpected error occurred.' };
