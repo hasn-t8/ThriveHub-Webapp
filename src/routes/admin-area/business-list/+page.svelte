@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Sidemenu from '../components/Sidemenu.svelte';
-	import { getProfiles } from '$lib/stores/business';
+	import { getProfilesPublic } from '$lib/stores/business';
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import type { ProfileData } from '$lib/types/Profile';
@@ -22,7 +22,7 @@
 
 	async function fetchProfiles(): Promise<void> {
 		try {
-			const profiles: ProfileData[] = await getProfiles();
+			const profiles: ProfileData[] = await getProfilesPublic();
 
 			businessProfile.set(profiles);
 			console.log('Profiles:', profiles);

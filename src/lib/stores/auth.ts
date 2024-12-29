@@ -38,13 +38,13 @@ export function login(token: string) {
 
 	localStorage.setItem('authToken', token);
 	loggedInStatus.set(true);
-    isAdmin.set(false);
     theUser.set({ userTypes: [] });
 }
 
 export function logout() {
 	localStorage.removeItem('authToken');
 	loggedInStatus.set(false);
+    isAdmin.set(false);
     goto('/');
 }
 

@@ -62,7 +62,7 @@
 				<!-- <a class="navbar-item" href="#blog">Blog</a>
 				<a class="navbar-item" href="#help">Help</a> -->
 				<a class="navbar-item" href="/user/settings">Settings</a>
-				{#if $loggedInStatus && $isAdmin}
+				{#if $isAdmin}
 					<a class="navbar-item" href="/admin-area/business-list">Dashboard</a>
 				{/if}
 				{#if $loggedInStatus || jwtTokenFound}
