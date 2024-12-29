@@ -23,4 +23,6 @@ export type ProfileData = {
 	org_name?: string;
 	work_email_verified?: boolean | string;
 	id?: string | number;
+	total_reviews?: number;
+	avg_rating?: number;
 };
