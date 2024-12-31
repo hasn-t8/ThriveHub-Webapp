@@ -100,8 +100,8 @@ export async function getProfiles() {
 			goto('/user/auth/sign-in');
 		}
 	}
-
-	return await response.json();
+   const data=await response.json();
+	return data.data;
 }
 
 export async function getProfilesPublic(): Promise<any> {
@@ -119,7 +119,7 @@ export async function getProfilesPublic(): Promise<any> {
 
         const data = await response.json();
         console.log('Profiles fetched:', data);
-        return data;
+        return data.data;
     } catch (error) {
         console.error('Error fetching profiles:', error);
         return { error: 'An unexpected error occurred.' };

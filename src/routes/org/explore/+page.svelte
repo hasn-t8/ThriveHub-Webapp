@@ -1141,7 +1141,8 @@
 			</div>
 			</div>
 			<div class="media-right">
-				<a href="/write-review" class="review-text-btn">
+				<!-- <a href="/user/review/" class="review-text-btn"> -->
+				<a href="/user/review/{item.business_profile_id}" class="review-text-btn">
 					Write Review
 					<img
 						src="/assets/edit.png"

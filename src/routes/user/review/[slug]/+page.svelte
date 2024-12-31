@@ -1,50 +1,76 @@
 <script>
   import { onMount } from 'svelte';
+  import { createReview } from '$lib/stores/reviews'; // Assume this handles API communication
+  import { page } from '$app/stores';
+	const slug = Number($page.params.slug);
 
   let rating = null; // Initial rating (null for no selection)
   let textareaValue = ''; // Value of the textarea
 
-  // Map rating values to text labels and image paths
+  // Map rating values to text labels
   const ratingLabels = {
-    1: { label: 'Poor!', image: '/assets/poor.png' },
-    2: { label: 'Fair!', image: '/assets/fair.png' },
-    3: { label: 'Neutral!', image: '/assets/neutral.png' },
-    4: { label: 'Good!', image: '/assets/good.png' },
-    5: { label: 'Excellent!', image: '/assets/excellent.png' }
+    1: 'Poor!',
+    2: 'Fair!',
+    3: 'Neutral!',
+    4: 'Good!',
+    5: 'Excellent!'
   };
 
+  // Example business ID
+  const businessId = slug;
+
+  // Function to handle the review submission
+  async function submitReview() {
+    if (!rating || !textareaValue.trim()) {
+      alert('Please provide both a rating and feedback.');
+      return;
+    }
+
+    const reviewData = {
+      businessId,
+      rating: rating * 2, // Convert the rating to a scale of 10
+      feedback: textareaValue
+    };
+
+    try {
+      await createReview(reviewData);
+      alert('Review submitted successfully!');
+      // Redirect to the thank you page
+       window.location.href = '/user/review/thankyou'; 
+        // Clear inputs
+      // rating = null;
+      // textareaValue = '';
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('Failed to submit review. Please try again.');
+    }
+  }
+
   onMount(() => {
-    // You can add any initialization logic here,
-    // such as fetching data or setting up event listeners.
+    // Initialization logic, if any
   });
 </script>
-
-
-<!-- Page Header -->
-<section class="page-header">
-	<h1>Bluehost</h1>
-</section>
 
 <main class="container">
   <h1 class="title">How was your experience?</h1>
 
   <div class="subtitle">
-    {rating ? ratingLabels[rating].label : 'Please rate your experience'}
+    {rating ? ratingLabels[rating] : 'Please rate your experience'}
   </div>
 
-<div class="rating-container">
-  {#each [1, 2, 3, 4, 5] as num}
-    <label class="rating">
-      <input type="radio" name="rating" value={num} bind:group={rating} />
-      <img
-        src={ratingLabels[num].image}
-        alt={ratingLabels[num].label}
-        class="star-icon {rating === num ? 'selected' : ''}"
-      />
-    </label>
-  {/each}
-</div>
-
+  <div class="rating-container">
+    {#each [1, 2, 3, 4, 5] as num}
+      <label class="rating">
+        <input
+          type="radio"
+          name="rating"
+          value={num}
+          bind:group={rating}
+        />
+        <span class="star {rating >= num ? 'selected' : ''}">&#9733;</span>
+      </label>
+    {/each}
+  </div>
 
   <div class="subtitle">Tell us more about your experience</div>
 
@@ -72,7 +98,7 @@
     </div>
   </div>
 
-  <button class="custom-button" disabled={!rating}>
+  <button class="custom-button" on:click={submitReview} disabled={!rating || !textareaValue.trim()}>
     Submit your review
   </button>
 </main>
@@ -129,31 +155,21 @@
     display: none; /* Hide the radio button circles */
   }
 
-  .star-icon {
-    width: 44px;
-    height: 44px;
+  .star {
+    font-size: 44px; /* Adjust star size */
+    color: #ccc; /* Default star color */
     transition: all 0.2s ease-in-out;
   }
 
-  .star-icon:hover {
+  .star:hover {
     transform: scale(1.1); /* Slightly enlarge the star on hover */
-  } 
-  .star-icon {
-  width: 50px; /* Adjust as needed */
-  height: 50px; /* Adjust as needed */
-  transition: background-color 0.3s, transform 0.2s; /* Smooth effect */
-}
+  }
 
-.star-icon.selected {
-  background-color: #FABF35; /* Highlight the selected star */
-  border-radius: 50%; /* Optional: make the background circular */
-  padding: 5px; /* Ensures the content doesn't get cropped */
-  box-shadow: 0 0 10px rgba(255, 223, 0, 0.8); /* Optional glow effect */
-}
+  .star.selected {
+    color: #FABF35; /* Highlight the selected star */
+    text-shadow: 0 0 10px rgba(255, 223, 0, 0.8); /* Optional glow effect */
+  }
 
-.star-icon.selected img {
-  z-index: 1; /* Ensures the image remains on top */
-}
   .textarea {
     width: 100%;
     height: 229px;
@@ -161,9 +177,10 @@
     border-radius: 8px;
     border-color: #1018281A;
   }
+
   .textarea::placeholder {
-  color: #707070; /* Change this to your desired placeholder color */
-}
+    color: #707070; /* Change this to your desired placeholder color */
+  }
 
   .field {
     margin-top: 20px;
@@ -195,26 +212,13 @@
     display: none; /* Hide the actual file input */
   }
 
-  .button {
-    margin-top: 20px;
-  }
-
- 
-
   .custom-button:disabled {
     background-color: #eeeeee; /* Light gray for disabled button */
     color: #707070; /* Darker text color */
     cursor: not-allowed;
   }
 
-  /* Adjust the text-decoration and icon color */
-  .file-name,
-  .file-label-text {
-    text-decoration-skip-ink: none; /* Remove underlines */
-    color: #707070; /* Icon and text color in gray */
-    border: none;
-  }
-  .fa-paperclip{
-    color:#41A2F8
+  .fa-paperclip {
+    color: #41A2F8;
   }
 </style>
