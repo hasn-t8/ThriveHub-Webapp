@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'http://localhost:3000/api';
+// export const API_BASE_URL = 'http://localhost:3000/api';
 // export const API_BASE_URL = 'https://api.app.thrivehub.ai/api';
 // import { API_URL } from '$env/static/public';
 import { PUBLIC_API_URL_PRODUCTION, PUBLIC_ENV } from '$env/static/public';
