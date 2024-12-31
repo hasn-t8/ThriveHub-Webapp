@@ -44,27 +44,29 @@
 	// Fetch profile data
 	async function fetchProfile() {
 		try {
-			const profiles = await getProfiles();
+			const personalProfile = await getProfiles();
 
-			// Look for the 'personal' profile in the array
-			const personalProfile = profiles.find((profile) => profile.profile_type === 'personal');
+			console.log('Profiles::::::', personalProfile);
+			
+			// // Look for the 'personal' profile in the array
+			// const personalProfile = profiles.find((profile) => profile.profile_type === 'personal');
 
-			// If no 'personal' profile exists, handle it (e.g., set defaults or log an error)
-			if (!personalProfile) {
-				console.log('No personal profile found.');
-				profile.set({
-					fullName: '',
-					email: '',
-					dob: '',
-					phone: '',
-					location: '',
-					address: '',
-					city: '',
-					postalCode: '',
-					profileImage: ''
-				});
-				return;
-			}
+			// // If no 'personal' profile exists, handle it (e.g., set defaults or log an error)
+			// if (!personalProfile) {
+			// 	console.log('No personal profile found.');
+			// 	profile.set({
+			// 		fullName: '',
+			// 		email: '',
+			// 		dob: '',
+			// 		phone: '',
+			// 		location: '',
+			// 		address: '',
+			// 		city: '',
+			// 		postalCode: '',
+			// 		profileImage: ''
+			// 	});
+			// 	return;
+			// }
 
 			// Use the personal profile data
 			profile.set({

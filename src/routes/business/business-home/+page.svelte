@@ -32,8 +32,8 @@
 					</figure>
 				</div>
 				<div class="info-text">
-					<h4 class="title is-6">Comfortable Search</h4>
-					<p>Our AI helps you find the best reviews and recommendations in seconds.</p>
+					<h4 class="title is-6">Find Your Reviews</h4>
+					<p>Easily discover what real customers are saying about your business.</p>
 				</div>
 			</div>
 
@@ -44,8 +44,8 @@
 					</figure>
 				</div>
 				<div class="info-text">
-					<h4 class="title is-6">Genuine Reviews</h4>
-					<p>Learn the opinions of real users about products and services.</p>
+					<h4 class="title is-6">AI-Driven Insights</h4>
+					<p>Our AI analyzes thousands of reviews to provide actionable insights.</p>
 				</div>
 			</div>
 		</div>
@@ -58,8 +58,8 @@
 					</figure>
 				</div>
 				<div class="info-text">
-					<h4 class="title is-6">Review Summaries with AI</h4>
-					<p>Get concise and meaningful overviews from thousands of reviews.</p>
+					<h4 class="title is-6">Build Trust, Boost Your Brand</h4>
+					<p>Earn customer loyalty and drive business growth with honest reviews.</p>
 				</div>
 			</div>
 
@@ -70,9 +70,9 @@
 					</figure>
 				</div>
 				<div class="info-text">
-					<h4 class="title is-6">Authentic Reviews</h4>
+					<h4 class="title is-6">Stay Ahead of the Competition</h4>
 					<p>
-						Trust in honest and unbiased feedback from real users to make well-informed decisions.
+						Make data-driven decisions to stay ahead of the curve.
 					</p>
 				</div>
 			</div>

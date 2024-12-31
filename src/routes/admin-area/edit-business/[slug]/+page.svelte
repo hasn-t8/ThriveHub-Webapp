@@ -34,6 +34,7 @@
 		full_name: '',
 		industry: '',
 		business_website_url: '',
+		business_website_title: '',
 		business_profile_id: null,
 		profile_type: '',
 		category: '',
@@ -41,34 +42,13 @@
 		logo_url: ''
 	});
 
-	// State management
 	let isEditable = false; // Default to read-only
-	// let logoUrl: string = '';
-	// theProfile.subscribe((profile) => {
-	// 	logoUrl = profile.logo_url; // Update logoUrl whenever the profile changes
-	// });
-
-	// function updateLogoUrl(url) {
-	// 	theProfile.update((profile) => {
-	// 		return { ...profile, logo_url: url };
-	// 	});
-	// }
-
+	
 	// Additional Form Variables
 	let companyLogoPreview = '';
 	let selectedFileName = 'No file selected';
-	// let keyFeatures = [];
 	let whyChoosePoints: any[] = [];
-	// Key Features
-	// let availableKeyFeatures = [
-	// 	'High Reliable Uptime',
-	// 	'Affordable Plans',
-	// 	'Easy-to-Use Control Panel',
-	// 	'Scalability',
-	// 	'Free Domain Name',
-	// 	'Security Features',
-	// 	'24/7 Customer Support'
-	// ];
+
 	let keyFeatureTitle = '';
 	let customKeyFeatureTitle = '';
 	let keyFeatureDescription = '';
@@ -176,7 +156,7 @@
 			console.log('Payload for addKeypointName:', keypointData);
 
 			const response = await addKeypointname(keypointData);
-			alert('Key-point name added successfully');
+			// alert('Key-point name added successfully');
 			window.location.reload();
 		} catch (error) {
 			console.error('Error in addKeypointName:', error);
@@ -220,7 +200,7 @@
 
 			if (response) {
 				console.log('Feature added successfully!', response);
-				alert('Keypoint added successfully!');
+				// alert('Keypoint added successfully!');
 
 				// Reload the keypoints list after successful addition
 				await reloadKeypointsList();
@@ -242,7 +222,7 @@
 	) {
 		try {
 			// Fetch the updated keypoints list for the specified type
-			const updatedKeypoints = await fetchKeyPoints(type); // Fetch points for 'feature' or 'why-us'
+			const updatedKeypoints = await fetchKeyPoints(type, 'feature');
 
 			// Update the UI directly
 			const keypointsListElement = document.getElementById(listElementId); // Dynamic element assignment
@@ -333,7 +313,7 @@
 				} else if (target === 'whyChoosePoints') {
 					whyChoosePoints = whyChoosePoints.filter((_, i) => i !== index);
 				}
-				alert('Key point successfully deleted.');
+				// alert('Key point successfully deleted.');
 			} else {
 				alert('Failed to delete the key point. Please try again.');
 			}
@@ -391,12 +371,10 @@
 		</div>
 	</div>
 	{#if $theProfile}
-		<!-- Company Details Form -->
 		<div class="stats-section">
 			<div class="card">
 				<h1 class="title">Company Details</h1>
 				<div class="column is-full is-flex is-justify-content-flex-end">
-					<!-- Toggle Button -->
 					{#if !isEditable}
 						<button
 							type="button"
@@ -410,37 +388,49 @@
 
 				<form>
 					<div class="columns is-multiline">
-						<!-- Company Name -->
-						<div class="column is-half">
+						<div class="column is-third">
 							<label class="label">Company Name</label>
 							<input
 								class="input"
 								type="text"
 								bind:value={$theProfile.org_name}
-								placeholder="Enter your company name"
 								disabled={!isEditable}
 							/>
 						</div>
 
-						<!-- Business Website URL -->
-						<div class="column is-half">
-							<label class="label">Business Website URL</label>
+						<div class="column is-third">
+							<label class="label">Work Email</label>
 							<input
 								class="input"
-								type="text"
-								bind:value={$theProfile.business_website_url}
-								placeholder="www.company.com"
+								type="email"
+								bind:value={$theProfile.work_email}
 								disabled={!isEditable}
 							/>
 						</div>
 
+						<div class="column is-third">
+							<label class="label">Business Category</label>
+							<select
+								class="input"
+								bind:value={$theProfile.category}
+								disabled={!isEditable}
+							>
+								<option value="Tech">Tech</option>
+								<option value="E-commerce">E-commerce</option>
+								<option value="Wellness">Wellness</option>
+								<option value="Education">Education</option>
+								<option value="Finance">Finance</option>
+								<option value="Home Electronics">Home Electronics</option>
+							</select>
+						</div>
+					</div>
+					<div class="columns is-multiline">
 						<!-- <div class="column is-half">
 							<label class="label">Full Name</label>
 							<input
 								class="input"
 								type="text"
 								bind:value={$theProfile.full_name}
-								placeholder="Enter your full name"
 								disabled={!isEditable}
 							/>
 						</div>
@@ -450,43 +440,36 @@
 								class="input"
 								type="text"
 								bind:value={jobTitle}
-								placeholder="Enter your job title"
 								disabled={!isEditable}
 							/>
 						</div> -->
 
-						<!-- Work Email -->
-						<div class="column is-half">
-							<label class="label">Work Email</label>
+						<div class="column is-third">
+							<label class="label">Business Website URL</label>
 							<input
 								class="input"
-								type="email"
-								bind:value={$theProfile.work_email}
-								placeholder="Enter your email"
+								type="text"
+								bind:value={$theProfile.business_website_title}
 								disabled={!isEditable}
 							/>
 						</div>
 
-						<!-- Business Category -->
-						<div class="column is-half">
-							<label class="label">Business Category</label>
-							<select class="input" bind:value={$theProfile.category} disabled={!isEditable}>
-								<option value="Tech">Tech</option>
-								<option value="E-commerce">E-commerce</option>
-								<option value="Wellness">Wellness</option>
-								<option value="Education">Education</option>
-								<option value="Finance">Finance</option>
-								<option value="Home Electronics">Home Electronics</option>
-							</select>
+						<div class="column is-third">
+							<label class="label">Affiliate Link</label>
+							<input
+								class="input"
+								type="text"
+								bind:value={$theProfile.business_website_url}
+								disabled={!isEditable}
+							/>
 						</div>
-
-						<!-- Company Description -->
+					</div>
+					<div class="columns is-multiline">
 						<div class="column is-full">
 							<label class="label">A Short Description</label>
 							<textarea
 								class="textarea"
 								bind:value={$theProfile.about_business}
-								placeholder="Enter a short description"
 								readonly={!isEditable}
 							></textarea>
 						</div>
@@ -495,7 +478,7 @@
 						{#if isEditable}
 							<div class="column is-full is-flex is-justify-content-flex-end">
 								<button
-									on:click={saveProfile($theProfile.business_profile_id)}
+									on:click={() => saveProfile(Number($theProfile.business_profile_id))}
 									class="button is-success">Save Changes</button
 								>
 							</div>
@@ -506,7 +489,7 @@
 		</div>
 
 		<!-- Logo Section -->
-		{$theProfile.logo_url}
+		<!-- {$theProfile.logo_url} -->
 		<LogoUpload
 			bind:value={$theProfile.logo_url}
 			businessProfileId={$theProfile.business_profile_id}
