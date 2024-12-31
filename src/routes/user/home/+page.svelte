@@ -1,7 +1,6 @@
 <script>
-	import Review from "../../components/reviews/popular-reviews.svelte";
-	import ReviewUS from "../../components/reviews/about-us-reviews.svelte";
-
+	import Review from '../../components/reviews/popular-reviews.svelte';
+	import ReviewUS from '../../components/reviews/about-us-reviews.svelte';
 </script>
 
 <!-- Hero Section -->
@@ -13,14 +12,24 @@
 				class="column is-half p-6 is-flex is-flex-direction-column is-justify-content-center custom-gap-5"
 			>
 				<h1 class="title is-size-1 is-size-3-mobile">
-					Trustworthy Brands at Your Fingertips with <span style="color: #118BF6;">Thrive Hub</span>
+					Trustworthy Brands at Your Fingertips with <span
+						style="color: #118BF6;">Thrive Hub</span
+					>
 				</h1>
-				<p class="has-text-grey-dark is-size-5 hide-mobile" style="font-weight: 600;">
-					Skip the guesswork! Explore top-rated companies and services, get AI-driven review summaries, and enjoy exclusive discounts.
+				<p
+					class="has-text-grey-dark is-size-5 hide-mobile"
+					style="font-weight: 600;"
+				>
+					Skip the guesswork! Explore top-rated companies and services, get
+					AI-driven review summaries, and enjoy exclusive discounts.
 				</p>
 				<div class="field has-addons mt-5 hide-search">
 					<div class="control has-icons-left is-expanded">
-						<input class="input is-rounded" type="text" placeholder="Search company or category" />
+						<input
+							class="input is-rounded"
+							type="text"
+							placeholder="Search company or category"
+						/>
 						<span class="icon is-left">
 							<i class="fas fa-search"></i>
 						</span>
@@ -29,7 +38,10 @@
 			</div>
 
 			<!-- Right Column (Mobile Search) -->
-			<div class="column is-half hero-right-column" style="background-color: #118cf6;">
+			<div
+				class="column is-half hero-right-column"
+				style="background-color: #118cf6;"
+			>
 				<div class="image-container">
 					<!-- Mobile Search Bar -->
 					<div class="field has-addons mt-5 mobile-search">
@@ -46,22 +58,53 @@
 					</div>
 
 					<!-- Main Image -->
-					<img src="/assets/Hoodie.png" alt="Person giving thumbs up" class="main-image" />
+					<img
+						src="/assets/Hoodie.png"
+						alt="Person giving thumbs up"
+						class="main-image"
+					/>
 
 					<!-- Overlayed Icons -->
-					<img src="/assets/heart-small.png" alt="Heart Small" class="icon icon-heart-small" />
-					<img src="/assets/heart-big.png" alt="Heart Big" class="icon icon-heart-big" />
-					<img src="/assets/chat-small.png" alt="Chat Small" class="icon icon-chat-small" />
-					<img src="/assets/chat-big.png" alt="Chat Big" class="icon icon-chat-big" />
-					<img src="/assets/star-big.png" alt="Star Big" class="icon icon-star-big" />
-					<img src="/assets/star-small.png" alt="Star Small" class="icon icon-star-small" />
-					<img src="/assets/circles.png" alt="Circles" class="icon icon-circles" />
+					<img
+						src="/assets/heart-small.png"
+						alt="Heart Small"
+						class="icon icon-heart-small"
+					/>
+					<img
+						src="/assets/heart-big.png"
+						alt="Heart Big"
+						class="icon icon-heart-big"
+					/>
+					<img
+						src="/assets/chat-small.png"
+						alt="Chat Small"
+						class="icon icon-chat-small"
+					/>
+					<img
+						src="/assets/chat-big.png"
+						alt="Chat Big"
+						class="icon icon-chat-big"
+					/>
+					<img
+						src="/assets/star-big.png"
+						alt="Star Big"
+						class="icon icon-star-big"
+					/>
+					<img
+						src="/assets/star-small.png"
+						alt="Star Small"
+						class="icon icon-star-small"
+					/>
+					<img
+						src="/assets/circles.png"
+						alt="Circles"
+						class="icon icon-circles"
+					/>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
-
 
 <!-- Explore Section -->
 <section class="section category-section">
@@ -74,7 +117,10 @@
 						<img src="/assets/tech.png" alt="Tech Icon" class="category-icon" />
 						<div class="is-flex is-flex-direction-column">
 							<h3 class="title is-5 m-0">Tech</h3>
-							<p class="hide-mobile" style="font-size: 12px; color:#4a4a4a; width:60%">
+							<p
+								class="hide-mobile"
+								style="font-size: 12px; color:#4a4a4a; width:60%"
+							>
 								Our goal is to help you achieve a balanced lifestyle.
 							</p>
 						</div>
@@ -84,10 +130,17 @@
 			<div class="column is-three-fifths-desktop is-6-mobile">
 				<div class="category-card">
 					<div class="category-card-content is-flex is-align-items-center">
-						<img src="/assets/wellness.png" alt="Tech Icon" class="category-icon" />
+						<img
+							src="/assets/wellness.png"
+							alt="Tech Icon"
+							class="category-icon"
+						/>
 						<div class="is-flex is-flex-direction-column">
 							<h4 class="title is-5 m-0">Wellness</h4>
-							<p class="hide-mobile" style="font-size: 12px; color:#4a4a4a; width:60%">
+							<p
+								class="hide-mobile"
+								style="font-size: 12px; color:#4a4a4a; width:60%"
+							>
 								Our goal is to help you achieve a balanced lifestyle.
 							</p>
 						</div>
@@ -98,10 +151,17 @@
 			<div class="column is-three-fifths-desktop is-6-mobile">
 				<div class="category-card">
 					<div class="category-card-content is-flex is-align-items-center">
-						<img src="/assets/finance.png" alt="Tech Icon" class="category-icon" />
+						<img
+							src="/assets/finance.png"
+							alt="Tech Icon"
+							class="category-icon"
+						/>
 						<div class="is-flex is-flex-direction-column">
 							<h4 class="title is-5 m-0">Finance</h4>
-							<p class="hide-mobile" style="font-size: 12px; color:#4a4a4a; width:60%">
+							<p
+								class="hide-mobile"
+								style="font-size: 12px; color:#4a4a4a; width:60%"
+							>
 								Our goal is to help you achieve a balanced lifestyle.
 							</p>
 						</div>
@@ -111,10 +171,17 @@
 			<div class="column is-6-mobile">
 				<div class="category-card">
 					<div class="category-card-content is-flex is-align-items-center">
-						<img src="/assets/electronics.png" alt="Tech Icon" class="category-icon" />
+						<img
+							src="/assets/electronics.png"
+							alt="Tech Icon"
+							class="category-icon"
+						/>
 						<div class="is-flex is-flex-direction-column">
 							<h4 class="title is-5 m-0">Home Electronics</h4>
-							<p class="hide-mobile" style="font-size: 12px; color:#4a4a4a; width:60%">
+							<p
+								class="hide-mobile"
+								style="font-size: 12px; color:#4a4a4a; width:60%"
+							>
 								Our goal is to help you achieve a balanced lifestyle.
 							</p>
 						</div>
@@ -125,8 +192,7 @@
 	</div>
 </section>
 
-<Review /> 
-
+<Review />
 
 <!-- Call to Action Section -->
 <section class="section cta-section">
@@ -136,7 +202,8 @@
 			<div class="column is-two-fourth cta-right-padding">
 				<h3 class="title is-3">Got a business?</h3>
 				<p class="text">
-					Join Thrive Hub to gain trust and foster confidence through genuine customer reviews.
+					Join Thrive Hub to gain trust and foster confidence through genuine
+					customer reviews.
 				</p>
 				<button class="button is-primary cta-button">Build your brand</button>
 			</div>
@@ -150,11 +217,12 @@
 							<img src="/assets/testimonial1.png" alt="Jan S." />
 						</figure>
 						<p class="quote">
-							Found my dream job thanks to <strong>Your Staffing Firm.</strong> Exceptional service and
-							support throughout. Highly recommended!
+							"Thrive Hub transformed our online presence! The authentic reviews
+							boosted our credibility and helped us build trust with new
+							clients. It's been a game-changer for our business growth.""
 						</p>
-						<p class="name">Jan S.</p>
-						<p class="role">Global Applications Representative</p>
+						<p class="name">Sarah M.</p>
+						<p class="role">Marketing Specialist</p>
 					</div>
 
 					<!-- Testimonial 2 -->
@@ -163,11 +231,12 @@
 							<img src="/assets/testimonial2.png" alt="Eric D." />
 						</figure>
 						<p class="quote">
-							<strong>Your Staffing Firm</strong> made hunting a breeze! Top-notch experience and unmatched
-							support. Will use this in my new role.
+							"Joining Thrive Hub was the best decision I made. The customer
+							reviews helped me stand out in a crowded market and attract more
+							clients than ever before!"
 						</p>
-						<p class="name">Eric D.</p>
-						<p class="role">IT Specialist</p>
+						<p class="name">John R., </p>
+						<p class="role">Entrepreneur</p>
 					</div>
 				</div>
 				<!-- <button class="button is-primary cta-button-mobile">Build your brand</button> -->
@@ -175,8 +244,6 @@
 		</div>
 	</div>
 </section>
-
-
 
 <!-- About Us -->
 <section class="section about-section">
@@ -186,12 +253,18 @@
 			<div class="column is-half is-flex is-flex-direction-column about1">
 				<h2 class="title is-3">About us</h2>
 				<p>
-					Welcome to Thrive Hub—your one-stop platform for honest reviews, real-time feedback, and exclusive deals through trusted affiliate links. Powered by AI, we make it easier to sift through reviews and make confident, informed choices.
+					Welcome to Thrive Hub—your one-stop platform for honest reviews,
+					real-time feedback, and exclusive deals through trusted affiliate
+					links. Powered by AI, we make it easier to sift through reviews and
+					make confident, informed choices.
 				</p>
 
 				<div class="about-box left is-flex-grow-1 is-align-items-center">
 					<p>
-						For businesses, Thrive Hub is the ultimate tool for connecting, engaging, and growing. It builds trust, boosts your brand, and promotes your services—all in one powerful platform. We’re here to make reviews smarter and connections stronger!
+						For businesses, Thrive Hub is the ultimate tool for connecting,
+						engaging, and growing. It builds trust, boosts your brand, and
+						promotes your services—all in one powerful platform. We’re here to
+						make reviews smarter and connections stronger!
 					</p>
 				</div>
 			</div>
@@ -199,18 +272,26 @@
 				<h2 class="title is-3 is-hidden">About Us</h2>
 				<div class="columns is-gapless is-flex is-align-items-stretch">
 					<!-- Center Column for Images and Stats -->
-					<div class="column is-half is-full-mobile is-flex is-flex-direction-column">
+					<div
+						class="column is-half is-full-mobile is-flex is-flex-direction-column"
+					>
 						<!-- First Image -->
 						<div class="column pl-0">
 							<figure class="image is-5by4">
-								<img src="/assets/young-person-intership 1.png" alt="Team working together" />
+								<img
+									src="/assets/young-person-intership 1.png"
+									alt="Team working together"
+								/>
 							</figure>
 						</div>
 						<div class="column pl-0">
-							<div class="stat-box is-flex-direction-row is-justify-content-space-around">
+							<div
+								class="stat-box is-flex-direction-row is-justify-content-space-around"
+							>
 								<div class="stat-number">70%</div>
 								<p class="stat-label">
-									<strong style="color:#ffffff!important">AI</strong> speeds up review analysis
+									<strong style="color:#ffffff!important">AI</strong> speeds up review
+									analysis
 								</p>
 							</div>
 						</div>
@@ -254,16 +335,23 @@
 <section class="section app-section">
 	<div class="container">
 		<div class="app-box">
-			<div class="columns is-vcentered is-align-items-stretch is-gapless app-columns">
+			<div
+				class="columns is-vcentered is-align-items-stretch is-gapless app-columns"
+			>
 				<!-- Left Column for Text -->
 				<div
 					class="column is-three-fifths is-flex is-flex-direction-column is-justify-content-center"
 					style="padding-left: 7%!important;"
 				>
-					<p style="margin-bottom:2%; margin-top: 3%; color:white; font-weight: 500!important; font-size:1.1rem;">
+					<p
+						style="margin-bottom:2%; margin-top: 3%; color:white; font-weight: 500!important; font-size:1.1rem;"
+					>
 						Join thousands of users discovering trusted reviews!
 					</p>
-					<h2 class="title is-3" style="color:white; max-width: 500px;font-weight:700;">
+					<h2
+						class="title is-3"
+						style="color:white; max-width: 500px;font-weight:700;"
+					>
 						Download the app and sign up today!
 					</h2>
 
@@ -296,8 +384,7 @@
 	</div>
 </section>
 
-
-<ReviewUS /> 
+<ReviewUS />
 
 <style>
 	/* Search Bar Styling  Start */
@@ -754,8 +841,6 @@
 	}
 
 	@media screen and (max-width: 769px) {
-	
-
 		.testimonial-box .image {
 			width: 42%;
 			height: auto;
@@ -806,7 +891,7 @@
 			left: 57%;
 			width: 43%;
 			top: 9%;
-			padding:0.5rem;
+			padding: 0.5rem;
 		}
 
 		.cta-button {

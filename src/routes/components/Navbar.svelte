@@ -1,21 +1,19 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { logout, loggedInStatus } from '$lib/stores/auth';
+	import { logout, loggedInStatus, setUserAndType, isAdmin  } from '$lib/stores/auth';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 
 	let jwtTokenFound = $state(false);
-
-
 
 	let menuActive = false;
 	function toggleMenu() {
 		menuActive = !menuActive;
 	}
 	onMount(() => {
+		setUserAndType();		
 		jwtTokenFound = localStorage.getItem('authToken') ? true : false;
 		if (jwtTokenFound) {
-			console.log('User is logged in.');
 			if($page.url.pathname === '/user/auth/sign-in'){
 				goto('/org/explore');
 			}
@@ -25,14 +23,11 @@
 
 	});
 
-
-
 	function navigateToLogin() {
 		// Save the current path before navigating to the login screen
 		localStorage.setItem('previousPath', $page.url.pathname);
 		goto('/user/auth/sign-in'); // Navigate to the login screen
 	}
-
 
 	function logoutHandler() {
 		logout();
@@ -67,6 +62,9 @@
 				<!-- <a class="navbar-item" href="#blog">Blog</a>
 				<a class="navbar-item" href="#help">Help</a> -->
 				<a class="navbar-item" href="/user/settings">Settings</a>
+				{#if $isAdmin}
+					<a class="navbar-item" href="/admin-area/business-list">Dashboard</a>
+				{/if}
 				{#if $loggedInStatus || jwtTokenFound}
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->

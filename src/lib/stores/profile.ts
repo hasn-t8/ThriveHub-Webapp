@@ -128,7 +128,8 @@ export async function saveBusinessProfile(profileData: ProfileData): Promise<num
 		  work_email: profileData.work_email,
 		  about_business: profileData.about_business,
 		  industry: profileData.industry,
-		  business_website_url: profileData.business_website_url
+		  business_website_url: profileData.business_website_url,
+		  business_website_title: profileData.business_website_title,
 		})
 	  };
 	  

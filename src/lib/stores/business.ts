@@ -41,7 +41,7 @@ export async function uploadBusinessLogo(file: File, businessProfileId: number):
 
 		const result = await response.json();
 		console.log('Logo uploaded successfully:', result);
-		alert('Logo uploaded successfully!');
+		// alert('Logo uploaded successfully!');
 		return true;
 	} catch (error) {
 		console.error('Error uploading logo:', error);
@@ -51,21 +51,11 @@ export async function uploadBusinessLogo(file: File, businessProfileId: number):
 }
 
 export async function getProfileById(profilId: number) {
-	const JWT = getJWT();
-	console.log(JWT);
-
-	if (!JWT) {
-		goto('/user/auth/sign-in');
-		return false;
-	}
 
 	const response = await fetch(`${API_BASE_URL}/businessprofiles/${profilId}`, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${JWT}`
-		}
+		method: 'GET'
 	});
-	// console.log('response from business-prof.ts:', response);
+	console.log('response from business-prof.ts:', response);
 
 	if (!response.ok) {
 		if (response.status === 401) {
@@ -117,9 +107,9 @@ export async function getProfilesPublic(): Promise<any> {
             };
         }
 
-        const data = await response.json();
-        console.log('Profiles fetched:', data);
-        return data;
+        const profilesData = await response.json();
+        console.log('Profiles fetched:', profilesData.data);
+        return profilesData.data;
     } catch (error) {
         console.error('Error fetching profiles:', error);
         return { error: 'An unexpected error occurred.' };
@@ -190,7 +180,8 @@ export async function saveBusinessProfile(profileData: ProfileData): Promise<num
 			work_email: profileData.work_email,
 			about_business: profileData.about_business,
 			category: profileData.category,
-			business_website_url: profileData.business_website_url
+			business_website_url: profileData.business_website_url,
+			business_website_title: profileData.business_website_title
 		})
 	};
 
@@ -234,41 +225,13 @@ export async function updateBusinessProfile(
 		return false;
 	}
 
-	// const filterNonEmptyValues = (data: Record<string, string | undefined>) =>
-	// 	Object.entries(data).reduce(
-	// 		(acc, [key, value]) => {
-	// 			if (value && value.trim() !== '') {
-	// 				acc[key] = value;
-	// 			}
-	// 			return acc;
-	// 		},
-	// 		{} as Record<string, string>
-	// 	);
-
-	// console.log(
-	// 	'filterNonEmptyValues:',
-	// 	filterNonEmptyValues({
-	// 		org_name: profileData.org_name,
-	// 		category: profileData.category,
-	// 		business_website_url: profileData.business_website_url
-	// 	})
-	// );
-
-	// job_title: '',
-	// work_email: '',
-	// about_business: '',
-	// full_name: '',
-	// industry: '',
-	// business_website_url: '',
-	// profile_type: '',
-	// category: '',
-
 	const apiRequestBody = {
 		profileData: {
 			org_name: profileData.org_name,
 			category: profileData.category,
 			work_email: profileData.work_email,
 			about_business: profileData.about_business,
+			business_website_title: profileData.business_website_title,
 			business_website_url: profileData.business_website_url
 		}
 	};
@@ -329,7 +292,7 @@ export async function registerUser(
 			full_name: userData.full_name,
 			org_name: userData.org_name,
 			job_title: userData.job_title,
-			business_website_url: userData.business_website_url
+			business_website_url: userData.business_website_url,
 		}
 	};
 

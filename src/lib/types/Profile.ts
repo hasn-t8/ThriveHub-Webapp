@@ -6,6 +6,7 @@ export type ProfileData = {
 	industry?: string;
 	profile_type: string;
 	category?: string;
+	business_website_title?: string;
 	business_website_url?: string;
 	profile_id?: string | number;
 	business_profile_id?: string | number | null;
@@ -22,4 +23,6 @@ export type ProfileData = {
 	org_name?: string;
 	work_email_verified?: boolean | string;
 	id?: string | number;
+	total_reviews?: number;
+	avg_rating?: number;
 };
