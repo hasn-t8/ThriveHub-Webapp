@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getProfilesPublic } from '$lib/stores/business';
 	import { onMount } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
+	import { writable, get, type Writable } from 'svelte/store';
 	import type { ProfileData } from '$lib/types/Profile';
 	import { goto } from '$app/navigation';
 
@@ -10,6 +10,57 @@
 	let itemsPerPage = 10;
 	let totalPages = 1;
 	let totalResults = 0;
+
+	let categories = [
+		{ text: "Technology", value: "tech" },
+		{ text: "E-Commerce", value: "e-commerce" },
+		{ text: "Wellness", value: "wellness" },
+		{ text: "Education", value: "education" },
+		{ text: "Finance", value: "finance" },
+		{ text: "Home Electronics", value: "home-electronics" }
+	];
+
+    // Store to keep track of selected categories
+	const selectedFilters: Writable<string[]> = writable([]);
+
+	// Store for selected ratings
+	const selectedRatings: Writable<string[]> = writable([]); 
+
+    // Function to toggle a category
+	function toggleFilter(category: string) {
+		selectedFilters.update((filters) => {
+			let updatedFilters;
+
+            if (filters.includes(category)) {
+				updatedFilters = filters.filter((filter) => filter !== category); // Remove if already selected
+            } else {
+				updatedFilters = [...filters, category]; // Add if not selected
+            }
+			return updatedFilters;
+		});
+    }
+
+	// Function to toggle a rating
+	function toggleRating(rating: string) {
+		selectedRatings.update((ratings) => {
+			let updatedRatings;
+			if (rating === "all") {
+				// If "All" is selected, clear all other ratings
+				updatedRatings = ["all"];
+			} else {
+				if (ratings.includes(rating)) {
+					updatedRatings = ratings.filter((r) => r !== rating);
+				} else {
+					// If "All" was previously selected, remove it
+					updatedRatings = ratings.includes("all")
+						? [rating]
+						: [...ratings, rating];
+				}
+			}
+			return updatedRatings;
+		});
+	}
+
 
 	// Utility function to scroll to top
 	function scrollToTop() {
@@ -23,9 +74,30 @@
 	async function fetchProfiles(): Promise<void> {
 		try {
 			const profiles: ProfileData[] = await getProfilesPublic();
-			businessProfile.set(profiles);
-			totalResults = profiles.length;
-			totalPages = Math.ceil(profiles.length / itemsPerPage);
+
+			// Apply category filter
+			const filters = get(selectedFilters);
+			const filteredByCategory =
+				filters.length > 0
+					? profiles.filter((profile) =>
+							filters.includes((profile.category ?? "").toLowerCase())
+					  )
+					: profiles;
+
+			// Apply rating filter
+			const ratings = get(selectedRatings);
+			const filteredByRating =
+				ratings.includes("all") || ratings.length === 0
+					? filteredByCategory // Show all if "All" is selected or no ratings are selected
+					: filteredByCategory.filter((profile) =>
+							profile.avg_rating && ratings.includes(String(profile.avg_rating).charAt(0))
+					  );
+
+			console.log("Filtered Profiles:", filteredByRating);
+			businessProfile.set(filteredByRating);
+			console.log(filteredByRating);
+			totalResults = filteredByRating.length;
+			totalPages = Math.ceil(filteredByRating.length / itemsPerPage);
 		} catch (error) {
 			console.error('Error fetching profiles:', error);
 		}
@@ -198,45 +270,32 @@
 			<div class="column">
 				<div class="box">
 					<aside class="menu">
+
+						<!-- Rating Filter -->
 						<p class="menu-label">Rating</p>
 						<div class="buttons">
-							<button class="button is-light clear-btn"
-								>All <span class="category-star">★</span></button
-							>
-							<button class="button is-light clear-btn"
-								>5 <span class="category-star">★</span></button
-							>
-							<button class="button is-light clear-btn"
-								>4 <span class="category-star">★</span></button
-							>
-							<button class="button is-light clear-btn"
-								>3 <span class="category-star">★</span></button
-							>
-							<button class="button is-light clear-btn"
-								>2 <span class="category-star">★</span></button
-							>
+							{#each ["all", 5, 4, 3, 2] as rating}
+								<!-- Use `$selectedRatings` to ensure reactivity -->
+								<button
+									class="button filter-button is-light clear-btn { $selectedRatings.includes(String(rating)) ? 'selected' : '' }"
+									on:click={() => toggleRating(String(rating))}
+								>
+									{String(rating).charAt(0).toUpperCase() + String(rating).slice(1)}
+									<span class="category-star">★</span>
+								</button>
+							{/each}
 						</div>
 
 						<p class="menu-label mb-0">Category</p>
 						<div class="menu-list is-flex is-flex-wrap-wrap">
-							<a class="is-inline-block mx-1 my-1">Web Hosting Services</a>
-							<a class="is-inline-block mx-1 my-1">VPN Providers</a>
-							<a class="is-inline-block mx-1 my-1">Cloud Storage Providers</a>
-							<a class="is-inline-block mx-1 my-1">E-commerce Platforms</a>
-							<a class="is-inline-block mx-1 my-1">Email Marketing Tools</a>
-							<a class="is-inline-block mx-1 my-1"
-								>Security Software Companies</a
+							{#each categories as { text, value }}
+							<button
+								class="filter-button {$selectedFilters.includes(value) ? 'selected' : ''} is-inline-block mx-1 my-1"
+								on:click={() => toggleFilter(value)}
 							>
-							<a class="is-inline-block mx-1 my-1">CRM Software</a>
-							<a class="is-inline-block mx-1 my-1">Accounting Software</a>
-							<a class="is-inline-block mx-1 my-1">Graphic Design Software</a>
-							<a class="is-inline-block mx-1 my-1">Video Editing Software</a>
-							<a class="is-inline-block mx-1 my-1">Education & Productivity</a>
-							<a class="is-inline-block mx-1 my-1">Project Management Tools</a>
-							<a class="is-inline-block mx-1 my-1">Customer Service Software</a>
-							<a class="is-inline-block mx-1 my-1"
-								>Marketing Automation Software</a
-							>
+								{text}
+							</button>
+							{/each}
 						</div>
 
 						<p class="menu-label mb-0">Special Needs</p>
@@ -245,6 +304,7 @@
 							<a class="is-inline-block mx-1 my-1">Only with reviews</a>
 						</div>
 						<button
+							on:click={fetchProfiles}
 							class="button is-primary is-fullwidth mb-5 mt-5"
 							style="border-radius: 15px;">Show Results</button
 						>
@@ -1253,7 +1313,7 @@
 				>
 					<strong style="font-size: 24px;">{item.org_name}</strong>
 					<p style="color: #949494; font-size:1rem;">
-						4.8 <span class="category-star ml-0">★</span> | 1.2k Reviews
+						{item.avg_rating} <span class="category-star ml-0">★</span> | {item.total_reviews} Reviews
 					</p>
 					<p style="font-weight:400;font-size:0.9rem;">
 						{item.about_business ?? 'No Data'}
@@ -1704,6 +1764,30 @@
 		background-color: #f5f5f5;
 		color: #363636;
 	}
+
+	.menu-list button {
+		font-size: 1rem;
+		border-radius: 9px;
+		border-width: 1px;
+		border: 1px solid transparent;
+		background-color: transparent;
+		border-color: #e7f4fd !important;
+		color: rgba(0, 0, 0, 0.7);
+		padding: 0.7em 0.75em;
+	}
+
+	.menu-list button:hover {
+		background-color: #f5f5f5;
+		color: #363636;
+		cursor: pointer;
+	}
+
+    .filter-button.selected {
+        background-color: #118cf6!important;
+        color: #fff!important;
+        border-color: #118cf6!important;
+    }
+
 
 	.category-tag {
 		width: auto;
