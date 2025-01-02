@@ -1,22 +1,73 @@
 <script>
 	import { onMount } from 'svelte';
+	import { deleteReview, updateReview } from '$lib/stores/reviews'; // Adjust the path as needed
 
+	// let reviewId = 123; // Example review ID (replace with actual ID from your app logic)
 	let reviewText = 'Good service. Been looking for a similar one for a long time';
 	let rating = 4.9;
 	let likes = 23;
 	let daysAgo = 7;
+	let isEditing = false;
+	let newReviewText = reviewText;
+	let newRating = rating;
+    /**
+	 * @type {null}
+	 */
+    let reviewId = null;
 
+	// Function to handle review deletion
+	async function handleDelete() {
+		if (confirm('Are you sure you want to delete this review?')) {
+			const success = await deleteReview(reviewId);
+			if (success) {
+				alert('Review deleted successfully.');
+				// Redirect or update the UI as needed
+			} else {
+				alert('Failed to delete review.');
+			}
+		}
+	}
+
+	// Function to handle review update
+	async function handleUpdate() {
+		const updatedReview = {
+			rating: newRating,
+			feedback: newReviewText
+		};
+		const response = await updateReview(reviewId, updatedReview);
+		if (response) {
+			alert('Review updated successfully.');
+			reviewText = response.feedback;
+			rating = response.rating;
+			isEditing = false;
+		} else {
+			alert('Failed to update review.');
+		}
+	}
+
+	// Toggle edit mode
+	function toggleEdit() {
+		isEditing = !isEditing;
+		newReviewText = reviewText;
+		newRating = rating;
+	}
 	onMount(() => {
-		// Fetch review data from an API if needed
-	});
+        const params = new URLSearchParams(window.location.search);
+        // @ts-ignore
+        reviewId = params.get('reviewId');
+        console.log('Review ID:', reviewId);
+        // Use the reviewId for update or delete operations
+    });
 </script>
+
+
 
 <!-- Page Header -->
 <section class="page-header">
 	<img src="/assets/thankyou.png" alt="Review Image" class="header-image" />
-
 	<h1>Thanks for review!</h1>
 </section>
+
 <div class="review-card">
 	<header class="header">
 		<p>Your review is pending.</p>
@@ -28,31 +79,41 @@
 			<p class="days-ago">{daysAgo} days ago</p>
 		</div>
 
-		<div class="rating-row">
-			<p>{rating}</p>
-			<span class="icon is-small">
-				<i class="fas fa-star"></i>
-			</span>
-		</div>
-		<p>{reviewText}</p>
-		<div class="actions">
-			<span class="icon">
-				<i class="fas fa-heart"></i>
-			</span>
-			<p>{likes}</p>
-			<span class="icon">
-				<i class="fas fa-share-alt"></i>
-			</span>
-		</div>
+		{#if isEditing}
+			<div class="edit-section">
+				<input type="number" bind:value={newRating} min="0" max="5" step="0.1" />
+				<textarea bind:value={newReviewText}></textarea>
+				<button on:click={handleUpdate}>Save</button>
+				<button on:click={toggleEdit}>Cancel</button>
+			</div>
+		{:else}
+			<div class="rating-row">
+				<p>{rating}</p>
+				<span class="icon is-small">
+					<i class="fas fa-star"></i>
+				</span>
+			</div>
+			<p>{reviewText}</p>
+			<div class="actions">
+				<span class="icon">
+					<i class="fas fa-heart"></i>
+				</span>
+				<p>{likes}</p>
+				<span class="icon">
+					<i class="fas fa-share-alt"></i>
+				</span>
+			</div>
+		{/if}
 	</div>
+
 	<footer class="footer">
-		<div class="footer-item">
+		<div class="footer-item" on:click={toggleEdit}>
 			<span class="icon is-small">
 				<i class="fas fa-edit"></i>
 			</span>
 			Edit
 		</div>
-		<div class="footer-item">
+		<div class="footer-item" on:click={handleDelete}>
 			<span class="icon is-small">
 				<i class="fas fa-trash-alt"></i>
 			</span>
