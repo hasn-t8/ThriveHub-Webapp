@@ -36,6 +36,37 @@ export async function getAllReviewsByBusinessId(businessId: any) {
 }
 
 /**
+ * Fetch all reviews in the system.
+ * @returns {Promise<any>} The reviews data or false if unauthorized.
+ */
+export async function getAllReviews() {
+    const JWT = getJWT();
+    console.log('getJWT:', JWT);
+
+    if (!JWT) {
+        goto('/user/auth/sign-in');
+        return false;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/reviews`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${JWT}`
+        }
+    });
+
+    if (!response.ok) {
+        if (response.status === 401) {
+            logout();
+            goto('/user/auth/sign-in');
+        }
+        return false;
+    }
+
+    return await response.json();
+}
+
+/**
  * Get a review by its ID.
  * @param {number} reviewId - The ID of the review to fetch.
  * @returns {Promise<any>} The review data or false if unauthorized.
@@ -135,6 +166,39 @@ export async function deleteReview(reviewId: any) {
     }
 
     return true;
+}
+
+
+/**
+ * Fetch reviews by approval status.
+ * @param {boolean} approvalStatus - The approval status to filter reviews (true for approved, false for unapproved).
+ * @returns {Promise<any>} The reviews data or false if unauthorized.
+ */
+export async function getReviewsByApprovalStatus(approvalStatus: boolean) {
+    const JWT = getJWT();
+    console.log('getJWT:', JWT);
+
+    if (!JWT) {
+        goto('/user/auth/sign-in');
+        return false;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/reviews/approval-status/${approvalStatus}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${JWT}`
+        }
+    });
+
+    if (!response.ok) {
+        if (response.status === 401) {
+            logout();
+            goto('/user/auth/sign-in');
+        }
+        return false;
+    }
+
+    return await response.json();
 }
 
 /**
