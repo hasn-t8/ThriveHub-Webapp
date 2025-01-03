@@ -1,6 +1,7 @@
 import { goto } from '$app/navigation';
 import { API_BASE_URL } from '$lib/config';
 import { getJWT, logout } from '$lib/stores/auth';
+import type { AnyARecord } from 'node:dns';
 
 /**
  * Fetch all reviews by business ID.
@@ -34,6 +35,37 @@ export async function getAllReviewsByBusinessId(businessId: any) {
     return await response.json();
 }
 
+/**
+ * Get a review by its ID.
+ * @param {number} reviewId - The ID of the review to fetch.
+ * @returns {Promise<any>} The review data or false if unauthorized.
+ */
+export async function getReviewById(reviewId: AnyARecord) {
+    const JWT = getJWT();
+  
+    if (!JWT) {
+      goto('/user/auth/sign-in');
+      return false;
+    }
+  
+    const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+    });
+  
+    if (!response.ok) {
+      if (response.status === 401) {
+        logout();
+        goto('/user/auth/sign-in');
+      }
+      return false;
+    }
+  
+    return await response.json();
+  }
+  
 /**
  * Create a new review.
  * @param {Object} reviewData - The review data to create.

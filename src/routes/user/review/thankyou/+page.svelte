@@ -1,217 +1,200 @@
 <script>
-	import { onMount } from 'svelte';
-	import { deleteReview, updateReview } from '$lib/stores/reviews'; // Adjust the path as needed
+    import { onMount } from 'svelte';
+    // @ts-ignore
+    import { deleteReview, updateReview, getReviewById } from '$lib/stores/reviews';
+    import { goto } from '$app/navigation';
 
-	// let reviewId = 123; // Example review ID (replace with actual ID from your app logic)
-	let reviewText = 'Good service. Been looking for a similar one for a long time';
-	let rating = 4.9;
-	let likes = 23;
-	let daysAgo = 7;
-	let isEditing = false;
-	let newReviewText = reviewText;
-	let newRating = rating;
+    /**
+	 * @type {string | import("dns").AnyARecord | null}
+	 */
+    let reviewId = null;
     /**
 	 * @type {null}
 	 */
-    let reviewId = null;
+    let businessId = null;
+    let reviewText = '';
+    /**
+	 * @type {null}
+	 */
+    let rating = null;
+    let likes = 0;
+    let daysAgo = 0;
+    let approvalStatus = 'Pending';
 
-	// Function to handle review deletion
-	async function handleDelete() {
-		if (confirm('Are you sure you want to delete this review?')) {
-			const success = await deleteReview(reviewId);
-			if (success) {
-				alert('Review deleted successfully.');
-				// Redirect or update the UI as needed
-			} else {
-				alert('Failed to delete review.');
-			}
-		}
-	}
+    // Function to handle review deletion
+    async function handleDelete() {
+        if (confirm('Are you sure you want to delete this review?')) {
+            const success = await deleteReview(reviewId);
+            if (success) {
+                alert('Review deleted successfully.');
+                goto(`/user/review/${businessId}`);
+            } else {
+                alert('Failed to delete review.');
+            }
+        }
+    }
 
-	// Function to handle review update
-	async function handleUpdate() {
-		const updatedReview = {
-			rating: newRating,
-			feedback: newReviewText
-		};
-		const response = await updateReview(reviewId, updatedReview);
-		if (response) {
-			alert('Review updated successfully.');
-			reviewText = response.feedback;
-			rating = response.rating;
-			isEditing = false;
-		} else {
-			alert('Failed to update review.');
-		}
-	}
+    // Function to handle edit and redirect to edit page with reviewId and businessId in the URL
+    function handleEdit() {
+        goto(`/user/review/${businessId}?reviewId=${reviewId}`);
+    }
 
-	// Toggle edit mode
-	function toggleEdit() {
-		isEditing = !isEditing;
-		newReviewText = reviewText;
-		newRating = rating;
-	}
-	onMount(() => {
+    // Capture the reviewId from the URL and fetch the review data
+    onMount(async () => {
         const params = new URLSearchParams(window.location.search);
-        // @ts-ignore
         reviewId = params.get('reviewId');
-        console.log('Review ID:', reviewId);
-        // Use the reviewId for update or delete operations
+
+        if (reviewId) {
+            // @ts-ignore
+            const reviewData = await getReviewById(reviewId);
+            if (reviewData) {
+                reviewText = reviewData.feedback;
+                rating = reviewData.rating;
+                likes = reviewData.likes_total || 0;
+                businessId = reviewData.business_id;
+
+                // Calculate days ago from created_at
+                const createdAt = new Date(reviewData.created_at);
+                const today = new Date();
+                // @ts-ignore
+                daysAgo = Math.floor((today - createdAt) / (1000 * 60 * 60 * 24));
+
+                // Set approval status
+                approvalStatus = reviewData.approval_status === 'true' ? 'Approved' : 'Pending';
+            }
+        }
     });
 </script>
 
-
-
 <!-- Page Header -->
 <section class="page-header">
-	<img src="/assets/thankyou.png" alt="Review Image" class="header-image" />
-	<h1>Thanks for review!</h1>
+    <img src="/assets/thankyou.png" alt="Review Image" class="header-image" />
+    <h1>Thanks for the review!</h1>
 </section>
 
 <div class="review-card">
-	<header class="header">
-		<p>Your review is pending.</p>
-	</header>
+    <header class="header">
+        <p>Your review is "{approvalStatus}"0.</p>
+    </header>
 
-	<div class="content">
-		<div class="title-row">
-			<p class="title is-4">Bluehost</p>
-			<p class="days-ago">{daysAgo} days ago</p>
-		</div>
+    <div class="content">
+        <div class="title-row">
+            <p class="title is-4">Bluehost</p>
+            <p class="days-ago">{daysAgo} days ago</p>
+        </div>
 
-		{#if isEditing}
-			<div class="edit-section">
-				<input type="number" bind:value={newRating} min="0" max="5" step="0.1" />
-				<textarea bind:value={newReviewText}></textarea>
-				<button on:click={handleUpdate}>Save</button>
-				<button on:click={toggleEdit}>Cancel</button>
-			</div>
-		{:else}
-			<div class="rating-row">
-				<p>{rating}</p>
-				<span class="icon is-small">
-					<i class="fas fa-star"></i>
-				</span>
-			</div>
-			<p>{reviewText}</p>
-			<div class="actions">
-				<span class="icon">
-					<i class="fas fa-heart"></i>
-				</span>
-				<p>{likes}</p>
-				<span class="icon">
-					<i class="fas fa-share-alt"></i>
-				</span>
-			</div>
-		{/if}
-	</div>
+        {#if reviewId && reviewText && rating}
+            <div class="rating-row">
+                <p>{rating}</p>
+                <span class="icon is-small">
+                    <i class="fas fa-star"></i>
+                </span>
+            </div>
+            <p>{reviewText}</p>
+            <div class="actions">
+                <span class="icon">
+                    <i class="fas fa-heart"></i>
+                </span>
+                <p>{likes}</p>
+                <span class="icon">
+                    <i class="fas fa-share-alt"></i>
+                </span>
+            </div>
+        {:else}
+            <p>Loading...</p>
+        {/if}
+    </div>
 
-	<footer class="footer">
-		<div class="footer-item" on:click={toggleEdit}>
-			<span class="icon is-small">
-				<i class="fas fa-edit"></i>
-			</span>
-			Edit
-		</div>
-		<div class="footer-item" on:click={handleDelete}>
-			<span class="icon is-small">
-				<i class="fas fa-trash-alt"></i>
-			</span>
-			Delete
-		</div>
-	</footer>
+    <footer class="footer">
+        <div class="footer-item" on:click={handleEdit}>
+            <span class="icon is-small">
+                <i class="fas fa-edit"></i>
+            </span>
+            Edit
+        </div>
+        <div class="footer-item" on:click={handleDelete}>
+            <span class="icon is-small">
+                <i class="fas fa-trash-alt"></i>
+            </span>
+            Delete
+        </div>
+    </footer>
 </div>
 
-<style>
+  
+  <style>
 	.review-card {
-		width: 100%;
-		max-width: 1026px;
-		/* height: ; */
-		margin-top: 4%;
-		margin-bottom: 4%;
-		justify-self: center;
-		background-color: #ffffff;
-		border-radius: 8px;
+	  width: 100%;
+	  max-width: 1026px;
+	  margin-top: 4%;
+	  margin-bottom: 4%;
+	  justify-self: center;
+	  background-color: #ffffff;
+	  border-radius: 8px;
 	}
-
+  
 	.header {
-		height: 56px;
-		display: flex;
-		align-items: center;
-		background-color: #118bf6;
-		color: white;
-		padding-top: 16px;
-		padding-left: 20px;
-		border-radius: 8px 8px 0 0;
+	  height: 56px;
+	  display: flex;
+	  align-items: center;
+	  background-color: #118bf6;
+	  color: white;
+	  padding-top: 16px;
+	  padding-left: 20px;
+	  border-radius: 8px 8px 0 0;
 	}
-
+  
 	.content {
-		padding: 20px;
-		display: flex;
-		flex-direction: column;
-		color: #1f1f1f;
+	  padding: 20px;
+	  display: flex;
+	  flex-direction: column;
+	  color: #1f1f1f;
 	}
-
+  
 	.title-row {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		text-decoration: underline;
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  text-decoration: underline;
 	}
 	.rating-row {
-		gap: 10px;
-		display: flex; /* Align items in the same row */
+	  gap: 10px;
+	  display: flex;
 	}
 	.rating-row .icon {
-		padding-top: 6px;
-		font-size: 1em; /* Adjust icon size */
+	  padding-top: 6px;
+	  font-size: 1em;
 	}
-	.title-row {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		text-decoration: underline;
-	}
-	.title-row .days-ago {
-		color: #949494; /* Set the color for the 'days ago' text */
-		text-decoration: none !important; /* Ensure no underline is applied */
-	}
-
 	.footer {
-		display: flex;
-		justify-content: start;
-		padding: 10px 20px;
-		gap: 30px;
-		border-top: 1px solid #ddd;
-		background-color: #ffffff;
+	  display: flex;
+	  justify-content: start;
+	  padding: 10px 20px;
+	  gap: 30px;
+	  border-top: 1px solid #ddd;
+	  background-color: #ffffff;
 	}
-
+  
 	.footer-item {
-		display: flex;
-		align-items: center;
-		gap: 5px;
-		cursor: pointer;
-		color: #939393;
+	  display: flex;
+	  align-items: center;
+	  gap: 5px;
+	  cursor: pointer;
+	  color: #939393;
 	}
-
+  
 	.actions {
-		display: flex;
-		gap: 10px;
+	  display: flex;
+	  gap: 10px;
 	}
-
+  
 	.actions .icon {
-		font-size: 1.5rem;
-		color: #118bf6;
-		cursor: pointer;
+	  font-size: 1.5rem;
+	  color: #118bf6;
+	  cursor: pointer;
 	}
-
+  
 	.actions .icon:hover {
-		color: #0a6ebf;
+	  color: #0a6ebf;
 	}
-	.fa-trash-alt,
-	.fa-edit,
-	.fa-share-alt,
-	.fa-heart {
-		color: #939393;
-	}
-</style>
+  </style>
+  

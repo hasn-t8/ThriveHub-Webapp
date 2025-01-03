@@ -1,113 +1,130 @@
 <script>
-// @ts-nocheck
+  // @ts-nocheck
+  
+  import { onMount } from 'svelte';
+  import { createReview, updateReview, getReviewById } from '$lib/stores/reviews';
+  import { page } from '$app/stores';
+  
+  const slug = Number($page.params.slug);
+  
+  /**
+   * @type {number | null}
+   */
+  let rating = null;
+  let textareaValue = '';
+  let reviewId = null;
+  let isEditing = false;
+  
+  const ratingLabels = {
+      1: 'Poor!',
+      2: 'Fair!',
+      3: 'Neutral!',
+      4: 'Good!',
+      5: 'Excellent!'
+  };
+  
+  const businessId = slug;
+  
+  // Function to fetch review data if reviewId exists in the URL
+  onMount(async () => {
+      const params = new URLSearchParams(window.location.search);
+      reviewId = params.get('reviewId'); // Get reviewId from URL
+  
+      if (reviewId) {
+          isEditing = true;
+          try {
+              const reviewData = await getReviewById(reviewId);
+              if (reviewData) {
+                  rating = reviewData.rating / 2;  // Convert back to scale of 5
+                  textareaValue = reviewData.feedback;
+              }
+          } catch (error) {
+              console.error('Error fetching review:', error);
+              alert('Failed to fetch review data.');
+          }
+      }
+  });
+  
+  // Function to handle review submission
+  async function submitReview() {
+    if (!rating || !textareaValue.trim()) {
+        alert('Please provide both a rating and feedback.');
+        return;
+    }
 
-    import { onMount } from 'svelte';
-    import { createReview } from '$lib/stores/reviews';
-    import { page } from '$app/stores';
-
-    const slug = Number($page.params.slug);
-
-    /**
-	 * @type {number | null}
-	 */
-    let rating = null;
-    let textareaValue = '';
-
-    const ratingLabels = {
-        1: 'Poor!',
-        2: 'Fair!',
-        3: 'Neutral!',
-        4: 'Good!',
-        5: 'Excellent!'
+    const reviewData = {
+        businessId,
+        rating: rating * 2, // Convert rating to a scale of 10
+        feedback: textareaValue,
     };
 
-    const businessId = slug;
-
-    async function submitReview() {
-        if (!rating || !textareaValue.trim()) {
-            alert('Please provide both a rating and feedback.');
-            return;
-        }
-
-        const reviewData = {
-            businessId,
-            rating: rating * 2, // Convert the rating to a scale of 10
-            feedback: textareaValue
-        };
-
-        try {
+    try {
+        if (isEditing && reviewId) {
+            // Update existing review
+            const response = await updateReview(reviewId, reviewData);
+            if (response) {
+                alert('Review updated successfully!');
+                // Use the existing reviewId for redirection
+                window.location.href = `/user/review/thankyou?reviewId=${reviewId}`;
+            } else {
+                alert('Failed to update review. Please try again.');
+            }
+        } else {
+            // Create new review
             const response = await createReview(reviewData);
             if (response?.reviewId) {
-                // Save the reviewId locally or as needed
                 alert('Review submitted successfully!');
-                // Redirect to the thank-you page with reviewId as a parameter
+                // Redirect to the thank-you page with reviewId
                 window.location.href = `/user/review/thankyou?reviewId=${response.reviewId}`;
             } else {
                 alert('Failed to save review ID. Please try again.');
             }
-        } catch (error) {
-            console.error('Error submitting review:', error);
-            alert('Failed to submit review. Please try again.');
         }
+    } catch (error) {
+        console.error('Error submitting review:', error);
+        alert('Failed to submit review. Please try again.');
     }
+}
 
-    onMount(() => {
-        // Initialization logic, if any
-    });
-</script>
-
+  
+  </script>
   
   <main class="container">
-    <h1 class="title">How was your experience?</h1>
+      <h1 class="title">{isEditing ? 'Edit your review' : 'How was your experience?'}</h1>
   
-    <div class="subtitle">
-      {rating ? ratingLabels[rating] : 'Please rate your experience'}
-    </div>
-  
-    <div class="rating-container">
-      {#each [1, 2, 3, 4, 5] as num}
-        <label class="rating">
-          <input
-            type="radio"
-            name="rating"
-            value={num}
-            bind:group={rating}
-          />
-          <span class="star {rating >= num ? 'selected' : ''}">&#9733;</span>
-        </label>
-      {/each}
-    </div>
-  
-    <div class="subtitle">Tell us more about your experience</div>
-  
-    <div class="field">
-      <textarea
-        bind:value={textareaValue}
-        class="textarea"
-        placeholder="What aspects of your experience stood out as positive? What is this company excelling at? Be sure to share your thoughts honestly, offering helpful and constructive feedback."
-      ></textarea>
-    </div>
-  
-    <!-- <div class="field">
-      <div class="file has-name">
-        <label class="file-label">
-          <input class="file-input" type="file" accept="image/*" />
-          <span class="file-label-text">
-            <span class="file-icon">
-              <i class="fas fa-paperclip"></i>
-            </span>
-            <span class="file-name">
-              Attach Photo
-            </span>
-          </span>
-        </label>
+      <div class="subtitle">
+        {rating ? ratingLabels[rating] : 'Please rate your experience'}
       </div>
-    </div> -->
   
-    <button class="custom-button" on:click={submitReview} disabled={!rating || !textareaValue.trim()}>
-      Submit your review
-    </button>
+      <div class="rating-container">
+        {#each [1, 2, 3, 4, 5] as num}
+          <label class="rating">
+            <input
+              type="radio"
+              name="rating"
+              value={num}
+              bind:group={rating}
+            />
+            <span class="star {rating >= num ? 'selected' : ''}">&#9733;</span>
+          </label>
+        {/each}
+      </div>
+  
+      <div class="subtitle">Tell us more about your experience</div>
+  
+      <div class="field">
+        <textarea
+          bind:value={textareaValue}
+          class="textarea"
+          placeholder="What aspects of your experience stood out as positive? What is this company excelling at? Be sure to share your thoughts honestly, offering helpful and constructive feedback."
+        ></textarea>
+      </div>
+  
+      <button class="custom-button" on:click={submitReview} disabled={!rating || !textareaValue.trim()}>
+        {isEditing ? 'Save changes' : 'Submit your review'}
+      </button>
   </main>
+  
   
   <style>
     .container {
