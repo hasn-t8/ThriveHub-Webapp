@@ -7,9 +7,9 @@
 </script>
 
 <div class="analytics-header">
-	<div class="header-top">
+	<!-- <div class="header-top">
 		<h1>Hi, Alex</h1>
-	</div>
+	</div> -->
 	<hr class="divider" />
 	<div class="heading">Choose a Plan</div>
 

@@ -10,6 +10,10 @@
 		logout();
 		goto('/');
 	}
+
+	function handleUpgrade() {
+		goto('/admin-area/pricing');
+	}
 </script>
 
 <div class="side-menu" style="min-height:100vh">
@@ -50,7 +54,7 @@
 	<!-- Footer -->
 	<div class="side-menu-footer">
 		<p>Your plan: <strong>Free</strong></p>
-		<button class="upgrade-button">Upgrade now</button>
+		<button class="upgrade-button" onclick={handleUpgrade()}>Upgrade now</button>
 		<div class="logo">
 			<img src="/assets/thrivehub-logo.png" alt="Thrive Hub Logo" />
 		</div>
