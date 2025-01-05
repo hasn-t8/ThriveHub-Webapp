@@ -1,9 +1,46 @@
 <script lang="ts">
-	let isMonthly = true;
+	import { onMount } from 'svelte';
+	import { writable, type Writable } from 'svelte/store';
+	import type { SubscriptionData } from '$lib/types/Subscriptions';
+	import { getMySubscriptions } from '$lib/stores/subscription/subs';
 
+	// States
+	let isMonthly = true; // Tracks whether the selected plan is monthly
+	let mySubs: Writable<SubscriptionData[]> = writable([]); // Store for subscription data
+	let error: string | null = null; // Error state
+	let loading = true; // Loading state
+
+	// Toggle between monthly and yearly plans
 	const togglePlan = (plan: string) => {
 		isMonthly = plan === 'monthly';
 	};
+
+	// Fetch user subscriptions
+	const fetchMySubscriptions = async () => {
+		loading = true; // Set loading to true
+		error = null; // Clear previous errors
+
+		try {
+			const subscriptions = await getMySubscriptions();
+			console.log('Fetched subscriptions:', subscriptions);
+
+			if (Array.isArray(subscriptions)) {
+				mySubs.set(subscriptions); // Update the store with fetched subscriptions
+			} else {
+				error = 'Invalid subscription data.';
+				console.error(error, subscriptions);
+			}
+		} catch (err) {
+			error = 'Error fetching subscriptions.';
+			console.error(error, err);
+		} finally {
+			loading = false; // Set loading to false after fetching
+		}
+	};
+
+	onMount(() => {
+		fetchMySubscriptions(); // Fetch subscriptions on mount
+	});
 </script>
 
 <div class="analytics-header">
@@ -49,7 +86,6 @@
 							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
 							<button class="button active">Your current plan</button>
 							<div class="icons">
-								
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-star"></i></span>
 									<strong>Reviews</strong>
@@ -63,9 +99,7 @@
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-bell"></i></span>
 									<strong>Notifications</strong>
-									<div class="info">
-										Basic notifications
-									</div>
+									<div class="info">Basic notifications</div>
 								</div>
 								<div class="icon-item">
 									<span class="icon"><i class="fa fa-paint-brush"></i></span>
@@ -77,11 +111,11 @@
 					</div>
 				</div>
 				<div class="column is-4">
-				<div class="recommended">
-					<div class="h2">Recommended</div>
+					<div class="recommended">
+						<div class="h2">Recommended</div>
 
-					<!-- Basic Plan -->
-					
+						<!-- Basic Plan -->
+
 						<div class="card">
 							<!-- <div class="recommended-badge">Recommended</div> -->
 							<div class="card-content">
@@ -90,7 +124,6 @@
 								<!-- <div class="description">Let's open up more opportunities for your business</div> -->
 								<button class="button">Get Basic</button>
 								<div class="icons">
-									
 									<div class="icon-item">
 										<span class="icon"><i class="far fa-star"></i></span>
 										<strong>Reviews</strong>
@@ -104,9 +137,7 @@
 									<div class="icon-item">
 										<span class="icon"><i class="far fa-bell"></i></span>
 										<strong>Notifications</strong>
-										<div class="info">
-											Basic notifications.
-										</div>
+										<div class="info">Basic notifications.</div>
 									</div>
 									<div class="icon-item">
 										<span class="icon"><i class="fa fa-paint-brush"></i></span>
@@ -127,7 +158,6 @@
 							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
 							<button class="button">Get Premium</button>
 							<div class="icons">
-								
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-star"></i></span>
 									<strong>Reviews</strong>
@@ -141,9 +171,7 @@
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-bell"></i></span>
 									<strong>Notifications</strong>
-									<div class="info">
-										Priority notifications and alerts.
-									</div>
+									<div class="info">Priority notifications and alerts.</div>
 								</div>
 								<div class="icon-item">
 									<span class="icon"><i class="fa fa-paint-brush"></i></span>
@@ -170,7 +198,6 @@
 							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
 							<button class="button active">Your current plan</button>
 							<div class="icons">
-								
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-star"></i></span>
 									<strong>Reviews</strong>
@@ -184,9 +211,7 @@
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-bell"></i></span>
 									<strong>Notifications</strong>
-									<div class="info">
-										Basic notifications
-									</div>
+									<div class="info">Basic notifications</div>
 								</div>
 								<div class="icon-item">
 									<span class="icon"><i class="fa fa-paint-brush"></i></span>
@@ -198,11 +223,11 @@
 					</div>
 				</div>
 				<div class="column is-4">
-				<div class="recommended">
-					<div class="h2">Recommended</div>
+					<div class="recommended">
+						<div class="h2">Recommended</div>
 
-					<!-- Basic Plan -->
-					
+						<!-- Basic Plan -->
+
 						<div class="card">
 							<!-- <div class="recommended-badge">Recommended</div> -->
 							<div class="card-content">
@@ -211,7 +236,6 @@
 								<!-- <div class="description">Let's open up more opportunities for your business</div> -->
 								<button class="button">Get Basic</button>
 								<div class="icons">
-									
 									<div class="icon-item">
 										<span class="icon"><i class="far fa-star"></i></span>
 										<strong>Reviews</strong>
@@ -225,9 +249,7 @@
 									<div class="icon-item">
 										<span class="icon"><i class="far fa-bell"></i></span>
 										<strong>Notifications</strong>
-										<div class="info">
-											Basic notifications.
-										</div>
+										<div class="info">Basic notifications.</div>
 									</div>
 									<div class="icon-item">
 										<span class="icon"><i class="fa fa-paint-brush"></i></span>
@@ -248,7 +270,6 @@
 							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
 							<button class="button">Get Premium</button>
 							<div class="icons">
-								
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-star"></i></span>
 									<strong>Reviews</strong>
@@ -262,9 +283,7 @@
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-bell"></i></span>
 									<strong>Notifications</strong>
-									<div class="info">
-										Priority notifications and alerts.
-									</div>
+									<div class="info">Priority notifications and alerts.</div>
 								</div>
 								<div class="icon-item">
 									<span class="icon"><i class="fa fa-paint-brush"></i></span>
@@ -281,7 +300,6 @@
 </div>
 
 <style>
-	
 	.analytics-header {
 		padding: 20px;
 		/* background-color: #f4faff; */
@@ -310,7 +328,7 @@
 		font-weight: 700;
 		text-align: center;
 		margin-bottom: 15px;
-		color: #000
+		color: #000;
 	}
 
 	.toggle-wrapper {
@@ -344,7 +362,7 @@
 		transition:
 			background-color 0.3s ease,
 			color 0.3s ease;
-		border-radius: 25px; 
+		border-radius: 25px;
 		padding: 0; /* Removes padding for exact centering */
 	}
 
@@ -387,7 +405,7 @@
 	.info {
 		padding-left: 30px;
 		padding-bottom: -3px;
-		color: #4D4D4D;
+		color: #4d4d4d;
 		/* letter-spacing: 0px; */
 		/* text-align: justify; */
 		/* padding: 14px; */
@@ -396,7 +414,7 @@
 		padding: 10px;
 	}
 	button.button.active {
-		background-color: #B7B7B7;
+		background-color: #b7b7b7;
 	}
 
 	.recommended {
