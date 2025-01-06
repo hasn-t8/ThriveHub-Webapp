@@ -12,55 +12,52 @@
 	let totalResults = 0;
 
 	let categories = [
-		{ text: "Technology", value: "tech" },
-		{ text: "E-Commerce", value: "e-commerce" },
-		{ text: "Wellness", value: "wellness" },
-		{ text: "Education", value: "education" },
-		{ text: "Finance", value: "finance" },
-		{ text: "Home Electronics", value: "home-electronics" }
+		{ text: 'Technology', value: 'tech' },
+		{ text: 'E-Commerce', value: 'e-commerce' },
+		{ text: 'Wellness', value: 'wellness' },
+		{ text: 'Education', value: 'education' },
+		{ text: 'Finance', value: 'finance' },
+		{ text: 'Home Electronics', value: 'home-electronics' }
 	];
 
-    // Store to keep track of selected categories
+	// Store to keep track of selected categories
 	const selectedFilters: Writable<string[]> = writable([]);
 
 	// Store for selected ratings
-	const selectedRatings: Writable<string[]> = writable([]); 
+	const selectedRatings: Writable<string[]> = writable([]);
 
-    // Function to toggle a category
+	// Function to toggle a category
 	function toggleFilter(category: string) {
 		selectedFilters.update((filters) => {
 			let updatedFilters;
 
-            if (filters.includes(category)) {
+			if (filters.includes(category)) {
 				updatedFilters = filters.filter((filter) => filter !== category); // Remove if already selected
-            } else {
+			} else {
 				updatedFilters = [...filters, category]; // Add if not selected
-            }
+			}
 			return updatedFilters;
 		});
-    }
+	}
 
 	// Function to toggle a rating
 	function toggleRating(rating: string) {
 		selectedRatings.update((ratings) => {
 			let updatedRatings;
-			if (rating === "all") {
+			if (rating === 'all') {
 				// If "All" is selected, clear all other ratings
-				updatedRatings = ["all"];
+				updatedRatings = ['all'];
 			} else {
 				if (ratings.includes(rating)) {
 					updatedRatings = ratings.filter((r) => r !== rating);
 				} else {
 					// If "All" was previously selected, remove it
-					updatedRatings = ratings.includes("all")
-						? [rating]
-						: [...ratings, rating];
+					updatedRatings = ratings.includes('all') ? [rating] : [...ratings, rating];
 				}
 			}
 			return updatedRatings;
 		});
 	}
-
 
 	// Utility function to scroll to top
 	function scrollToTop() {
@@ -79,21 +76,20 @@
 			const filters = get(selectedFilters);
 			const filteredByCategory =
 				filters.length > 0
-					? profiles.filter((profile) =>
-							filters.includes((profile.category ?? "").toLowerCase())
-					  )
+					? profiles.filter((profile) => filters.includes((profile.category ?? '').toLowerCase()))
 					: profiles;
 
 			// Apply rating filter
 			const ratings = get(selectedRatings);
 			const filteredByRating =
-				ratings.includes("all") || ratings.length === 0
+				ratings.includes('all') || ratings.length === 0
 					? filteredByCategory // Show all if "All" is selected or no ratings are selected
-					: filteredByCategory.filter((profile) =>
-							profile.avg_rating && ratings.includes(String(profile.avg_rating).charAt(0))
-					  );
+					: filteredByCategory.filter(
+							(profile) =>
+								profile.avg_rating && ratings.includes(String(profile.avg_rating).charAt(0))
+						);
 
-			console.log("Filtered Profiles:", filteredByRating);
+			console.log('Filtered Profiles:', filteredByRating);
 			businessProfile.set(filteredByRating);
 			console.log(filteredByRating);
 			totalResults = filteredByRating.length;
@@ -205,9 +201,7 @@
 	}
 
 	onMount(() => {
-		const horizontalContainers = document.querySelectorAll(
-			'.horizontal-scroll-container'
-		);
+		const horizontalContainers = document.querySelectorAll('.horizontal-scroll-container');
 		const verticalContainers = document.querySelectorAll('.scroll-container');
 
 		makeHorizontalDraggable(horizontalContainers);
@@ -253,9 +247,7 @@
 			<ul>
 				<li><a href="/" class="has-text-white">Home</a></li>
 				<li class="is-active has-text-white">
-					<a href="#" aria-current="page" class="has-text-white"
-						>All Categories</a
-					>
+					<a href="#" aria-current="page" class="has-text-white">All Categories</a>
 				</li>
 			</ul>
 		</nav>
@@ -270,14 +262,17 @@
 			<div class="column">
 				<div class="box">
 					<aside class="menu">
-
 						<!-- Rating Filter -->
 						<p class="menu-label">Rating</p>
 						<div class="buttons">
-							{#each ["all", 5, 4, 3, 2] as rating}
+							{#each ['all', 5, 4, 3, 2] as rating}
 								<!-- Use `$selectedRatings` to ensure reactivity -->
 								<button
-									class="button filter-button is-light clear-btn { $selectedRatings.includes(String(rating)) ? 'selected' : '' }"
+									class="button filter-button is-light clear-btn {$selectedRatings.includes(
+										String(rating)
+									)
+										? 'selected'
+										: ''}"
 									on:click={() => toggleRating(String(rating))}
 								>
 									{String(rating).charAt(0).toUpperCase() + String(rating).slice(1)}
@@ -289,12 +284,14 @@
 						<p class="menu-label mb-0">Category</p>
 						<div class="menu-list is-flex is-flex-wrap-wrap">
 							{#each categories as { text, value }}
-							<button
-								class="filter-button {$selectedFilters.includes(value) ? 'selected' : ''} is-inline-block mx-1 my-1"
-								on:click={() => toggleFilter(value)}
-							>
-								{text}
-							</button>
+								<button
+									class="filter-button {$selectedFilters.includes(value)
+										? 'selected'
+										: ''} is-inline-block mx-1 my-1"
+									on:click={() => toggleFilter(value)}
+								>
+									{text}
+								</button>
 							{/each}
 						</div>
 
@@ -342,10 +339,7 @@
 				<!-- Pagination -->
 				<div class="pagination-container has-text-weight-bold">
 					<!-- "Go to First" Button -->
-					<button
-						class="pagination-arrow double-arrow mr-5"
-						on:click={() => handlePageClick(1)}
-					>
+					<button class="pagination-arrow double-arrow mr-5" on:click={() => handlePageClick(1)}>
 						&lt;&lt;
 					</button>
 					<!-- Previous Button -->
@@ -402,9 +396,7 @@
 	<div class="container">
 		<div class="columns is-gapless horizontal-reviews">
 			<div class="column pt-6" style="width: 100%;">
-				<h3 class="title is-3 has-text-left pt-6">
-					Most popular reviews about all categories
-				</h3>
+				<h3 class="title is-3 has-text-left pt-6">Most popular reviews about all categories</h3>
 				<div class="horizontal-scroll-container">
 					<!-- Add your horizontal review cards here -->
 					<!-- Card 1 -->
@@ -413,11 +405,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -439,9 +427,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -460,11 +447,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -486,9 +469,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -507,11 +489,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -533,9 +511,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -554,11 +531,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -580,9 +553,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -601,11 +573,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -627,9 +595,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -648,11 +615,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -674,9 +637,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -700,9 +662,7 @@
 			<div class="column">
 				<div class="columns">
 					<div class="column pt-6">
-						<h3 class="title is-3 has-text-left pt-6">
-							Most popular reviews about all categories
-						</h3>
+						<h3 class="title is-3 has-text-left pt-6">Most popular reviews about all categories</h3>
 					</div>
 				</div>
 			</div>
@@ -715,11 +675,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -741,9 +697,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -763,11 +718,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -789,9 +740,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -810,11 +760,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -836,9 +782,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -857,11 +802,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -883,9 +824,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -910,11 +850,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -936,9 +872,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -958,11 +893,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -984,9 +915,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -1004,11 +934,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -1030,9 +956,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -1051,11 +976,7 @@
 							<div class="review-header">
 								<div class="review-user">
 									<!-- User Avatar -->
-									<img
-										class="avatar"
-										src="/assets/avatar.png"
-										alt="User Avatar"
-									/>
+									<img class="avatar" src="/assets/avatar.png" alt="User Avatar" />
 									<div class="user-info">
 										<!-- User Name and Rating -->
 										<h5 class="name">Alice Palmer</h5>
@@ -1077,9 +998,8 @@
 							<h4 class="review-title">GoDaddy</h4>
 							<!-- Review Text -->
 							<p class="review-text">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<p class="likes">
@@ -1104,9 +1024,7 @@
 		<!-- Header Text -->
 		<div class="columns is-gapless">
 			<div class="column pt-6" style="width: 100%;">
-				<h3 class="title is-3 has-text-left pt-6">
-					Top companies in all categories
-				</h3>
+				<h3 class="title is-3 has-text-left pt-6">Top companies in all categories</h3>
 				<div class="horizontal-scroll-container">
 					<!-- Add your horizontal review cards here -->
 					<!-- Card 1 -->
@@ -1115,11 +1033,7 @@
 							<div class="review-header">
 								<div class="review-company">
 									<!-- User Avatar -->
-									<img
-										class="company-avatar"
-										src="/assets/image (1).png"
-										alt="Company Avatar"
-									/>
+									<img class="company-avatar" src="/assets/image (1).png" alt="Company Avatar" />
 									<div class="company-info">
 										<!-- User Name and Rating -->
 										<h5 class="company-name mb-2">HostGator</h5>
@@ -1132,9 +1046,8 @@
 							<div class="is-divider"></div>
 							<!-- Review Text -->
 							<p class="company-review">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<a href="/write-review" class="review-link">Learn More</a>
@@ -1147,11 +1060,7 @@
 							<div class="review-header">
 								<div class="review-company">
 									<!-- User Avatar -->
-									<img
-										class="company-avatar"
-										src="/assets/image (1).png"
-										alt="Company Avatar"
-									/>
+									<img class="company-avatar" src="/assets/image (1).png" alt="Company Avatar" />
 									<div class="company-info">
 										<!-- User Name and Rating -->
 										<h5 class="company-name mb-2">HostGator</h5>
@@ -1164,9 +1073,8 @@
 							<div class="is-divider"></div>
 							<!-- Review Text -->
 							<p class="company-review">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<a href="/write-review" class="review-link">Learn More</a>
@@ -1179,11 +1087,7 @@
 							<div class="review-header">
 								<div class="review-company">
 									<!-- User Avatar -->
-									<img
-										class="company-avatar"
-										src="/assets/image (1).png"
-										alt="Company Avatar"
-									/>
+									<img class="company-avatar" src="/assets/image (1).png" alt="Company Avatar" />
 									<div class="company-info">
 										<!-- User Name and Rating -->
 										<h5 class="company-name mb-2">HostGator</h5>
@@ -1196,9 +1100,8 @@
 							<div class="is-divider"></div>
 							<!-- Review Text -->
 							<p class="company-review">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<a href="/write-review" class="review-link">Learn More</a>
@@ -1211,11 +1114,7 @@
 							<div class="review-header">
 								<div class="review-company">
 									<!-- User Avatar -->
-									<img
-										class="company-avatar"
-										src="/assets/image (1).png"
-										alt="Company Avatar"
-									/>
+									<img class="company-avatar" src="/assets/image (1).png" alt="Company Avatar" />
 									<div class="company-info">
 										<!-- User Name and Rating -->
 										<h5 class="company-name mb-2">HostGator</h5>
@@ -1228,9 +1127,8 @@
 							<div class="is-divider"></div>
 							<!-- Review Text -->
 							<p class="company-review">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<a href="/write-review" class="review-link">Learn More</a>
@@ -1243,11 +1141,7 @@
 							<div class="review-header">
 								<div class="review-company">
 									<!-- User Avatar -->
-									<img
-										class="company-avatar"
-										src="/assets/image (1).png"
-										alt="Company Avatar"
-									/>
+									<img class="company-avatar" src="/assets/image (1).png" alt="Company Avatar" />
 									<div class="company-info">
 										<!-- User Name and Rating -->
 										<h5 class="company-name mb-2">HostGator</h5>
@@ -1260,9 +1154,8 @@
 							<div class="is-divider"></div>
 							<!-- Review Text -->
 							<p class="company-review">
-								Good service. Been looking for a similar one for a long time.
-								Good service. Been looking for a similar one for a long time.
-								Good service.
+								Good service. Been looking for a similar one for a long time. Good service. Been
+								looking for a similar one for a long time. Good service.
 							</p>
 							<div class="review-footer">
 								<a href="/write-review" class="review-link">Learn More</a>
@@ -1281,19 +1174,15 @@
 		<article class="media">
 			<div
 				class="media-left media-left-link"
-				on:click={() =>
-					item.id && redirectToBusinessProfile(item.id.toString())}
+				on:click={() => item.id && redirectToBusinessProfile(item.id.toString())}
 				on:keydown={(e) =>
-					e.key === 'Enter' &&
-					item.id &&
-					redirectToBusinessProfile(item.id.toString())}
+					e.key === 'Enter' && item.id && redirectToBusinessProfile(item.id.toString())}
 			>
 				<figure class="media-left">
 					<p class="image" style="width: 100%; height: auto; padding:0;">
 						<img
 							style="width: 4rem;"
-							src="{item.logo_url ??
-								'/assets/no_image.jpg'}?cacheBust=${Date.now()}"
+							src="{item.logo_url ?? '/assets/no_image.jpg'}?cacheBust=${Date.now()}"
 							alt="Company logo"
 						/>
 					</p>
@@ -1304,12 +1193,9 @@
 					class="content content-link"
 					role="button"
 					tabindex="0"
-					on:click={() =>
-						item.id && redirectToBusinessProfile(item.id.toString())}
+					on:click={() => item.id && redirectToBusinessProfile(item.id.toString())}
 					on:keydown={(e) =>
-						e.key === 'Enter' &&
-						item.id &&
-						redirectToBusinessProfile(item.id.toString())}
+						e.key === 'Enter' && item.id && redirectToBusinessProfile(item.id.toString())}
 				>
 					<strong style="font-size: 24px;">{item.org_name}</strong>
 					<p style="color: #949494; font-size:1rem;">
@@ -1320,14 +1206,12 @@
 					</p>
 					<div>
 						<p class="category-tag">{item.category ?? 'No Category'}</p>
-						<button class="button is-light clear-btn is-hidden review-btn"
-							>Write Review</button
-						>
+						<button class="button is-light clear-btn is-hidden review-btn">Write Review</button>
 					</div>
 				</div>
 			</div>
 			<div class="media-right">
-				<a href="/user/review" class="review-text-btn">
+				<a href="/user/review/{item.id}" class="review-text-btn">
 					Write Review
 					<img
 						src="/assets/edit.png"
@@ -1782,12 +1666,11 @@
 		cursor: pointer;
 	}
 
-    .filter-button.selected {
-        background-color: #118cf6!important;
-        color: #fff!important;
-        border-color: #118cf6!important;
-    }
-
+	.filter-button.selected {
+		background-color: #118cf6 !important;
+		color: #fff !important;
+		border-color: #118cf6 !important;
+	}
 
 	.category-tag {
 		width: auto;
