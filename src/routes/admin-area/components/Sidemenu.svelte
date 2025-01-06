@@ -37,7 +37,7 @@
 		</a>
 		<hr /> -->
 		<a href="/admin-area/business-list" class="menu-item">
-			<i class="icon fas fa-briefcase"></i> Business List
+			<i class="icon fas fa-list"></i> Business List
 		</a>
 		<a href="/admin-area/add-company" class="menu-item"
 			><i class="icon fas fa-briefcase"></i>Add business</a
@@ -46,6 +46,11 @@
 		<!-- <a href="/business/business-setting/setting" class="menu-item">
 			<i class="icon fas fa-cog"></i> Settings
 		</a> -->
+		
+		<a href="/admin-area/reviews-list" class="menu-item">
+			<i class="icon fa fa-list"></i> Reviews List
+		</a>
+		<hr />
 		<a href="#" class="menu-item" onclick={logoutHandler}>
 			<i class="icon fa fa-door-open"></i> Logout
 		</a>
