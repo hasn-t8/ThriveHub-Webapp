@@ -6,7 +6,7 @@ import type { ErrData } from '$lib/types/Error';
 
 export async function getMySubscriptions(): Promise<SubscriptionData[] | ErrData> {
 	try {
-		const response = await fetch(`${API_BASE_URL}/subscriptions`, {
+		const response = await fetch(`${API_BASE_URL}/subscriptions-active`, {
 			method: 'GET',
 			headers: { Authorization: `Bearer ${getJWT()}` }
 		});

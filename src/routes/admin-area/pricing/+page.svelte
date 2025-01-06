@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
+	import { writable, derived, type Writable } from 'svelte/store';
 	import type { SubscriptionData } from '$lib/types/Subscriptions';
 	import { getMySubscriptions } from '$lib/stores/subscription/subs';
 
@@ -10,9 +10,38 @@
 	let error: string | null = null; // Error state
 	let loading = true; // Loading state
 
+	// Derived store for filtered subscriptions
+	const filteredSubs = derived(mySubs, ($mySubs) => {
+		return $mySubs.filter((sub) => {
+			if (!sub.plan) {
+				return false; // Skip subscriptions without a plan
+			}
+			// console.log('-----Filtering subscription:', sub.plan.startsWith('YEARLY'));
+			if(sub.plan.startsWith('YEARLY')) {
+				console.log('-----Filtering subscription:', sub.plan.startsWith('YEARLY'), sub.id, ' ', sub.plan.endsWith('Premium'));	
+				isMonthly = false;
+			}
+			
+			// Check if the plan starts with the appropriate prefix based on toggle state
+			return isMonthly ? sub.plan.startsWith('MONTHLY') : sub.plan.startsWith('YEARLY');
+		});
+	});
+
 	// Toggle between monthly and yearly plans
 	const togglePlan = (plan: string) => {
 		isMonthly = plan === 'monthly';
+	};
+
+	const isActive = (type: string) => {
+
+		console.log('&&***isMonthly:', isMonthly, 'type:', type);
+		if (type === 'free') {
+			return true;
+		} else {
+			return true;
+		}
+		return true;
+		// return (isMonthly && type === 'monthly') || (!isMonthly && type === 'free');
 	};
 
 	// Fetch user subscriptions
@@ -40,6 +69,8 @@
 
 	onMount(() => {
 		fetchMySubscriptions(); // Fetch subscriptions on mount
+		console.log('filtereSubs:', $filteredSubs);
+		
 	});
 </script>
 
@@ -70,6 +101,10 @@
 		</div>
 		<div class="muted-text">Save 55%</div>
 	</div>
+
+	<!-- {#each $filteredSubs as sub}
+		{sub.plan}
+	{/each} -->
 
 	{#if isMonthly}
 		<div id="monthly-plans" class="flex">
@@ -196,7 +231,7 @@
 							<div class="package-name">Free</div>
 							<div class="price">$0<span>/m</span></div>
 							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-							<button class="button active">Your current plan</button>
+							<button class="button ${isActive('free') ? 'active' : 'active'}">Your current plan</button>
 							<div class="icons">
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-star"></i></span>
