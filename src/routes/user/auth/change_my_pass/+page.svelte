@@ -73,7 +73,7 @@
 				/>
 			</div>
 			<div class="field">
-				<label class="label">Password</label>
+				<label class="label">New Password</label>
 				<div class="control has-icons-right">
 					<input
 						bind:value={newPassword}
