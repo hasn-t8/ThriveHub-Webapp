@@ -9,23 +9,23 @@
 	let mySubs: Writable<SubscriptionData[]> = writable([]); // Store for subscription data
 	let error: string | null = null; // Error state
 	let loading = true; // Loading state
+	let activeSub = 'free';
 
 	// Derived store for filtered subscriptions
-	const filteredSubs = derived(mySubs, ($mySubs) => {
+	const filteredSubs = () => {
 		return $mySubs.filter((sub) => {
 			if (!sub.plan) {
-				return false; // Skip subscriptions without a plan
+				return;
 			}
-			// console.log('-----Filtering subscription:', sub.plan.startsWith('YEARLY'));
-			if(sub.plan.startsWith('YEARLY')) {
-				console.log('-----Filtering subscription:', sub.plan.startsWith('YEARLY'), sub.id, ' ', sub.plan.endsWith('Premium'));	
-				isMonthly = false;
+			isMonthly = sub.plan.startsWith('YEARLY') ? false : true;
+
+			if (sub.plan.endsWith('BASIC')) {
+				activeSub = isMonthly ? 'monthly-basic' : 'yearly-basic';
+			} else if (sub.plan.endsWith('Premium')) {
+				activeSub = isMonthly ? 'monthly-premium' : 'yearly-premium';
 			}
-			
-			// Check if the plan starts with the appropriate prefix based on toggle state
-			return isMonthly ? sub.plan.startsWith('MONTHLY') : sub.plan.startsWith('YEARLY');
 		});
-	});
+	};
 
 	// Toggle between monthly and yearly plans
 	const togglePlan = (plan: string) => {
@@ -33,15 +33,7 @@
 	};
 
 	const isActive = (type: string) => {
-
-		console.log('&&***isMonthly:', isMonthly, 'type:', type);
-		if (type === 'free') {
-			return true;
-		} else {
-			return true;
-		}
-		return true;
-		// return (isMonthly && type === 'monthly') || (!isMonthly && type === 'free');
+		return type === activeSub ? 'active' : '';
 	};
 
 	// Fetch user subscriptions
@@ -51,10 +43,10 @@
 
 		try {
 			const subscriptions = await getMySubscriptions();
-			console.log('Fetched subscriptions:', subscriptions);
+			// console.log('Fetched subscriptions:', subscriptions);
 
 			if (Array.isArray(subscriptions)) {
-				mySubs.set(subscriptions); // Update the store with fetched subscriptions
+				mySubs.set(subscriptions);
 			} else {
 				error = 'Invalid subscription data.';
 				console.error(error, subscriptions);
@@ -63,14 +55,13 @@
 			error = 'Error fetching subscriptions.';
 			console.error(error, err);
 		} finally {
-			loading = false; // Set loading to false after fetching
+			loading = false;
 		}
 	};
 
-	onMount(() => {
-		fetchMySubscriptions(); // Fetch subscriptions on mount
-		console.log('filtereSubs:', $filteredSubs);
-		
+	onMount(async () => {
+		await fetchMySubscriptions();
+		await filteredSubs();
 	});
 </script>
 
@@ -119,7 +110,7 @@
 							<div class="package-name">Free</div>
 							<div class="price">$0<span>/m</span></div>
 							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-							<button class="button active">Your current plan</button>
+							<button class="button {isActive('free')}">Your current plan</button>
 							<div class="icons">
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-star"></i></span>
@@ -157,7 +148,8 @@
 								<div class="package-name">Basic</div>
 								<div class="price">$15<span>/m</span></div>
 								<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-								<button class="button">Get Basic</button>
+								<!-- <button class="button">Get Basic</button> -->
+								<button class="button {isActive('monthly-basic')}">Get Basic</button>
 								<div class="icons">
 									<div class="icon-item">
 										<span class="icon"><i class="far fa-star"></i></span>
@@ -191,7 +183,8 @@
 							<div class="package-name">Premium</div>
 							<div class="price">$40<span>/m</span></div>
 							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-							<button class="button">Get Premium</button>
+							<!-- <button class="button">Get Premium</button> -->
+							<button class="button {isActive('monthly-premium')}">Get Premium</button>
 							<div class="icons">
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-star"></i></span>
@@ -231,7 +224,7 @@
 							<div class="package-name">Free</div>
 							<div class="price">$0<span>/m</span></div>
 							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-							<button class="button ${isActive('free') ? 'active' : 'active'}">Your current plan</button>
+							<button class="button {isActive('free')}">Your current plan</button>
 							<div class="icons">
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-star"></i></span>
@@ -269,7 +262,7 @@
 								<div class="package-name">Basic</div>
 								<div class="price">$149<span>/m</span></div>
 								<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-								<button class="button">Get Basic</button>
+								<button class="button {isActive('yearly-basic')}">Get Basic</button>
 								<div class="icons">
 									<div class="icon-item">
 										<span class="icon"><i class="far fa-star"></i></span>
@@ -303,7 +296,8 @@
 							<div class="package-name">Premium</div>
 							<div class="price">$160<span>/m</span></div>
 							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-							<button class="button">Get Premium</button>
+							<!-- <button class="button">Get Premium</button> -->
+							<button class="button {isActive('yearly-premium')}">Get Premium</button>
 							<div class="icons">
 								<div class="icon-item">
 									<span class="icon"><i class="far fa-star"></i></span>
@@ -449,7 +443,8 @@
 		padding: 10px;
 	}
 	button.button.active {
-		background-color: #b7b7b7;
+		/* background-color: #b7b7b7; */
+		background-color: black;
 	}
 
 	.recommended {
