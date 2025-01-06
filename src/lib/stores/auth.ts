@@ -226,6 +226,45 @@ export async function changePassword(email: string, token: string, newPassword: 
     }
 }
 
+export async function changeMyPassword(currentPassword: string, newPassword: string): Promise<string | void> {
+    const JWT = getJWT();
+
+	if (!JWT) {
+		goto('/user/auth/sign-in');
+		return;
+	}
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/change-password`, {
+            method: 'POST',
+            headers: {
+                accept: 'application/json',
+                Authorization: `Bearer ${JWT}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ currentPassword, newPassword })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.log('errorData:', errorData.error);
+            throw new Error(errorData.error || 'An unexpected error occurred.');
+        }
+
+        const data = await response.json();
+        console.log('Password changed successfully:', data);
+        return data.message || 'Password changed successfully.';
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error in changePassword:', error.message);
+            throw error;
+        } else {
+            console.error('Unexpected error:', error);
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
 
 /********************Account verification********************/
 

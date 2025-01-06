@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { changePassword } from '$lib/stores/auth';
+	import { changeMyPassword } from '$lib/stores/auth';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
@@ -8,6 +8,7 @@
 	let code = ''; // Code entered by the user
 	let newPassword = '';
 	let confirmPassword = '';
+	let currentPassword = '';
 	let showNewPassword = false;
 	let showConfirmPassword = false;
 	let passwordError = false;
@@ -43,7 +44,7 @@
 		passwordError = false;
 
 		try {
-			message = await changePassword(email, code, newPassword );
+			message = await changeMyPassword(currentPassword, newPassword);
 			isError = false;
 			alert('Password reset sucessfully');
 
@@ -58,23 +59,18 @@
 
 <div class="section is-flex is-justify-content-center is-align-items-center">
 	<div class="forget-container">
-		<h1 class="title is-4 has-text-centered custom-heading">Create New Password</h1>
-		<p class="custom-description has-text-centered mb-5">
-			Please enter and confirm your new password. After the reset is complete, you will need to log
-			in.
-		</p>
+		<h1 class="title is-4 has-text-centered custom-heading">Change My Password</h1>
+		<p class="custom-description has-text-centered mb-5">Please change your password here.</p>
 		<form on:submit={handleSubmit}>
 			<div class="field">
-				<label class="label">Code</label>
-				<div class="control">
-					<input
-						bind:value={code}
-						class="input rounded"
-						type="text"
-						placeholder="Enter the code sent to your email"
-						required
-					/>
-				</div>
+				<label class="label">Current Password</label>
+				<input
+					bind:value={currentPassword}
+					class="input rounded"
+					type="password"
+					placeholder="Enter your new password"
+					required
+				/>
 			</div>
 			<div class="field">
 				<label class="label">Password</label>
@@ -124,9 +120,6 @@
 		</form>
 	</div>
 </div>
-
-
-
 
 <style>
 	.forget-container {
