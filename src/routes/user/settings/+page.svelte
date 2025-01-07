@@ -259,7 +259,7 @@
 	<div class="container">
 		<h1 class="title">Security</h1>
 		<div class="field">
-			<span class="label">Password: <a href="/user/auth/change_password">Change Password</a></span>
+			<span class="label">Password: <a href="/user/auth/change_my_pass">Change Password</a></span>
 			<!-- <label class="label" for="password">Password</label>
 			<div class="control">
 				<input class="input" type="password" id="password" placeholder="Enter your password" />

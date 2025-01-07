@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
 	import { goto } from "$app/navigation";
 
 	// import { goto } from "$app/navigation";
@@ -9,6 +11,10 @@
 	function logoutHandler() {
 		logout();
 		goto('/');
+	}
+
+	function handleUpgrade() {
+		goto('/admin-area/pricing');
 	}
 </script>
 
@@ -33,10 +39,10 @@
 		</a>
 		<hr /> -->
 		<a href="/admin-area/business-list" class="menu-item">
-			<i class="icon fas fa-briefcase"></i> Business List
+			<i class="icon fas fa-list"></i> Business List
 		</a>	
 		<a href="/admin-area/reviews-list" class="menu-item">
-			<i class="icon fas fa-briefcase"></i> Reviews List
+			<i class="icon fas fa-list"></i> Reviews List
 		</a>
 		<a href="/admin-area/add-company" class="menu-item"
 			><i class="icon fas fa-briefcase"></i>Add business</a
@@ -45,6 +51,11 @@
 		<!-- <a href="/business/business-setting/setting" class="menu-item">
 			<i class="icon fas fa-cog"></i> Settings
 		</a> -->
+		
+		<a href="/admin-area/reviews-list" class="menu-item">
+			<i class="icon fa fa-list"></i> Reviews List
+		</a>
+		<hr />
 		<a href="#" class="menu-item" onclick={logoutHandler}>
 			<i class="icon fa fa-door-open"></i> Logout
 		</a>
@@ -53,7 +64,7 @@
 	<!-- Footer -->
 	<div class="side-menu-footer">
 		<p>Your plan: <strong>Free</strong></p>
-		<button class="upgrade-button">Upgrade now</button>
+		<button class="upgrade-button" onclick={handleUpgrade()}>Upgrade now</button>
 		<div class="logo">
 			<img src="/assets/thrivehub-logo.png" alt="Thrive Hub Logo" />
 		</div>

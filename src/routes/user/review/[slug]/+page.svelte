@@ -1,62 +1,65 @@
 <script>
-  // @ts-nocheck
-  
-  import { onMount } from 'svelte';
-  import { createReview, updateReview, getReviewById } from '$lib/stores/reviews';
-  import { page } from '$app/stores';
-  
-  const slug = Number($page.params.slug);
-  
-  /**
-   * @type {number | null}
-   */
-  let rating = null;
-  let textareaValue = '';
-  let reviewId = null;
-  let isEditing = false;
-  
-  const ratingLabels = {
-      1: 'Poor!',
-      2: 'Fair!',
-      3: 'Neutral!',
-      4: 'Good!',
-      5: 'Excellent!'
-  };
-  
-  const businessId = slug;
-  
-  // Function to fetch review data if reviewId exists in the URL
-  onMount(async () => {
-      const params = new URLSearchParams(window.location.search);
-      reviewId = params.get('reviewId'); // Get reviewId from URL
-  
-      if (reviewId) {
-          isEditing = true;
-          try {
-              const reviewData = await getReviewById(reviewId);
-              if (reviewData) {
-                  rating = reviewData.rating / 2;  // Convert back to scale of 5
-                  textareaValue = reviewData.feedback;
-              }
-          } catch (error) {
-              console.error('Error fetching review:', error);
-              alert('Failed to fetch review data.');
-          }
-      }
-  });
-  
-  // Function to handle review submission
-  async function submitReview() {
-    if (!rating || !textareaValue.trim()) {
-        alert('Please provide both a rating and feedback.');
-        return;
-    }
+	// @ts-nocheck
 
-    const reviewData = {
-        businessId,
-        rating: rating * 2, // Convert rating to a scale of 10
-        feedback: textareaValue,
-    };
+	import { onMount } from 'svelte';
+	import { createReview, updateReview, getReviewById } from '$lib/stores/reviews';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
+
+	const slug = Number($page.params.slug);
+
+	/**
+	 * @type {number | null}
+	 */
+	let rating = null;
+	let textareaValue = '';
+	let reviewId = null;
+	let isEditing = false;
+	let business_name = '';
+
+	const ratingLabels = {
+		1: 'Poor!',
+		2: 'Fair!',
+		3: 'Neutral!',
+		4: 'Good!',
+		5: 'Excellent!'
+	};
+
+	const businessId = slug;
+
+	// Function to fetch review data if reviewId exists in the URL
+	onMount(async () => {
+		const params = new URLSearchParams(window.location.search);
+		reviewId = params.get('reviewId');
+		business_name = params.get('business_name');
+
+		if (reviewId) {
+			isEditing = true;
+			try {
+				const reviewData = await getReviewById(reviewId);
+				if (reviewData) {
+					rating = reviewData.rating / 2; // Convert back to scale of 5
+					textareaValue = reviewData.feedback;
+				}
+			} catch (error) {
+				console.error('Error fetching review:', error);
+				alert('Failed to fetch review data.');
+			}
+		}
+	});
+
+	// Function to handle review submission
+	async function submitReview() {
+		if (!rating || !textareaValue.trim()) {
+			alert('Please provide both a rating and feedback.');
+			return;
+		}
+
+		const reviewData = {
+			businessId,
+			rating: rating * 2, // Convert rating to a scale of 10
+			feedback: textareaValue
+		};
 
     try {
       if (isEditing && reviewId) {
