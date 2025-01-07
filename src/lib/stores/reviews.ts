@@ -201,6 +201,43 @@ export async function getReviewsByApprovalStatus(approvalStatus: boolean) {
     return await response.json();
 }
 
+
+/**
+ * Fetch all reviews by the authenticated user.
+ * @returns {Promise<any>} The reviews data or false if unauthorized.
+ */
+export async function getUserReviews(): Promise<any> {
+    const JWT = getJWT();
+    console.log('getJWT:', JWT);
+
+    if (!JWT) {
+        goto('/user/auth/sign-in');
+        return false;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/reviews`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${JWT}`,
+            },
+        });
+
+        if (!response.ok) {
+            if (response.status === 401) {
+                logout();
+                goto('/user/auth/sign-in');
+            }
+            return false;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching user reviews:", error);
+        return false;
+    }
+}
+
 /**
  * Update a review by ID.
  * @param {number} reviewId - The ID of the review to update.
@@ -238,4 +275,43 @@ export async function updateReview(reviewId: any, reviewData: any) {
     }
 
     return await response.json();
+}
+
+
+/**
+ * Approve a review by ID.
+ * @param {number} reviewId - The ID of the review to approve.
+ * @returns {Promise<any>} The approved review data or false if unauthorized.
+ */
+export async function approveReview(reviewId: number): Promise<any> {
+    const JWT = getJWT();
+    console.log('getJWT:', JWT);
+
+    if (!JWT) {
+        goto('/user/auth/sign-in');
+        return false;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}/approve`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${JWT}`,
+            },
+        });
+
+        if (!response.ok) {
+            if (response.status === 401) {
+                logout();
+                goto('/user/auth/sign-in');
+            }
+            throw new Error('Failed to approve review');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error approving review:', error);
+        return false;
+    }
 }

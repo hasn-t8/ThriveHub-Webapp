@@ -1,9 +1,8 @@
 <script lang="ts">
 	import Sidemenu from '../components/Sidemenu.svelte';
-	import { deleteReview, getAllReviews, getReviewsByApprovalStatus } from '$lib/stores/reviews';
+	import { deleteReview, getAllReviews, getReviewsByApprovalStatus, approveReview } from '$lib/stores/reviews';
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
-	import { API_BASE_URL } from '$lib/config';
 	import { getJWT } from '$lib/stores/auth';
 
 	interface Review {
@@ -23,64 +22,94 @@
 	let currentPage = 1;
 	let itemsPerPage = 6;
 	let totalPages = 0;
+	let currentFilter: 'all' | 'pending' | 'approved' = 'all';
+	let isLoading = false;
 
 	// Fetch reviews and calculate pagination
 	async function fetchReviews(approvalStatus?: boolean): Promise<void> {
 		try {
+			isLoading = true;
 			let reviewData;
+
 			if (approvalStatus !== undefined) {
 				reviewData = await getReviewsByApprovalStatus(approvalStatus);
 			} else {
 				reviewData = await getAllReviews();
 			}
-			reviews.set(reviewData);
 
-			// Calculate total pages
+			reviews.set(reviewData);
 			totalPages = Math.ceil(reviewData.length / itemsPerPage);
 		} catch (error) {
 			console.error('Error fetching reviews:', error);
+		} finally {
+			isLoading = false;
 		}
+	}
+
+	function showAllReviews() {
+		currentPage = 1;
+		currentFilter = 'all';
+		fetchReviews();
 	}
 
 	function showPendingReviews() {
 		currentPage = 1;
+		currentFilter = 'pending';
 		fetchReviews(false);
 	}
 
 	function showApprovedReviews() {
 		currentPage = 1;
+		currentFilter = 'approved';
 		fetchReviews(true);
 	}
 
-	async function approveReview(reviewId: number): Promise<void> {
+	// Approve a review
+	async function handleApproveReview(reviewId: number): Promise<void> {
 		try {
-			await fetch(`${API_BASE_URL}/reviews/${reviewId}/approve`, {
-				method: 'PATCH',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${getJWT()}`
+			isLoading = true;
+
+			const approvedReview = await approveReview(reviewId);
+			if (approvedReview) {
+				alert('Review approved successfully');
+
+				// Update reviews locally
+				reviews.update((currentReviews) => 
+					currentReviews.filter((review) => review.id !== reviewId)
+				);
+
+				// Refresh the approved list if the current filter is "approved"
+				if (currentFilter === 'approved') {
+					fetchReviews(true);
 				}
-			});
-			alert('Approved successfully');
-			showPendingReviews();
+			} else {
+				console.error('Failed to approve the review.');
+			}
 		} catch (error) {
 			console.error('Error approving review:', error);
+		} finally {
+			isLoading = false;
 		}
 	}
 
+	// Delete a review
 	async function handleDeleteReview(reviewId: number): Promise<void> {
 		try {
+			isLoading = true;
+
 			const isDeleted = await deleteReview(reviewId);
 			if (isDeleted) {
 				reviews.update((currentReviews) =>
 					currentReviews.filter((review) => review.id !== reviewId)
 				);
-				alert('Deleted successfully');
+				alert('Review deleted successfully');
 			} else {
 				console.error('Failed to delete the review.');
 			}
 		} catch (error) {
 			console.error('Error deleting review:', error);
+		} finally {
+			isLoading = false;
 		}
 	}
 
@@ -121,9 +150,12 @@
 	}
 
 	onMount(() => {
-		fetchReviews();
+		showAllReviews();
 	});
 </script>
+
+
+
 
 <div class="main-content" style="height: 100vh;">
 	<Sidemenu />
@@ -142,7 +174,9 @@
 			</div>
 		</div>
 
-		{#if $reviews.length > 0}
+		{#if isLoading}
+			<p>Loading...</p>
+		{:else if $reviews.length > 0}
 			<ul class="review-list">
 				{#each $reviews.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) as review}
 					<li class="review-item">
@@ -153,17 +187,20 @@
 							<div class="review-status">Status: {review.approval_status === 'true' ? 'Approved' : 'Pending'}</div>
 							<div class="review-created">Date: {new Date(review.created_at).toLocaleDateString()}</div>
 							<div class="review-feedback">Feedback: {review.feedback || 'No feedback provided.'}</div>
+							
 							<div class="status">
 								{#if review.approval_status === 'false'}
 									<button
 										class="custom-button add-button"
-										on:click={() => approveReview(review.id)}>
+										on:click={() => handleApproveReview(review.id)}
+										disabled={isLoading}>
 										Approve
 									</button>
 								{/if}
 								<button
 									class="custom-button add-button"
-									on:click={() => handleDeleteReview(review.id)}>
+									on:click={() => handleDeleteReview(review.id)}
+									disabled={isLoading}>
 									Delete
 								</button>
 							</div>
@@ -173,63 +210,23 @@
 			</ul>
 
 			<!-- Pagination -->
-            <div class="pagination-container has-text-weight-bold">
-                <!-- "Go to First" Button -->
-                <button
-                    class="pagination-arrow double-arrow mr-5"
-                    on:click={() => handlePageClick(1)}
-                >
-                    &lt;&lt;
-                </button>
-                <!-- Previous Button -->
-                <button
-                    class="pagination-arrow single-arrow mr-4"
-                    on:click={prevPage}
-                    disabled={currentPage === 1}
-                >
-                    &lt;
-                </button>
-
-                {#if currentPage > 5}
-                    <span class="pagination-link">...</span>
-                {/if}
-
-                <!-- Interval Page Numbers -->
-                {#each getPageNumbers() as page}
-                    <button
-                        class="pagination-link {currentPage === page ? 'is-current' : ''}"
-                        on:click={() => handlePageClick(page)}
-                    >
-                        {page}
-                    </button>
-                {/each}
-
-                <!-- "Go to Last" Button -->
-
-                {#if currentPage < totalPages - 4}
-                    <span class="pagination-link">...</span>
-                {/if}
-                <button
-                    class="pagination-arrow single-arrow ml-4"
-                    on:click={nextPage}
-                    disabled={currentPage === totalPages}
-                >
-                    >
-                </button>
-
-                <!-- Next Button -->
-                <button
-                    class="pagination-arrow double-arrow ml-5"
-                    on:click={() => handlePageClick(totalPages)}
-                >
-                    >>
-                </button>
-            </div>
-            {:else}
+			<div class="pagination-container">
+				<button class="pagination-arrow double-arrow" on:click={() => handlePageClick(1)}>&lt;&lt;</button>
+				<button class="pagination-arrow single-arrow" on:click={prevPage} disabled={currentPage === 1}>&lt;</button>
+				{#each getPageNumbers() as page}
+					<button class="pagination-link {currentPage === page ? 'is-current' : ''}" on:click={() => handlePageClick(page)}>
+						{page}
+					</button>
+				{/each}
+				<button class="pagination-arrow single-arrow" on:click={nextPage} disabled={currentPage === totalPages}>&gt;</button>
+				<button class="pagination-arrow double-arrow" on:click={() => handlePageClick(totalPages)}>&gt;&gt;</button>
+			</div>
+		{:else}
 			<p>No reviews available to display.</p>
 		{/if}
 	</div>
-</div>
+</div> 
+
 
 <style>
     	.pagination-container {

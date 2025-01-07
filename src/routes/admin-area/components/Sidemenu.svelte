@@ -34,6 +34,9 @@
 		<hr /> -->
 		<a href="/admin-area/business-list" class="menu-item">
 			<i class="icon fas fa-briefcase"></i> Business List
+		</a>	
+		<a href="/admin-area/reviews-list" class="menu-item">
+			<i class="icon fas fa-briefcase"></i> Reviews List
 		</a>
 		<a href="/admin-area/add-company" class="menu-item"
 			><i class="icon fas fa-briefcase"></i>Add business</a

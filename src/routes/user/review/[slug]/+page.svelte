@@ -59,17 +59,32 @@
     };
 
     try {
-        if (isEditing && reviewId) {
-            // Update existing review
-            const response = await updateReview(reviewId, reviewData);
-            if (response) {
-                alert('Review updated successfully!');
-                // Use the existing reviewId for redirection
-                window.location.href = `/user/review/thankyou?reviewId=${reviewId}`;
-            } else {
-                alert('Failed to update review. Please try again.');
-            }
+      if (isEditing && reviewId) {
+    // Set approval status to "false" (pending) before update
+    const updatedReviewData = {
+        ...reviewData,
+        approval_status: "false", // Set approval status to pending
+    };
+
+    try {
+        // Update the existing review
+        const response = await updateReview(reviewId, updatedReviewData);
+
+        if (response) {
+            // Ensure approval status is set to pending in the response
+            response.approval_status = "false"; 
+            alert('Review updated successfully!');
+            // Redirect to thank you page with the reviewId
+            window.location.href = `/user/review/thankyou?reviewId=${reviewId}`;
         } else {
+            alert('Failed to update review. Please try again.');
+        }
+    } catch (error) {
+        console.error("Error updating review:", error);
+        alert('An error occurred while updating the review. Please try again.');
+    }
+}
+ else {
             // Create new review
             const response = await createReview(reviewData);
             if (response?.reviewId) {
