@@ -3,6 +3,7 @@
     import { getAllReviewsByBusinessId, deleteReview } from '$lib/stores/reviews';
     import { onMount } from 'svelte';
     import { getJWT } from '$lib/stores/auth';
+	import Sidemenu from '../admin-area/components/Sidemenu.svelte';
 
     interface User {
         id: number;
@@ -184,7 +185,7 @@
     });
 </script>
 
-
+<Sidemenu/>
 <div class="review-list-container">
 	<div class="header">
 		<h1>All Reviews for {$organizationName}</h1>

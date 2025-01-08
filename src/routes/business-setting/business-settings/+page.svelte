@@ -1,7 +1,13 @@
 <script>
+// @ts-nocheck
+
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
-	import Sidemenu from '../../../admin-area/components/Sidemenu.svelte';
+	import Sidemenu from '../../admin-area/components/Sidemenu.svelte';
+	import { getProfiles } from '$lib/stores/business';
+	import { saveProfile } from '$lib/stores/profile';
+	// import Sidemenu from './admin-area/components/Sidemenu.svelte
+	// @ts-ignore
 	let searchQuery = '';
 	// import { getProfiles, saveProfile } from '$lib/stores/profile';
 
@@ -49,7 +55,7 @@
 			const profiles = await getProfiles();
 
 			// Look for the 'personal' profile in the array
-			const personalProfile = profiles.find((profile) => profile.profile_type === 'personal');
+			const personalProfile = profiles.find((/** @type {{ profile_type: string; }} */ profile) => profile.profile_type === 'personal');
 
 			// If no 'personal' profile exists, handle it (e.g., set defaults or log an error)
 			if (!personalProfile) {
@@ -92,6 +98,7 @@
 
 		try {
 			const currentProfile = $profile;
+			// @ts-ignore
 			const result = await saveProfile(currentProfile);
 			console.log('Profile saved successfully:', result);
 		} catch (error) {
@@ -101,6 +108,9 @@
 	}
 
 	// Utility to format date to "yyyy-MM-dd"
+	/**
+	 * @param {string | number | Date} dateString
+	 */
 	function formatDateToYMD(dateString) {
 		if (!dateString) return ''; // Handle null or undefined dates
 		const date = new Date(dateString);
@@ -122,7 +132,7 @@
 </script>
 
 <div class="main-content">
-	<Sidemenu />
+	<Sidemenu/>
 	<!-- Analytics Header -->
 	<div class="analytics-header">
 		<div class="header-top">
@@ -314,7 +324,7 @@
 			</div>
 		</div>
 
-		<div class="container">
+		<!-- <div class="container">
 			<h2 class="title">Log out everywhere</h2>
 			<p>
 				Log out wherever you have your Thrive Hub account open (this includes desktop, mobile, and
@@ -323,7 +333,7 @@
 			<div class="buttons">
 				<button class="button">Log out</button>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="container">
 			<h2 class="title">Delete user</h2>
@@ -478,6 +488,7 @@
 	.user-profile {
 		background-color: #e7f3fe;
 		font-family: Inter, sans-serif;
+		padding-left: 70px;
 	}
 	.user-profile .container {
 		background-color: white;
