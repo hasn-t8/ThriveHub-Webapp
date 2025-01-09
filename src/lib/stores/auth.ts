@@ -89,18 +89,12 @@ export function refreshJWT() {
 	return false;
 }
 
-export function storeUserType(userTypes: string[]) {
-	localStorage.setItem('userType', JSON.stringify(userTypes)); // Save as JSON string
-	console.log('User type stored in localStorage:', userTypes);
-}
-
 export function setUserAndType() {
 	const jwtToken = localStorage.getItem('authToken');
 
 	if (jwtToken) {
 		const { payload } = decodeJWT(jwtToken);
 		console.log('payload:', payload);
-		storeUserType((payload as User).userTypes || []);
 
 		const isValid = isTokenValid(jwtToken);
 		if (isValid) {

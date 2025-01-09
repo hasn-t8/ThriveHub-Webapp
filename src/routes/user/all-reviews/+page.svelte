@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { deleteReview, getUserReviews, updateReview } from '$lib/stores/reviews';
-	import { getProfileById } from '$lib/stores/business';
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	interface Review {
@@ -14,7 +13,7 @@
 		updated_at: string;
 		customer_name: string;
 		approval_status: string;
-		org_name?: string;
+		business_name?: string;
 	}
 
 	let reviews: Writable<Review[]> = writable([]);
@@ -32,12 +31,6 @@
 		try {
 			const userReviews = await getUserReviews();
 			if (userReviews) {
-				for (const review of userReviews) {
-					if (review.business_id) {
-						const businessProfile = await getProfileById(review.business_id);
-						review.org_name = businessProfile?.org_name || 'Unknown Organization';
-					}
-				}
 				reviews.set(userReviews);
 				totalPages = Math.ceil(userReviews.length / itemsPerPage);
 			} else {
@@ -55,7 +48,8 @@
 		goto(`/user/review/${businessId}?reviewId=${reviewId}`);
 	}
 
-	
+
+    
 	// Delete a review
 	async function handleDeleteReview(reviewId: number): Promise<void> {
 		try {
@@ -110,12 +104,16 @@ function scrollToTop() {
 
 	onMount(() => {
 		fetchReviews();
-	}); 
+	});
 </script>
 
 <div class="review-list-container">
 	<div class="header">
 		<h1>All Reviews</h1>
+		<div class="status">
+			<!-- <button class="custom-button add-button" on:click={showPendingReviews}>Pending</button>
+			<button class="custom-button add-button" on:click={showApprovedReviews}>Approved</button> -->
+		</div>
 	</div>
 
 {#if $reviews.length > 0}
@@ -125,7 +123,7 @@ function scrollToTop() {
 		<li class="review-item">
 			<div class="review-content">
 				<div class="reviewer-name">Reviewer: {review.customer_name || 'Anonymous'}</div>
-				<div class="review-business">Organization: {review.org_name || 'Unknown Organization'}</div>
+				<div class="review-business">Organization: {review.business_name || 'Unknown Organization'}</div>
 				<div class="review-rating">Rating: {review.rating || 'N/A'}</div>
 				<div class="review-status">Status: {review.approval_status === 'true' ? 'Approved' : 'Pending'}</div>
 				<div class="review-created">Date: {new Date(review.created_at).toLocaleDateString()}</div>
