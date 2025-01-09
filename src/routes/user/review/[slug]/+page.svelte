@@ -73,7 +73,7 @@
         // Update the existing review
         const response = await updateReview(reviewId, updatedReviewData);
 
-        if (response) {
+        if (response) { 
             // Ensure approval status is set to pending in the response
             response.approval_status = "false"; 
             alert('Review updated successfully!');
