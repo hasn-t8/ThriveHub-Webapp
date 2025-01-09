@@ -1,29 +1,25 @@
 <script>
     import { onMount } from 'svelte';
     // @ts-ignore
-    // @ts-ignore
     import { deleteReview, updateReview, getReviewById } from '$lib/stores/reviews';
-    // @ts-ignore
-    import { getProfileById } from '$lib/stores/business';
     import { goto } from '$app/navigation';
 
     /**
-     * @type {string | import("dns").AnyARecord | null}
-     */
+	 * @type {string | import("dns").AnyARecord | null}
+	 */
     let reviewId = null;
     /**
-     * @type {null}
-     */
+	 * @type {null}
+	 */
     let businessId = null;
     let reviewText = '';
     /**
-     * @type {null}
-     */
+	 * @type {null}
+	 */
     let rating = null;
     let likes = 0;
     let daysAgo = 0;
     let approvalStatus = 'Pending';
-    let orgName = 'Loading...';
 
     // Function to handle review deletion
     async function handleDelete() {
@@ -65,17 +61,6 @@
 
                 // Set approval status
                 approvalStatus = reviewData.approval_status === 'true' ? 'Approved' : 'Pending';
-
-                if (businessId) {
-    const businessProfile = await getProfileById(businessId);
-    console.log('Business Profile:', businessProfile); // Debug the response
-    if (businessProfile && businessProfile.org_name){
-        orgName = businessProfile.org_name;
-    } else {
-        orgName = 'Unknown Organization';
-    }
-}
-
             }
         }
     });
@@ -94,7 +79,7 @@
 
     <div class="content">
         <div class="title-row">
-            <p class="title is-4">{orgName}</p>
+            <p class="title is-4">Bluehost</p>
             <p class="days-ago">{daysAgo} days ago</p>
         </div>
 

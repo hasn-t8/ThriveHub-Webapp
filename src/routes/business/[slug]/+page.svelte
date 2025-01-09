@@ -3,10 +3,8 @@
 	import { getProfileById } from '$lib/stores/business';
 	import { page } from '$app/stores';
 	import { writable } from 'svelte/store';
-	import { getAllReviewsByBusinessId } from '$lib/stores/reviews';
 	import type { ProfileData } from '$lib/types/Profile';
 
-	// Profile store
 	let theProfile = writable<ProfileData>({
 		org_name: '',
 		job_title: '',
@@ -24,73 +22,14 @@
 		total_reviews: 0
 	});
 
-	// Reviews store
-	let reviews = writable<any[]>([]);
-
-	// Fetch business profile
 	async function fetchProfile(): Promise<void> {
 		try {
-			const slug = Number($page.params.slug); // Get business ID from URL
+			const slug = Number($page.params.slug);
 			const profile: ProfileData = await getProfileById(slug);
 			theProfile.set(profile);
-
-			// Fetch reviews after fetching profile
-			await fetchReviews(slug);
 		} catch (error) {
-			console.error('Error fetching profile:', error);
+			console.error('Error fetching profiles:', error);
 		}
-	}
-
-	// Fetch reviews
-	async function fetchReviews(businessId: number): Promise<void> {
-		try {
-			const reviewsData = await getAllReviewsByBusinessId(businessId);
-			if (reviewsData) {
-				reviews.set(reviewsData);
-			}
-		} catch (error) {
-			console.error('Error fetching reviews:', error);
-		}
-	}
-
-	// Utility function to scroll to top
-	function scrollToTop() {
-		window.scrollTo({
-			top: 0,
-			behavior: 'smooth'
-		});
-	}
-
-    let currentPage = 1;
-    let itemsPerPage = 4;
-    let totalPages = 0;
-
-	// Handle page click
-	function handlePageClick(pageNumber: number) {
-		currentPage = pageNumber;
-		scrollToTop();
-	}
-
-	// Calculate the visible page numbers (intervals of 5)
-	function getPageNumbers(): number[] {
-		const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
-		const endPage = Math.min(startPage + 4, totalPages);
-		const pageNumbers = [];
-		for (let i = startPage; i <= endPage; i++) {
-			pageNumbers.push(i);
-		}
-		return pageNumbers;
-	}
-
-	// Handle Next and Previous buttons
-	function nextPage() {
-		if (currentPage < totalPages) currentPage++;
-		scrollToTop();
-	}
-
-	function prevPage() {
-		if (currentPage > 1) currentPage--;
-		scrollToTop();
 	}
 
 	onMount(() => {
@@ -101,6 +40,7 @@
 <section class="page-header">
 	<h1>{$theProfile.org_name}</h1>
 </section>
+
 <div class="container">
 	<div class="columns is-variable is-8">
 		<!-- About Section -->
@@ -111,36 +51,11 @@
 					{$theProfile.about_business}
 				</p>
 			</div>
-			{#if $reviews && $reviews.length > 0}
-				<h2>Reviews</h2>
-				<div class="review-list">
-					{#each $reviews as review}
-						<div class="card review-item">
-							<div class="card-content">
-								<p><strong>Reviewer:</strong> {review.customer_name || 'Anonymous'}</p>
-								<p><strong>Feedback:</strong> {review.feedback || 'No Comment'}</p>
-								<p><strong>Rating:</strong> {review.rating || 'N/A'}</p>
-								<p><strong>Date:</strong> {new Date(review.created_at).toLocaleDateString()}</p>
-							</div>
-						</div>
-					{/each}
+			{#if $theProfile.total_reviews && $theProfile.total_reviews > 0}
+				<div class="card">
+					<h2>Reviews</h2>
+					<div class="review-stars"></div>
 				</div>
-
-
-						<!-- Pagination -->
-		<div class="pagination-container">
-			<button class="pagination-arrow double-arrow" on:click={() => handlePageClick(1)}>&lt;&lt;</button>
-			<button class="pagination-arrow single-arrow" on:click={prevPage} disabled={currentPage === 1}>&lt;</button>
-			{#each getPageNumbers() as page}
-				<button class="pagination-link {currentPage === page ? 'is-current' : ''}" on:click={() => handlePageClick(page)}>
-					{page}
-				</button>
-			{/each}
-			<button class="pagination-arrow single-arrow" on:click={nextPage} disabled={currentPage === totalPages}>&gt;</button>
-			<button class="pagination-arrow double-arrow" on:click={() => handlePageClick(totalPages)}>&gt;&gt;</button>
-		</div>
-			{:else}
-				<p>No reviews available for this business.</p>
 			{/if}
 		</div>
 
@@ -162,12 +77,54 @@
 						<span class="arrow">↗</span>
 					</span>
 				</p>
+
 				{#if $theProfile.work_email}
 					<p class="contact-item">
 						<img src="/assets/mail.png" alt="Email Icon" class="icon" />
-						<a href="mailto:{$theProfile.work_email}">{$theProfile.work_email}</a>
+						<a href="mailto:support@bluehost.com">{$theProfile.work_email}</a>
 					</p>
 				{/if}
+				<!-- {#if $theProfile.location}
+					<p class="contact-item">
+						<img src="/assets/job.png" alt="Job Icon" class="icon" />
+						{$theProfile.job_title}
+					</p>
+				{/if} -->
+				<!-- <p class="contact-item">
+					<img src="/assets/mail.png" alt="Email Icon" class="icon" />
+					<a href="mailto:support@bluehost.com">{$theProfile.work_email}</a>
+				</p> -->
+				<!-- <p class="contact-item">
+					<img src="/assets/phone.png" alt="Phone Icon" class="icon" />
+					+1 123-456-7890
+				</p> -->
+				{#if $theProfile.location}
+					<p class="contact-item">
+						<img
+							src="/assets/Frame 1321316461.png"
+							alt="Address Icon"
+							class="icon"
+						/>
+						src={$theProfile.location}
+					</p>
+				{/if}
+				<!-- <div class="map-container">
+					<iframe
+						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345094103!2d144.9559283158441!3d-37.817209979751554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43b091d3b1%3A0xbbf63a5d6fbe0e3e!2s123%20Example%20St%2C%20Los%20Angeles%2C%20CA!5e0!3m2!1sen!2sus!4v1632713282110!5m2!1sen!2sus"
+					></iframe>
+				</div> -->
+				<div style="margin-top: 1rem;">
+					<h3>Industries</h3>
+					<div class="tags">
+						<span class="tag is-primary">{$theProfile.category}</span>
+					</div>
+				</div>
+
+				<!-- <h3>Company Size</h3>
+				<p>1K - 5K Employees</p>
+				<h3>Funding</h3>
+				<p>Series C: 22 Million</p> -->
+
 				{#if $theProfile.logo_url}
 					<div style="margin-top: 3rem;">
 						<img
@@ -182,61 +139,3 @@
 		</div>
 	</div>
 </div>
-<style>
-	
-	.pagination-container {
-		display: flex;
-		justify-content: center;
-		padding-top: 20px;
-		padding-bottom: 20px;
-	}
-
-	.pagination-arrow {
-		font-size: 18px;
-		cursor: pointer;
-		color: black;
-		all: unset;
-		background: none;
-		border: none;
-		padding: 0;
-		font: inherit;
-		color: inherit;
-		cursor: pointer;
-	}
-
-	.pagination-arrow.double-arrow {
-		color: #b08888; /* Light black */
-	}
-
-	.pagination {
-		display: flex;
-		align-items: center;
-		gap: 5px;
-	}
-
-	.pagination-link {
-		padding: 5px 10px;
-		cursor: pointer;
-		user-select: none;
-		color: black;
-		border: 1px solid rgb(193, 193, 193);
-		border-radius: 5px;
-		background-color: transparent;
-		transition:
-			background-color 0.3s,
-			border-color 0.3s;
-	}
-
-	.pagination-link:hover,
-	.pagination-link.is-current {
-		background-color: #118cf6;
-		color: white;
-		border-color: #118cf6;
-	}
-
-	.pagination-link.disabled {
-		pointer-events: none;
-		opacity: 0.5;
-	}
-
-</style>
