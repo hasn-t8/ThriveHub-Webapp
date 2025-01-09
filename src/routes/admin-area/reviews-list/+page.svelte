@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { getJWT } from '$lib/stores/auth';
+	import { getProfileById } from '$lib/stores/business';
 
 	interface Review {
 		id: number;
@@ -16,7 +17,7 @@
 		customer_name: string;
 		approval_status: string;
 		business_name?: string;
-	}
+	} 
 
 	let reviews: Writable<Review[]> = writable([]);
 	let currentPage = 1;
@@ -35,6 +36,14 @@
 				reviewData = await getReviewsByApprovalStatus(approvalStatus);
 			} else {
 				reviewData = await getAllReviews();
+			}
+
+			// Fetch org_name for each review's business_id
+			for (const review of reviewData) {
+				if (review.business_id) {
+					const businessProfile = await getProfileById(review.business_id);
+					review.business_name = businessProfile?.org_name || 'Unknown Organization';
+				}
 			}
 
 			reviews.set(reviewData);
