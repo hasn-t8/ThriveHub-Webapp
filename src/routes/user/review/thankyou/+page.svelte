@@ -74,7 +74,7 @@
 
 <div class="review-card">
     <header class="header">
-        <p>Your review is "{approvalStatus}"0.</p>
+        <p>Your review is "{approvalStatus}".</p>
     </header>
 
     <div class="content">
