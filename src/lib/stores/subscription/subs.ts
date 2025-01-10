@@ -17,8 +17,7 @@ export async function getMySubscriptions(): Promise<SubscriptionData[] | ErrData
 		}
 
 		const subscriptionsData = await response.json();
-		// console.log('Subscriptions fetched:::', subscriptionsData.data);
-		return subscriptionsData.data;
+		return subscriptionsData;
 	} catch (error) {
 		console.error('Error fetching subscriptions:', error);
 		return { error: 'An unexpected error occurred.' };

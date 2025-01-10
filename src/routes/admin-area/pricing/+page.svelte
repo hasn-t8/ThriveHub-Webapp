@@ -13,17 +13,31 @@
 
 	// Derived store for filtered subscriptions
 	const filteredSubs = () => {
+		console.log('Filtering subscriptions...');
+		
+		
 		return $mySubs.filter((sub) => {
+			console.log('-------');
+			console.log('Sub.id:', sub.id, ' - sub.end_date:', sub.end_date);
+			
 			if (!sub.plan) {
 				return;
 			}
 			isMonthly = sub.plan.startsWith('YEARLY') ? false : true;
+			console.log('isMonthly:', isMonthly);
+			
 
-			if (sub.plan.endsWith('BASIC')) {
+			if (sub.plan.endsWith('basic')) {
 				activeSub = isMonthly ? 'monthly-basic' : 'yearly-basic';
 			} else if (sub.plan.endsWith('Premium')) {
 				activeSub = isMonthly ? 'monthly-premium' : 'yearly-premium';
 			}
+			console.log('Active sub:', activeSub);
+			console.log('sub.plan:', sub.plan);
+			
+			
+			
+			
 		});
 	};
 
@@ -45,6 +59,8 @@
 			const subscriptions = await getMySubscriptions();
 			// console.log('Fetched subscriptions:', subscriptions);
 
+			console.log('Subscriptions:', subscriptions);
+			
 			if (Array.isArray(subscriptions)) {
 				mySubs.set(subscriptions);
 			} else {
@@ -57,6 +73,10 @@
 		} finally {
 			loading = false;
 		}
+	};
+
+	const switchPlan = async (plan: string) => {
+		console.log('Switching to plan:', plan);
 	};
 
 	onMount(async () => {
@@ -230,7 +250,7 @@
 							<div class="package-name">Free</div>
 							<div class="price">$0<span>/m</span></div>
 							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-							<button class="button {isActive('free')}">Your current plan</button>
+							<button class="button {isActive('free')}" on:click="{switchPlan('free')}">Your current plan</button>
 							<div class="icons">
 								<div class="icon-item">
 									<span class="icon"><i class="fas fa-eye"></i></span>
