@@ -76,7 +76,6 @@
 	};
 
 	const switchPlan = async (plan: string) => {
-		console.log('Switching to plan:', plan);
 		createSubscription(plan);
 	};
 

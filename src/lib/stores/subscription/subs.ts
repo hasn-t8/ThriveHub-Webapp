@@ -40,9 +40,14 @@ export async function createSubscription(plan: string): Promise<SubscriptionData
 			},
 			body: JSON.stringify({ plan })
 		});
-
+		
+		console.log('Switching to plan:', plan);
 		const responseJson = await response.json();
-
+		console.log('Response:', responseJson);
+		if(responseJson.url){
+			window.location.href = responseJson.url;
+		}
+		
 		if (!response.ok) {
 			console.error(`API request failed with status ${response.status}`);
 			return { error: `Failed to create subscription: ${response.status}` };
