@@ -1,6 +1,16 @@
 <script>
 	import Review from '../../components/reviews/popular-reviews.svelte';
 	import ReviewUS from '../../components/reviews/about-us-reviews.svelte';
+	import { goto } from '$app/navigation';
+
+	let query = '';
+
+	function searchReviews() {
+		// Redirect to a new page with the query as a URL parameter
+		if (query.trim() !== '') {
+			goto(`/org/search?query=${encodeURIComponent(query)}`);
+		}
+	}
 </script>
 
 <!-- Hero Section -->
@@ -13,8 +23,7 @@
 			>
 				<h1 class="title is-size-1 is-size-3-mobile">
 					Trustworthy Brands at Your Fingertips with <span
-						style="color: #118BF6;">Thrive Hub</span
-					>
+						style="color: #118BF6;">Thrive Hub</span>
 				</h1>
 				<p
 					class="has-text-grey-dark is-size-5 hide-mobile"
@@ -23,17 +32,18 @@
 					Skip the guesswork! Explore top-rated companies and services, get
 					AI-driven review summaries, and enjoy exclusive discounts.
 				</p>
-				<div class="field has-addons mt-5 hide-search">
-					<div class="control has-icons-left is-expanded">
-						<input
-							class="input is-rounded"
-							type="text"
-							placeholder="Search company or category"
-						/>
-						<span class="icon is-left">
-							<i class="fas fa-search"></i>
-						</span>
-					</div>
+
+				<div class="search-box">
+					<span class="icon is-info">
+						<i class="fas fa-search"></i>
+					</span>
+					<input
+						class="input is-rounded"
+						type="text"
+						bind:value={query}
+						placeholder="Search reviews..."
+					/>
+					<button class="button is-info" on:click={searchReviews}>Search</button>
 				</div>
 			</div>
 
@@ -43,20 +53,8 @@
 				style="background-color: #118cf6;"
 			>
 				<div class="image-container">
-					<!-- Mobile Search Bar -->
-					<div class="field has-addons mt-5 mobile-search">
-						<div class="control has-icons-left is-expanded">
-							<input
-								class="input is-rounded"
-								type="text"
-								placeholder="Search company or category"
-							/>
-							<span class="icon is-left">
-								<i class="fas fa-search"></i>
-							</span>
-						</div>
-					</div>
-
+					
+					
 					<!-- Main Image -->
 					<img
 						src="/assets/Hoodie.png"
