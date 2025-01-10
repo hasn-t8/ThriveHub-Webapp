@@ -28,3 +28,30 @@ export async function getMySubscriptions(): Promise<SubscriptionData[] | ErrData
 		return { error: 'An unexpected error occurred.' };
 	}
 }
+
+export async function createSubscription(plan: string): Promise<SubscriptionData | ErrData> {
+	try {
+		const response = await fetch(`${API_BASE_URL}/subscription`, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${getJWT()}`
+			},
+			body: JSON.stringify({ plan })
+		});
+
+		const responseJson = await response.json();
+
+		if (!response.ok) {
+			console.error(`API request failed with status ${response.status}`);
+			return { error: `Failed to create subscription: ${response.status}` };
+		}
+
+		const subscriptionData = responseJson as SubscriptionData;
+		return subscriptionData;
+	} catch (error) {
+		console.error('Error creating subscription:', error);
+		return { error: 'An unexpected error occurred.' };
+	}
+}

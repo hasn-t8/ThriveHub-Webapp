@@ -2,14 +2,14 @@
 	import { onMount } from 'svelte';
 	import { writable, derived, type Writable } from 'svelte/store';
 	import type { SubscriptionData } from '$lib/types/Subscriptions';
-	import { getMySubscriptions } from '$lib/stores/subscription/subs';
+	import { getMySubscriptions, createSubscription } from '$lib/stores/subscription/subs';
 
 	// States
 	let isMonthly: Writable<boolean> = writable(); // Tracks whether the selected plan is monthly
 	let mySubs: Writable<SubscriptionData[]> = writable([]); // Store for subscription data
 	let error: string | null = null; // Error state
 	let loading = true; // Loading state
-	let activeSub = 'free';
+	let activeSub: Writable<strubg> = writable('free');
 
 	// Derived store for filtered subscriptions
 	const filteredSubs = () => {
@@ -25,12 +25,16 @@
 			$isMonthly = sub.plan.startsWith('YEARLY') ? false : true;
 			console.log('isMonthly:', $isMonthly);
 
-			if (sub.plan.endsWith('basic')) {
-				activeSub = $isMonthly ? 'monthly-basic' : 'yearly-basic';
-			} else if (sub.plan.endsWith('Premium')) {
-				activeSub = $isMonthly ? 'monthly-premium' : 'yearly-premium';
+			if (
+				sub.plan.endsWith('basic') &&
+				$activeSub !== 'monthly-premium' &&
+				$activeSub !== 'yearly-premium'
+			) {
+				$activeSub = $isMonthly ? 'monthly-basic' : 'yearly-basic';
+			} else if (sub.plan.endsWith('Premium') && $activeSub !== 'yearly-premium') {
+				$activeSub = $isMonthly ? 'monthly-premium' : 'yearly-premium';
 			}
-			console.log('Active sub:', activeSub);
+			console.log('Active sub:', $activeSub);
 			console.log('sub.plan:', sub.plan);
 		});
 	};
@@ -41,7 +45,9 @@
 	};
 
 	const isActive = (type: string) => {
-		return type === activeSub ? 'active' : '';
+		console.log('Checking active:', type, $activeSub);
+
+		return type === $activeSub ? 'active' : '';
 	};
 
 	// Fetch user subscriptions
@@ -71,6 +77,7 @@
 
 	const switchPlan = async (plan: string) => {
 		console.log('Switching to plan:', plan);
+		createSubscription(plan);
 	};
 
 	onMount(async () => {
@@ -290,8 +297,11 @@
 							<div class="card-content">
 								<div class="package-name">Basic</div>
 								<div class="price">$149<span>/m</span></div>
-								<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-								<button class="button {isActive('yearly-basic')}">Get Basic</button>
+								{#if isActive('yearly-basic') === 'active'}
+									<button class="button active">Your current plan</button>
+								{:else}
+									<button class="button" on:click={switchPlan('basic_yearly')}>Get Basic</button>
+								{/if}
 								<div class="icons">
 									<div class="icon-item">
 										<span class="icon"><i class="fas fa-eye"></i></span>
@@ -326,9 +336,11 @@
 						<div class="card-content">
 							<div class="package-name">Premium</div>
 							<div class="price">$160<span>/m</span></div>
-							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-							<!-- <button class="button">Get Premium</button> -->
-							<button class="button {isActive('yearly-premium')}">Get Premium</button>
+							{#if isActive('yearly-premium') === 'active'}
+								<button class="button active">Your current plan</button>
+							{:else}
+								<button class="button" on:click={switchPlan('premium_yearly')}>Get Premium</button>
+							{/if}
 							<div class="icons">
 								<div class="icon-item">
 									<span class="icon"><i class="fas fa-eye"></i></span>
