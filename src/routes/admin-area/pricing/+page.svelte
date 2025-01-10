@@ -5,7 +5,7 @@
 	import { getMySubscriptions } from '$lib/stores/subscription/subs';
 
 	// States
-	let isMonthly = true; // Tracks whether the selected plan is monthly
+	let isMonthly: Writable<boolean> = writable(); // Tracks whether the selected plan is monthly
 	let mySubs: Writable<SubscriptionData[]> = writable([]); // Store for subscription data
 	let error: string | null = null; // Error state
 	let loading = true; // Loading state
@@ -14,36 +14,30 @@
 	// Derived store for filtered subscriptions
 	const filteredSubs = () => {
 		console.log('Filtering subscriptions...');
-		
-		
+
 		return $mySubs.filter((sub) => {
 			console.log('-------');
 			console.log('Sub.id:', sub.id, ' - sub.end_date:', sub.end_date);
-			
+
 			if (!sub.plan) {
 				return;
 			}
-			isMonthly = sub.plan.startsWith('YEARLY') ? false : true;
-			console.log('isMonthly:', isMonthly);
-			
+			$isMonthly = sub.plan.startsWith('YEARLY') ? false : true;
+			console.log('isMonthly:', $isMonthly);
 
 			if (sub.plan.endsWith('basic')) {
-				activeSub = isMonthly ? 'monthly-basic' : 'yearly-basic';
+				activeSub = $isMonthly ? 'monthly-basic' : 'yearly-basic';
 			} else if (sub.plan.endsWith('Premium')) {
-				activeSub = isMonthly ? 'monthly-premium' : 'yearly-premium';
+				activeSub = $isMonthly ? 'monthly-premium' : 'yearly-premium';
 			}
 			console.log('Active sub:', activeSub);
 			console.log('sub.plan:', sub.plan);
-			
-			
-			
-			
 		});
 	};
 
 	// Toggle between monthly and yearly plans
 	const togglePlan = (plan: string) => {
-		isMonthly = plan === 'monthly';
+		$isMonthly = plan === 'monthly';
 	};
 
 	const isActive = (type: string) => {
@@ -60,7 +54,7 @@
 			// console.log('Fetched subscriptions:', subscriptions);
 
 			console.log('Subscriptions:', subscriptions);
-			
+
 			if (Array.isArray(subscriptions)) {
 				mySubs.set(subscriptions);
 			} else {
@@ -97,13 +91,13 @@
 		<div class="toggle-wrapper">
 			<div class="toggle">
 				<button
-					class={`toggle-button ${isMonthly ? 'active' : ''}`}
+					class={`toggle-button ${$isMonthly ? 'active' : ''}`}
 					on:click={() => togglePlan('monthly')}
 				>
 					Monthly
 				</button>
 				<button
-					class={`toggle-button ${!isMonthly ? 'active' : ''}`}
+					class={`toggle-button ${!$isMonthly ? 'active' : ''}`}
 					on:click={() => togglePlan('annually')}
 				>
 					Annually
@@ -117,7 +111,7 @@
 		{sub.plan}
 	{/each} -->
 
-	{#if isMonthly}
+	{#if $isMonthly}
 		<div id="monthly-plans" class="flex plans">
 			<!-- Monthly plan cards here -->
 
@@ -130,7 +124,11 @@
 							<div class="package-name">Free</div>
 							<div class="price">$0<span>/m</span></div>
 							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-							<button class="button {isActive('free')}">Your current plan</button>
+							{#if isActive('free') === 'active'}
+								<button class="button active">Your current plan</button>
+							{:else}
+								<button class="button" on:click={switchPlan('free')}>Get Free</button>
+							{/if}
 							<div class="icons">
 								<div class="icon-item">
 									<span class="icon"><i class="fas fa-eye"></i></span>
@@ -249,8 +247,11 @@
 						<div class="card-content">
 							<div class="package-name">Free</div>
 							<div class="price">$0<span>/m</span></div>
-							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-							<button class="button {isActive('free')}" on:click="{switchPlan('free')}">Your current plan</button>
+							{#if isActive('free') === 'active'}
+								<button class="button active">Your current plan1</button>
+							{:else}
+								<button class="button" on:click={switchPlan('free')}>Get Free</button>
+							{/if}
 							<div class="icons">
 								<div class="icon-item">
 									<span class="icon"><i class="fas fa-eye"></i></span>
