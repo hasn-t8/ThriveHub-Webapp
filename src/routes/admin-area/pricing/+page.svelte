@@ -130,7 +130,6 @@
 						<div class="card-content">
 							<div class="package-name">Free</div>
 							<div class="price">$0<span>/m</span></div>
-							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
 							{#if isActive('free') === 'active'}
 								<button class="button active">Your current plan</button>
 							{:else}
@@ -174,9 +173,11 @@
 							<div class="card-content">
 								<div class="package-name">Basic</div>
 								<div class="price">$15<span>/m</span></div>
-								<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-								<!-- <button class="button">Get Basic</button> -->
-								<button class="button {isActive('monthly-basic')}">Get Basic</button>
+								{#if isActive('monthly-basic') === 'active'}
+									<button class="button active">Your current plan</button>
+								{:else}
+									<button class="button" on:click={switchPlan('basic_monthly')}>Get Basic</button>
+								{/if}
 								<div class="icons">
 									<div class="icon-item">
 										<span class="icon"><i class="fas fa-eye"></i></span>
@@ -211,9 +212,11 @@
 						<div class="card-content">
 							<div class="package-name">Premium</div>
 							<div class="price">$40<span>/m</span></div>
-							<!-- <div class="description">Let's open up more opportunities for your business</div> -->
-							<!-- <button class="button">Get Premium</button> -->
-							<button class="button {isActive('monthly-premium')}">Get Premium</button>
+							{#if isActive('monthly-premium') === 'active'}
+								<button class="button active">Your current plan</button>
+							{:else}
+								<button class="button" on:click={switchPlan('premium_monthly')}>Get Premium</button>
+							{/if}
 							<div class="icons">
 								<div class="icon-item">
 									<span class="icon"><i class="fas fa-eye"></i></span>
