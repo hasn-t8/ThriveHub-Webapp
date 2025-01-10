@@ -1,50 +1,65 @@
 <script>
-	// @ts-nocheck
 	import { API_BASE_URL } from '$lib/config';
+	import { goto } from '$app/navigation';
 	import AboutUsReviews from '../../components/reviews/about-us-reviews.svelte';
 	import { onMount } from 'svelte';
 
 	let query = '';
-	let reviews = [];
+	let userType = '';
 	let error = '';
-	let userType = ''; // To store the user type
 
-	// Fetch the user type from localStorage when the component mounts
-	onMount(() => {
-		const storedUserType = localStorage.getItem('userType');
-		// Parse userType if it's a JSON string (e.g., ["business-owner"])
+	// Function to decode JWT token
+	/**
+	 * @param {string} token
+	 */
+	function decodeJWT(token) {
 		try {
-			const parsedUserType = JSON.parse(storedUserType);
-			userType = Array.isArray(parsedUserType) ? parsedUserType[0] : parsedUserType; // Extract first value if it's an array
+			const [, payload] = token.split('.');
+			const decodedPayload = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+			return JSON.parse(decodedPayload);
 		} catch (error) {
-			userType = storedUserType || ''; // Use raw value if parsing fails
+			console.error('Error decoding JWT:', error);
+			return null;
 		}
-		console.log('User Type:', userType); // Print the user type to the console
-	});
+	}
 
-	// Function to search reviews
-	async function searchReviews() {
-		error = '';
-		reviews = [];
-
-		// Check if the user is a business owner
-		if (userType !== 'business-owner') {
-			error = 'Only business owners can search for reviews.';
+	// Fetch user type on component mount
+	onMount(() => {
+		const jwtToken = localStorage.getItem('authToken'); // Get the JWT token from localStorage
+		if (!jwtToken) {
+			error = 'No JWT token found. Please log in.';
+			console.error(error);
 			return;
 		}
 
-		try {
-			const response = await fetch(
-				`${API_BASE_URL}/reviews/search?query=${encodeURIComponent(query)}`
-			);
-			if (!response.ok) throw new Error('Failed to fetch reviews');
-			const data = await response.json();
-			reviews = data;
-		} catch (err) {
-			error = err.message;
+		const decodedPayload = decodeJWT(jwtToken);
+		if (!decodedPayload) {
+			error = 'Failed to decode JWT token.';
+			console.error(error);
+			return;
 		}
+
+		userType = decodedPayload?.userTypes?.[0] || '';
+		console.log('User Type:', userType);
+	});
+
+	// Function to handle the search button click
+	function searchReviews() {
+		if (userType !== 'business-owner') {
+			error = 'Only business owners can search for reviews.';
+			console.error(error);
+			return;
+		}
+
+		// Redirect to a new page with the query as a URL parameter
+		goto(`/business/reviews?query=${encodeURIComponent(query)}`);
 	}
+			// Redirect to signup page
+			function redirectToSignup() {
+			window.location.href = '/business/signup'; // Adjust the path to your signup page
+		}
 </script>
+
 
 <div class="hero-section">
 	<div class="text-content">
@@ -57,25 +72,21 @@
 			<span class="icon is-info">
 				<i class="fas fa-search"></i>
 			</span>
-
 			<input type="text" bind:value={query} placeholder="Search reviews..." />
 			<button on:click={searchReviews}>Search</button>
 		</div>
 
 		{#if error}
-			<p style="color: red;">{error}</p>
-		{/if}
+		<p style="color: blue;">{error}</p>
+		<p style="color: blue; cursor: pointer; text-decoration: underline;" on:click={() => redirectToSignup()}>
+			Create your account
+		</p>
+	{/if}
+	
 
-		<ul>
-			{#each reviews as review}
-				<li>
-					<strong>{review.customer_name}</strong>: {review.feedback} (Rating: {review.rating})
-				</li>
-			{/each}
-		</ul>
+	
 	</div>
 </div>
-
 
 <div class="container-info">
 	<div class="has-text-centered mb-5">
