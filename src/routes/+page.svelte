@@ -40,18 +40,23 @@
 					AI-driven review summaries, and enjoy exclusive discounts.
 				</p>
 
-				<div class="search-box">
-					<span class="icon is-info">
-						<i class="fas fa-search"></i>
-					</span>
+				<div class="search-box" style="display: flex; align-items: center; position: relative;">
 					<input
 						class="input is-rounded"
 						type="text"
 						bind:value={query}
-						placeholder="Search reviews..."
+						placeholder="Search"
+						style="flex: 1; margin-right: 10px;"
 					/>
-					<button class="button is-info" on:click={searchReviews}>Search</button>
+					<button
+						class="button is-info"
+						on:click={searchReviews}
+						style="position: absolute; right: 0; top: 0; height: 100%;"
+					>
+						Search
+					</button>
 				</div>
+				
 			</div>
 
 			<!-- Right Column (Mobile Search) -->
