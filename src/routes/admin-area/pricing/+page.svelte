@@ -2,13 +2,14 @@
 	import { onMount } from 'svelte';
 	import { writable, derived, type Writable } from 'svelte/store';
 	import type { SubscriptionData } from '$lib/types/Subscriptions';
+	import Spinner from '$lib/components/Spinner.svelte';
 	import { getMySubscriptions, createSubscription } from '$lib/stores/subscription/subs';
 
 	// States
 	let isMonthly: Writable<boolean> = writable(); // Tracks whether the selected plan is monthly
 	let mySubs: Writable<SubscriptionData[]> = writable([]); // Store for subscription data
-	let error: string | null = null; // Error state
-	let loading = true; // Loading state
+	let error: string | null = null;
+	let loading: Writable<boolean> = writable();
 	let activeSub: Writable<strubg> = writable('free');
 
 	// Derived store for filtered subscriptions
@@ -16,8 +17,8 @@
 		console.log('Filtering subscriptions...');
 
 		return $mySubs.filter((sub) => {
-			console.log('-------');
-			console.log('Sub.id:', sub.id, ' - sub.end_date:', sub.end_date);
+			// console.log('-------');
+			// console.log('Sub.id:', sub.id, ' - sub.end_date:', sub.end_date);
 
 			if (!sub.plan) {
 				return;
@@ -52,7 +53,7 @@
 
 	// Fetch user subscriptions
 	const fetchMySubscriptions = async () => {
-		loading = true; // Set loading to true
+		$loading = true;
 		error = null; // Clear previous errors
 
 		try {
@@ -63,6 +64,7 @@
 
 			if (Array.isArray(subscriptions)) {
 				mySubs.set(subscriptions);
+				filteredSubs();
 			} else {
 				error = 'Invalid subscription data.';
 				console.error(error, subscriptions);
@@ -70,20 +72,46 @@
 		} catch (err) {
 			error = 'Error fetching subscriptions.';
 			console.error(error, err);
+			$loading = false;
 		} finally {
-			loading = false;
+			$loading = false;
 		}
 	};
 
 	const switchPlan = async (plan: string) => {
-		createSubscription(plan);
+		$loading = true;
+		await createSubscription(plan);
+		await waitForTenSeconds(2000);
+		await fetchMySubscriptions();
+		$loading = false;
 	};
 
+	const waitForTenSeconds = (time: number) => {
+		loading.set(true);
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				loading.set(false);
+				// resolve('Done! !!!!!!!!!!!!!!!!!');
+				$loading = false;
+			}, time);
+		});
+	};
+	let result = null;
+
 	onMount(async () => {
+		loading.set(true);
 		await fetchMySubscriptions();
 		await filteredSubs();
+		loading.set(false);
 	});
 </script>
+
+{#if $loading}
+	<Spinner />
+{/if}
+{#if error}
+	{error}
+{/if}
 
 <div class="analytics-header">
 	<!-- <div class="header-top">
