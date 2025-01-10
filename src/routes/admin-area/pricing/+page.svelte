@@ -3,6 +3,7 @@
 	import { writable, derived, type Writable } from 'svelte/store';
 	import type { SubscriptionData } from '$lib/types/Subscriptions';
 	import Spinner from '$lib/components/Spinner.svelte';
+	import Toast from '$lib/components/Toast.svelte';
 	import { getMySubscriptions, createSubscription } from '$lib/stores/subscription/subs';
 
 	// States
@@ -11,6 +12,8 @@
 	let error: string | null = null;
 	let loading: Writable<boolean> = writable();
 	let activeSub: Writable<strubg> = writable('free');
+
+	let toastMessage = '';
 
 	// Derived store for filtered subscriptions
 	const filteredSubs = () => {
@@ -58,10 +61,6 @@
 
 		try {
 			const subscriptions = await getMySubscriptions();
-			// console.log('Fetched subscriptions:', subscriptions);
-
-			console.log('Subscriptions:', subscriptions);
-
 			if (Array.isArray(subscriptions)) {
 				mySubs.set(subscriptions);
 				filteredSubs();
@@ -83,6 +82,7 @@
 		await createSubscription(plan);
 		await waitForTenSeconds(2000);
 		await fetchMySubscriptions();
+		toastMessage = 'Plan is changed successfully! ';
 		$loading = false;
 	};
 
@@ -111,6 +111,10 @@
 {/if}
 {#if error}
 	{error}
+{/if}
+
+{#if toastMessage}
+	<Toast message={toastMessage} />
 {/if}
 
 <div class="analytics-header">
