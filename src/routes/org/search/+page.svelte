@@ -108,7 +108,7 @@
 			<div class="level-left">
 				<p>Showing {totalResults} companies</p>
 			</div>
-			<div class="level-right">
+			<!-- <div class="level-right">
 				<p class="mr-5">Sorting By</p>
 				<div class="select">
 					<select>
@@ -117,14 +117,14 @@
 						<option>Most Reviewed</option>
 					</select>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 
 	<!-- Companies List -->
 	{#each $filteredProfiles.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) as business}
 		<div class="box mb-4">
-			<article class="media">
+			<article class="media" style="cursor: pointer;">
 				<div
 					class="media-left"
 					on:click={() => business.id && redirectToBusinessProfile(business.id.toString())}
