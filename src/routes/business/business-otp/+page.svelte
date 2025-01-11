@@ -15,9 +15,11 @@
   onMount(() => {
       // Retrieve the email from localStorage
       email = localStorage.getItem('email') || '';
-      if (!email) {
-          alert('Email is not set. Please return to the previous step.');
-      }
+	  console.log('email', email);
+	  
+    //   if (!email) {
+    //       alert('Email is not set. Please return to the previous step.');
+    //   }
       startTimer();
   });
 
@@ -71,7 +73,7 @@
 
           const data = await response.json();
           alert('Account verified successfully!');
-          goto('/business/business-category');
+          goto('/org/explore');
       } catch (error) {
           console.error('Error verifying account:', error);
           alert('Verification failed. Please try again.');
