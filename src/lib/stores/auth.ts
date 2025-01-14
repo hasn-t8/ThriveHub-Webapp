@@ -10,6 +10,7 @@ type User = {
 
 export const theUser = writable<User>({ userTypes: [] });
 export const isAdmin = writable(false);
+export const isBusinessOwner = writable(false);
 
 type JWTHeader = {
 	alg: string;
@@ -45,6 +46,7 @@ export function logout() {
 	localStorage.removeItem('authToken');
 	loggedInStatus.set(false);
 	isAdmin.set(false);
+	isBusinessOwner.set(false);
 	goto('/');
 }
 
@@ -107,6 +109,9 @@ export function setUserAndType() {
 			theUser.set(payload as User);
 			if ((payload as User).userTypes.includes('admin')) {
 				isAdmin.set(true);
+			}
+			if ((payload as User).userTypes.includes('business-owner')) {
+				isBusinessOwner.set(true);
 			}
 		}
 	}

@@ -1,47 +1,49 @@
 <script>
 	import { API_BASE_URL } from '$lib/config';
 	import { goto } from '$app/navigation';
-	import AboutUsReviews from '../../components/reviews/about-us-reviews.svelte';
+	import { getJWT } from '$lib/stores/auth';
+	// import AboutUsReviews from '../../components/reviews/about-us-reviews.svelte';
 	import { onMount } from 'svelte';
+
 
 	let query = '';
 	let userType = '';
 	let error = '';
 
-	// Function to decode JWT token
-	/**
-	 * @param {string} token
-	 */
-	function decodeJWT(token) {
-		try {
-			const [, payload] = token.split('.');
-			const decodedPayload = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-			return JSON.parse(decodedPayload);
-		} catch (error) {
-			console.error('Error decoding JWT:', error);
-			return null;
-		}
-	}
+	// // Function to decode JWT token
+	// /**
+	//  * @param {string} token
+	//  */
+	// function decodeJWT(token) {
+	// 	try {
+	// 		const [, payload] = token.split('.');
+	// 		const decodedPayload = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+	// 		return JSON.parse(decodedPayload);
+	// 	} catch (error) {
+	// 		console.error('Error decoding JWT:', error);
+	// 		return null;
+	// 	}
+	// }
 
 	// Fetch user type on component mount
-	onMount(() => {
-		const jwtToken = localStorage.getItem('authToken'); // Get the JWT token from localStorage
-		if (!jwtToken) {
-			error = 'No JWT token found. Please log in.';
-			console.error(error);
-			return;
-		}
+	// onMount(() => {
+	// 	// const jwtToken = localStorage.getItem('authToken'); // Get the JWT token from localStorage
+	// 	// if (!jwtToken) {
+	// 	// 	error = 'No JWT token found. Please log in.';
+	// 	// 	console.error(error);
+	// 	// 	return;
+	// 	// }
 
-		const decodedPayload = decodeJWT(jwtToken);
-		if (!decodedPayload) {
-			error = 'Failed to decode JWT token.';
-			console.error(error);
-			return;
-		}
+	// 	// const decodedPayload = decodeJWT(jwtToken);
+	// 	// if (!decodedPayload) {
+	// 	// 	error = 'Failed to decode JWT token.';
+	// 	// 	console.error(error);
+	// 	// 	return;
+	// 	// }
 
-		userType = decodedPayload?.userTypes?.[0] || '';
-		console.log('User Type:', userType);
-	});
+	// 	// userType = decodedPayload?.userTypes?.[0] || '';
+	// 	// console.log('User Type:', userType);
+	// });
 
 	// Function to handle the search button click
 	function searchReviews() {
@@ -54,10 +56,10 @@
 		// Redirect to a new page with the query as a URL parameter
 		goto(`/business/reviews?query=${encodeURIComponent(query)}`);
 	}
-			// Redirect to signup page
-			function redirectToSignup() {
-			window.location.href = '/business/signup'; // Adjust the path to your signup page
-		}
+		// 	// Redirect to signup page
+		// 	function redirectToSignup() {
+		// 	window.location.href = '/business/signup'; // Adjust the path to your signup page
+		// }
 </script>
 
 
@@ -72,16 +74,19 @@
 			<span class="icon is-info">
 				<i class="fas fa-search"></i>
 			</span>
-			<input type="text" bind:value={query} placeholder="Search reviews..." />
-			<button on:click={searchReviews}>Search</button>
+			<!-- <input type="text" bind:value={query} placeholder="Search reviews..." />
+			<button on:click={searchReviews}>Search</button> -->
+			<input type="text" placeholder="Search reviews..." />
+			<button>Search</button>
+			
 		</div>
 
-		{#if error}
+		<!-- {#if error}
 		<p style="color: blue;">{error}</p>
 		<p style="color: blue; cursor: pointer; text-decoration: underline;" on:click={() => redirectToSignup()}>
 			Create your account
 		</p>
-	{/if}
+	{/if} -->
 	
 
 	
