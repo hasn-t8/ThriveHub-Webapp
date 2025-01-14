@@ -73,7 +73,7 @@
 
           const data = await response.json();
           alert('Account verified successfully!');
-          goto('/org/explore');
+          goto('/business/business-category');
       } catch (error) {
           console.error('Error verifying account:', error);
           alert('Verification failed. Please try again.');
