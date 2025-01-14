@@ -53,6 +53,7 @@
 	let customKeyFeatureTitle = '';
 	let keyFeatureDescription = '';
 	let keyFeatures: {
+		id: any;
 		keyPointName: any;
 		text: any;
 		title: string;
@@ -66,6 +67,7 @@
 		description: string;
 	}[] = [];
 	type KeyFeature = {
+		id: any;
 		name: string;
 	};
 
@@ -203,7 +205,7 @@
 				// alert('Keypoint added successfully!');
 
 				// Reload the keypoints list after successful addition
-				await reloadKeypointsList();
+				await reloadKeypointsList(type);
 
 				// Clear the input fields
 				clearForm();
@@ -222,7 +224,7 @@
 	) {
 		try {
 			// Fetch the updated keypoints list for the specified type
-			const updatedKeypoints = await fetchKeyPoints(type, 'feature');
+			const updatedKeypoints = await fetchKeyPoints(type, 'feature') || [];
 
 			// Update the UI directly
 			const keypointsListElement = document.getElementById(listElementId); // Dynamic element assignment
@@ -260,15 +262,15 @@
 		const titleInput = document.getElementById('keyFeatureTitle'); // Assuming an element with this ID exists
 		const descriptionInput = document.getElementById('keyFeatureDescription'); // Assuming an element with this ID exists
 
-		if (titleInput) titleInput.value = '';
-		if (descriptionInput) descriptionInput.value = '';
+		if (titleInput) (titleInput as HTMLInputElement).value = '';
+		if (descriptionInput) (descriptionInput as HTMLInputElement).value = '';
 	}
 
 	// Function to fetch and set key points
 	async function fetchKeyPoints(
 		type: string | undefined,
 		targetVariable: string | undefined
-	) {
+	): Promise<any> {
 		try {
 			const response = await getKeyPoints(slug);
 			if (response) {
