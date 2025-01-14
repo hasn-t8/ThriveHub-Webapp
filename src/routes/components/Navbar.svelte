@@ -58,7 +58,7 @@
 				<a class="navbar-item" href="/org/explore">Explore</a>
 				<!-- <a class="navbar-item" href="#blog">Blog</a>
 				<a class="navbar-item" href="#help">Help</a> -->
-				<a class="navbar-item" href="/user/settings">Settings</a>
+				
 				{#if $isAdmin}
 					<a class="navbar-item" href="/admin-area/business-list">Dashboard</a>
 				{/if}
@@ -66,6 +66,7 @@
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<!-- svelte-ignore a11y_missing_attribute -->
+					<a class="navbar-item" href="/user/settings">Settings</a>
 					<a class="navbar-item" onclick={() => logoutHandler()}>Logout</a>
 				{:else if $page.url.pathname.includes('/business')}
 					<a class="navbar-item" href="/business/sign-in">Login</a>
