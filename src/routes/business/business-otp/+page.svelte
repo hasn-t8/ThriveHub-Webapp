@@ -15,9 +15,11 @@
   onMount(() => {
       // Retrieve the email from localStorage
       email = localStorage.getItem('email') || '';
-      if (!email) {
-          alert('Email is not set. Please return to the previous step.');
-      }
+	  console.log('email', email);
+	  
+    //   if (!email) {
+    //       alert('Email is not set. Please return to the previous step.');
+    //   }
       startTimer();
   });
 

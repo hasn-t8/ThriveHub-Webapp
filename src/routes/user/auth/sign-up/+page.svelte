@@ -2,6 +2,7 @@
     import { goto } from '$app/navigation';
     import { API_BASE_URL } from '$lib/config';
     import { userEmail } from '$lib/stores/auth'; // Assuming this is a writable store
+	import { login } from '$lib/stores/auth';
 
 	let email = '';
     let emailError = '';
@@ -44,6 +45,8 @@
 
             const data = await response.json();
             console.log('Account created:', data);
+
+			login(data.token);
 
             // Update the userEmail store
             userEmail.set(email);
