@@ -1,53 +1,13 @@
 <script>
-	import { API_BASE_URL } from '$lib/config';
 	import { goto } from '$app/navigation';
-	import { getJWT } from '$lib/stores/auth';
+	import { isBusinessOwner, isAdmin } from '$lib/stores/auth';
 	import AboutUsReviews from '../../components/reviews/about-us-reviews.svelte';
-	import { onMount } from 'svelte';
-
 
 	let query = '';
-	let userType = '';
 	let error = '';
-
-	// // Function to decode JWT token
-	// /**
-	//  * @param {string} token
-	//  */
-	// function decodeJWT(token) {
-	// 	try {
-	// 		const [, payload] = token.split('.');
-	// 		const decodedPayload = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-	// 		return JSON.parse(decodedPayload);
-	// 	} catch (error) {
-	// 		console.error('Error decoding JWT:', error);
-	// 		return null;
-	// 	}
-	// }
-
-	// Fetch user type on component mount
-	// onMount(() => {
-	// 	// const jwtToken = localStorage.getItem('authToken'); // Get the JWT token from localStorage
-	// 	// if (!jwtToken) {
-	// 	// 	error = 'No JWT token found. Please log in.';
-	// 	// 	console.error(error);
-	// 	// 	return;
-	// 	// }
-
-	// 	// const decodedPayload = decodeJWT(jwtToken);
-	// 	// if (!decodedPayload) {
-	// 	// 	error = 'Failed to decode JWT token.';
-	// 	// 	console.error(error);
-	// 	// 	return;
-	// 	// }
-
-	// 	// userType = decodedPayload?.userTypes?.[0] || '';
-	// 	// console.log('User Type:', userType);
-	// });
-
 	// Function to handle the search button click
 	function searchReviews() {
-		if (userType !== 'business-owner') {
+		if (!isAdmin && !isBusinessOwner) {
 			error = 'Only business owners can search for reviews.';
 			console.error(error);
 			return;
@@ -56,12 +16,11 @@
 		// Redirect to a new page with the query as a URL parameter
 		goto(`/business/reviews?query=${encodeURIComponent(query)}`);
 	}
-		// 	// Redirect to signup page
-		// 	function redirectToSignup() {
-		// 	window.location.href = '/business/signup'; // Adjust the path to your signup page
-		// }
+	// Redirect to signup page
+	function redirectToSignup() {
+		goto('/business/signup');
+	}
 </script>
-
 
 <div class="hero-section">
 	<div class="text-content">
@@ -70,26 +29,25 @@
 			<span style="color: #118BF6;">Thrive Hub</span>
 		</h1>
 		<p>Authentic reviews from genuine customers.</p>
-		<div class="search-box">
+		<!-- <div class="search-box">
 			<span class="icon is-info">
 				<i class="fas fa-search"></i>
 			</span>
-			<!-- <input type="text" bind:value={query} placeholder="Search reviews..." />
-			<button on:click={searchReviews}>Search</button> -->
-			<input type="text" placeholder="Search reviews..." />
-			<button>Search</button>
-			
+			<input type="text" bind:value={query} placeholder="Search reviews..." />
+			<button on:click={searchReviews}>Search</button>
 		</div>
 
-		<!-- {#if error}
-		<p style="color: blue;">{error}</p>
-		<p style="color: blue; cursor: pointer; text-decoration: underline;" on:click={() => redirectToSignup()}>
-			Create your account
-		</p>
-	{/if} -->
-	
-
-	
+		{#if error}
+			<p style="color: blue;">
+				<span>{error}</span>
+				<span
+					style="color: blue; cursor: pointer; text-decoration: underline;"
+					on:click={() => redirectToSignup()}
+				>
+					Create your account</span
+				>
+			</p>
+		{/if} -->
 	</div>
 </div>
 
@@ -206,8 +164,8 @@
 
 <div>
 	<AboutUsReviews />
-  </div>
-  
+</div>
+
 <!-- About Us -->
 <section class="section about-section">
 	<div class="container">
