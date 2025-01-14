@@ -198,7 +198,11 @@
 		</div>
 	</div>
 </div>
-<AboutUsReviews />
+
+<div>
+	<AboutUsReviews />
+  </div>
+  
 <!-- About Us -->
 <section class="section about-section">
 	<div class="container">
