@@ -281,6 +281,12 @@ goto('/business/business-verify');
     font-weight: 600;
   }
   .button.is-primary {
+    background-color: rgb(0, 110, 184);
+    border-color: transparent;
+    color: white;
+    border-radius: 11px;
+  }
+  .button.is-primary[disabled] {
     background-color: lightgrey;
     border-color: transparent;
     color: gray;
