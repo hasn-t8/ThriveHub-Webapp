@@ -1,87 +1,89 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { deleteReview, getUserReviews, updateReview } from '$lib/stores/reviews';
-	import { getProfileById } from '$lib/stores/business';
-	import { onMount } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
-	interface Review {
-		id: number;
-		business_id: number;
-		user_id: number;
-		rating: number;
-		feedback: string;
-		created_at: string;
-		updated_at: string;
-		customer_name: string;
-		approval_status: string;
-		org_name?: string;
-	}
+    import { goto } from '$app/navigation';
+    import { deleteReview, getUserReviews, updateReview } from '$lib/stores/reviews';
+    import { getProfileById } from '$lib/stores/business';
+    import { onMount } from 'svelte';
+    import { writable, type Writable } from 'svelte/store';
 
-	let reviews: Writable<Review[]> = writable([]);
-	let currentPage = 1;
-	let itemsPerPage = 6;
-	let totalPages = 0;
-    let reviewId: null = null;
-    /**
-	 * @type {null}
-	 */
-    let businessId: null = null;
+    interface Review {
+        likes: number;
+        id: number;
+        business_id: number;
+        user_id: number;
+        rating: number;
+        feedback: string;
+        created_at: string;
+        updated_at: string;
+        customer_name: string;
+        approval_status: string;
+        org_name?: string;
+    }
 
-	// Fetch reviews by the authenticated user
-	async function fetchReviews(): Promise<void> {
-		try {
-			const userReviews = await getUserReviews();
-			if (userReviews) {
-				for (const review of userReviews) {
-					if (review.business_id) {
-						const businessProfile = await getProfileById(review.business_id);
-						review.org_name = businessProfile?.org_name || 'Unknown Organization';
-					}
-				}
-				reviews.set(userReviews);
-				totalPages = Math.ceil(userReviews.length / itemsPerPage);
-			} else {
-				console.error('Failed to fetch user reviews.');
-			}
-		} catch (error) {
-			console.error('Error fetching reviews:', error);
-		}
-	}
+    let reviews: Writable<Review[]> = writable([]);
+    let currentPage = 1;
+    let itemsPerPage = 6;
+    let totalPages = 0;
 
-	// Edit a review
+    async function fetchReviews(): Promise<void> {
+        try {
+            const userReviews = await getUserReviews();
+            if (userReviews) {
+                for (const review of userReviews) {
+                    if (review.business_id) {
+                        const businessProfile = await getProfileById(review.business_id);
+                        review.org_name = businessProfile?.org_name || 'Unknown Organization';
+                    }
+                }
+                reviews.set(userReviews);
+                totalPages = Math.ceil(userReviews.length / itemsPerPage);
+            } else {
+                console.error('Failed to fetch user reviews.');
+            }
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+        }
+    }
 
-    // Function to handle edit and redirect to edit page with reviewId and businessId in the URL
     function handleEdit(businessId: number, reviewId: number): void {
-		goto(`/user/review/${businessId}?reviewId=${reviewId}`);
-	}
+        goto(`/user/review/${businessId}?reviewId=${reviewId}`);
+    }
 
-	
-	// Delete a review
-	async function handleDeleteReview(reviewId: number): Promise<void> {
-		try {
-			const isDeleted = await deleteReview(reviewId);
-			if (isDeleted) {
-				reviews.update((currentReviews) =>
-					currentReviews.filter((review) => review.id !== reviewId)
-				);
-				alert('Review deleted successfully.');
-			} else {
-				console.error('Failed to delete the review.');
-			}
-		} catch (error) {
-			console.error('Error deleting review:', error);
-		}
-	}
-// Utility function to scroll to top
-function scrollToTop() {
-		window.scrollTo({
-			top: 0,
-			behavior: 'smooth'
-		});
-	}
+    async function handleDeleteReview(reviewId: number): Promise<void> {
+        try {
+            const isDeleted = await deleteReview(reviewId);
+            if (isDeleted) {
+                reviews.update((currentReviews) =>
+                    currentReviews.filter((review) => review.id !== reviewId)
+                );
+                alert('Review deleted successfully.');
+            } else {
+                console.error('Failed to delete the review.');
+            }
+        } catch (error) {
+            console.error('Error deleting review:', error);
+        }
+    }
 
-	// Handle page click
-	function handlePageClick(pageNumber: number) {
+    function handleLike(reviewId: number): void {
+        reviews.update((currentReviews) => {
+            return currentReviews.map((review) => {
+                if (review.id === reviewId) {
+                    review.likes += 1;
+                }
+                return review;
+            });
+        });
+    }
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    }
+
+		// Handle page click
+		function handlePageClick(pageNumber: number) {
 		currentPage = pageNumber;
 		scrollToTop();
 	}
@@ -108,168 +110,232 @@ function scrollToTop() {
 		scrollToTop();
 	}
 
-	onMount(() => {
-		fetchReviews();
-	}); 
+    onMount(() => {
+        fetchReviews();
+    });
 </script>
 
 <div class="review-list-container">
-	<div class="header">
-		<h1>All Reviews</h1>
-	</div>
+    {#if $reviews.length > 0}
+        <div class="container">
+			<div class="h1"> All Reviews</div>
 
-{#if $reviews.length > 0}
+			{#each $reviews.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) as review}
+                <div class="card review-card">
+                    <div class="card-content review-card-content">
+                        <div class="review-header">
+                            <div class="user-info">
+                                <h5 class="name"> {review.org_name || 'Unknown Organization'}
+                                </h5>
+                                {review.rating} <span class="star">★</span>
+                            </div>
+                            <div class="meta-info">
+                                <strong>{review.approval_status === 'true' ? 'Approved' : 'Pending'}</strong>
+                                <p class="meta-date">
+                                    {new Date(review.created_at).toLocaleDateString()}
+                                </p>
+                                <button
+                                    class="custom-button edit-button"
+                                    on:click={() => handleEdit(review.business_id, review.id)}>
+                                    Edit
+                                </button>
+                                <button
+                                    class="custom-button delete-button"
+                                    on:click={() => handleDeleteReview(review.id)}>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
 
-<ul class="review-list">
-	{#each $reviews.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) as review}
-		<li class="review-item">
-			<div class="review-content">
-				<div class="reviewer-name">Reviewer: {review.customer_name || 'Anonymous'}</div>
-				<div class="review-business">Organization: {review.org_name || 'Unknown Organization'}</div>
-				<div class="review-rating">Rating: {review.rating || 'N/A'}</div>
-				<div class="review-status">Status: {review.approval_status === 'true' ? 'Approved' : 'Pending'}</div>
-				<div class="review-created">Date: {new Date(review.created_at).toLocaleDateString()}</div>
-				<div class="review-feedback">Feedback: {review.feedback || 'No feedback provided.'}</div>
-				<div class="status">
-					<button
-						class="custom-button edit-button"
-						on:click={() => handleEdit(review.business_id, review.id)}>
-						Edit
-					</button>
-					<button
-						class="custom-button delete-button"
-						on:click={() => handleDeleteReview(review.id)}>
-						Delete
-					</button>
-				</div>
-			</div>
-		</li>
-	{/each}
-</ul>
-			<!-- Pagination -->
-            <div class="pagination-container has-text-weight-bold">
-                <!-- "Go to First" Button -->
-                <button
-                    class="pagination-arrow double-arrow mr-5"
-                    on:click={() => handlePageClick(1)}
-                >
-                    &lt;&lt;
-                </button>
-                <!-- Previous Button -->
-                <button
-                    class="pagination-arrow single-arrow mr-4"
-                    on:click={prevPage}
-                    disabled={currentPage === 1}
-                >
-                    &lt;
-                </button>
+                        <hr />
+                        <p class="review-text">{review.feedback || 'No feedback provided.'}</p>
+                        <div class="review-footer">
+                            <p class="likes">
+                                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                                <!-- svelte-ignore a11y_no_static_element_interactions -->
+                                <i class="fas fa-heart" on:click={() => handleLike(review.id)}></i>
+                                {review.likes}
+                            </p>
+                            <p class="share">
+                                <i class="fas fa-share-alt"></i>
+                            </p>
+                        </div>
 
-                {#if currentPage > 5}
-                    <span class="pagination-link">...</span>
-                {/if}
+                    </div>
+                </div>
+            {/each}
+        </div>
+  		<!-- Pagination -->
+		  <div class="pagination-container has-text-weight-bold">
+			<!-- "Go to First" Button -->
+			<button class="pagination-arrow double-arrow mr-5" on:click={() => handlePageClick(1)}>
+				&lt;&lt;
+			</button>
+			<!-- Previous Button -->
+			<button
+				class="pagination-arrow single-arrow mr-4"
+				on:click={prevPage}
+				disabled={currentPage === 1}
+			>
+				&lt;
+			</button>
 
-                <!-- Interval Page Numbers -->
-                {#each getPageNumbers() as page}
-                    <button
-                        class="pagination-link {currentPage === page ? 'is-current' : ''}"
-                        on:click={() => handlePageClick(page)}
-                    >
-                        {page}
-                    </button>
-                {/each}
+			{#if currentPage > 5}
+				<span class="pagination-link">...</span>
+			{/if}
 
-                <!-- "Go to Last" Button -->
+			<!-- Interval Page Numbers -->
+			{#each getPageNumbers() as page}
+				<button
+					class="pagination-link {currentPage === page ? 'is-current' : ''}"
+					on:click={() => handlePageClick(page)}
+				>
+					{page}
+				</button>
+			{/each}
 
-                {#if currentPage < totalPages - 4}
-                    <span class="pagination-link">...</span>
-                {/if}
-                <button
-                    class="pagination-arrow single-arrow ml-4"
-                    on:click={nextPage}
-                    disabled={currentPage === totalPages}
-                >
-                    >
-                </button>
+			<!-- "Go to Last" Button -->
 
-                <!-- Next Button -->
-                <button
-                    class="pagination-arrow double-arrow ml-5"
-                    on:click={() => handlePageClick(totalPages)}
-                >
-                    >>
-                </button>
-            </div>
-            {:else}
-			<p>No reviews available to display.</p>
-		{/if}
+			{#if currentPage < totalPages - 4}
+				<span class="pagination-link">...</span>
+			{/if}
+			<button
+				class="pagination-arrow single-arrow ml-4"
+				on:click={nextPage}
+				disabled={currentPage === totalPages}
+			>
+				>
+			</button>
+
+			<!-- Next Button -->
+			<button
+				class="pagination-arrow double-arrow ml-5"
+				on:click={() => handlePageClick(totalPages)}
+			>
+				>>
+			</button>
+		</div>
+    {:else}
+        <p>No reviews available to display.</p>
+    {/if}
 </div>
 
+
+
+
 <style>
-	.analytics-header {
-		margin-left: 50px;
-		padding: 20px;
-		background-color: transparent;
+		/* ========================================
+   Review Section Page Styling Starts Here
+======================================== */
+
+.review-list-container {
+        padding: 10px;
+        font-family: Arial, sans-serif;
+	
+    }
+	.container{
+
+		justify-items: center;
 	}
-	.header-top {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-    
-	.header .add-button {
-		cursor: pointer;
-	}
-	.header .add-button:hover {
-		background-color: #0056b3; /* Darker blue on hover */
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow effect */
-	}
-	.header .add-button:active {
-		background-color: #004080; /* Even darker blue on click */
+	.card {
+        flex: 0 0 calc(33.33% - 10px);
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        background-color: #fff;
+		width: 80%;
+    }
+
+  .h1{
+	padding-right: 71%;
+    /* align-content: start; */
+    font-size: large;
+    font-weight: 600;
+  }
+	
+
+.star {
+		color: #ffd700;
+		font-weight: bold;
 	}
 
-	.divider {
-		border: none;
-		height: 1px;
-		background-color: #dfe6ed;
-		margin: 20px 0;
+	.name {
+		font-size: 1rem;
+		font-weight: bold;
+		margin-bottom: 0.5rem;
 	}
-	.review-list-container {
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 20px;
-	}
-    .header {
+	/* Header Section */
+	.review-header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 20px;
+		margin-bottom: 0rem;
 	}
-	.review-list {
-		list-style-type: none;
-		padding: 0;
+
+
+	.user-info .name {
+		font-size: 1.4rem;
 		margin: 0;
+		font-weight: 700;
 	}
-	.review-item {
-		background-color: #f9f9f9;
-		border-radius: 5px;
-		padding: 15px;
-		margin-bottom: 10px;
-		border: 1px solid #e0e0e0;
+
+	.meta-info {
+		text-align: right;
 	}
-	.review-content {
+
+	.meta-date {
+		font-size: 0.7rem;
+		color: #999;
+		margin-top: 2px;
+	}
+
+	
+
+	.review-text {
+		font-size: 1rem;
+		line-height: 1.4;
+		color: #8b8a8f;
+		margin-bottom: 1rem;
+	}
+
+	.review-footer {
 		display: flex;
-		flex-direction: column;
-		gap: 8px;
+		align-items: center; /* Vertically center the icons and text */
+		font-size: 0.9rem;
+		color: #555;
 	}
-	.reviewer-name,
-	.review-business,
-	.review-rating,
-	.review-status,
-	.review-created,
-	.review-feedback {
-		font-size: 14px;
-		margin: 5px 0;
+
+	.likes,
+	.share {
+		display: flex;
+		align-items: center;
+		margin-right: 1rem; /* Space between the like and share sections */
 	}
+
+	.likes i,
+	.share i {
+		margin-right: 8px; /* Add space between the icon and text */
+	}
+
+
+	.fas {
+		color: unset !important;
+	}
+
+	.likes {
+		color: #ff6b6b !important; /* Heart color */
+	}
+
+	.share {
+		color: #4a90e2 !important; /* Share icon color */
+	}
+
+	/* Reviews about us Section Start */
+
+	
+	/* Reviews about us Section End */
+
     	.pagination-container {
 		display: flex;
 		justify-content: center;
@@ -290,118 +356,5 @@ function scrollToTop() {
 		cursor: pointer;
 	}
 
-	.pagination-arrow.double-arrow {
-		color: #b08888; /* Light black */
-	}
 
-	.pagination {
-		display: flex;
-		align-items: center;
-		gap: 5px;
-	}
-
-	.pagination-link {
-		padding: 5px 10px;
-		cursor: pointer;
-		user-select: none;
-		color: black;
-		border: 1px solid rgb(193, 193, 193);
-		border-radius: 5px;
-		background-color: transparent;
-		transition:
-			background-color 0.3s,
-			border-color 0.3s;
-	}
-
-	.pagination-link:hover,
-	.pagination-link.is-current {
-		background-color: #118cf6;
-		color: white;
-		border-color: #118cf6;
-	}
-
-	.pagination-link.disabled {
-		pointer-events: none;
-		opacity: 0.5;
-	}
-
-    /* Styles remain unchanged */
-	.main-content {
-		margin-left: 200px;
-	}
-	.analytics-header {
-		margin-left: 50px;
-		padding: 20px;
-		background-color: transparent;
-	}
-	.header-top {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-    
-	.header .add-button {
-		cursor: pointer;
-	}
-	.header .add-button:hover {
-		background-color: #0056b3; /* Darker blue on hover */
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow effect */
-	}
-	.header .add-button:active {
-		background-color: #004080; /* Even darker blue on click */
-	}
-
-	.divider {
-		border: none;
-		height: 1px;
-		background-color: #dfe6ed;
-		margin: 20px 0;
-	}
-	.review-list-container {
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 20px;
-	}
-    .header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 20px;
-	}
-	.review-list {
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-	}
-	.review-item {
-		background-color: #f9f9f9;
-		border-radius: 5px;
-		padding: 15px;
-		margin-bottom: 10px;
-		border: 1px solid #e0e0e0;
-	}
-	.review-content {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-	.reviewer-name,
-	.review-business,
-	.review-rating,
-	.review-status,
-	.review-created,
-	.review-feedback {
-		font-size: 14px;
-		margin: 5px 0;
-	}
-	.reviewer-name {
-		font-weight: bold;
-		font-size: 16px;
-	}
-	.review-business {
-		color: #555;
-	}
-	.review-feedback {
-		color: #666;
-	}
 </style>
