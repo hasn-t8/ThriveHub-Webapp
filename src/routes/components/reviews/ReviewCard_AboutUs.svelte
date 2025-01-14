@@ -1,7 +1,6 @@
 <script>
 	export let review = {
 		name: 'Unknown Reviewer',
-		title: 'No Title',
 		location: 'Unknown Location',
 		rating: 0,
 		date: 'Unknown Date',
@@ -14,35 +13,34 @@
 <div class="card review-card">
 	<div class="card-content review-card-content">
 		<div class="review-header">
-			<div class="review-user">
-				<div class="user-info">
-					<h5 class="name">{review.name}</h5>
-					<p class="rating">
-						{review.rating} <span class="star">★</span>
+			<div class="user-info">
+				<h5 class="name">{review.name}</h5>
+				{review.rating} <span class="star">★</span>
+			</div>
+				<div class="meta-info">
+					<p class="location">
+						<i class="fa fa-map-marker-alt location-icon"></i>
+						{review.location}
+					</p>
+					<p class="meta-date">{review.date}</p>
+				</div>
+				
+		</div>
+				<hr />
+	
+				<p class="review-text">{review.text}</p>
+				<div class="review-footer">
+					<p class="likes">
+						<i class="fas fa-heart"></i>
+						{review.likes}
+					</p>
+					<p class="share">
+						<i class="fas fa-share-alt"></i>
 					</p>
 				</div>
-			</div>
-			<div class="meta-info">
-				<i class="fa fa-map-marker-alt location-icon"></i>
-				<span class="meta-location">{review.location}</span>
-				<p class="meta-date">{review.date}</p>
-			</div>
-		</div>
-		<div class="is-divider"></div>
-		<p class="review-text">
-			{review.text}
-		</p>
-		<div class="review-footer">
-			<p class="likes">
-				<i class="fas fa-heart"></i>
-				<span>{review.likes}</span>
-			</p>
-			<p class="share">
-				<i class="fas fa-share-alt"></i>
-			</p>
 		</div>
 	</div>
-</div>
+
 
 <!-- <div class="card review-card">
 	<div class="card-content review-card-content">
@@ -52,7 +50,7 @@
 				<div class="user-info">
 					<h5 class="name">{review.name}</h5>
 					<p class="title">{review.title}</p>
-					<p class="rating">
+					
 						{review.rating} <span class="star">★</span>
 					</p>
 				</div>
@@ -81,11 +79,18 @@
 	/* ========================================
    Review Section Page Styling Starts Here
 ======================================== */
-
+	.star {
+		color: #ffd700;
+		font-weight: bold;
+	}
 	.review-card {
 		flex: 0 0 calc(33.33% - 20px);
 	}
-
+	.name {
+		font-size: 1rem;
+		font-weight: bold;
+		margin-bottom: 0.5rem;
+	}
 	.horizontal-scroll-container {
 		display: flex;
 		flex-wrap: nowrap;

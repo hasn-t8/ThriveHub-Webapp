@@ -5,6 +5,7 @@
 	import { writable } from 'svelte/store';
 	import { getAllReviewsByBusinessId } from '$lib/stores/reviews';
 	import type { ProfileData } from '$lib/types/Profile';
+	import { getRepliesForReview } from '$lib/stores/reply-reviews';
 
 	// Profile store
 	let theProfile = writable<ProfileData>({
@@ -27,6 +28,9 @@
 	// Reviews store
 	let reviews = writable<any[]>([]);
 
+	// Store for replies
+	let repliesStore = writable<{ [key: number]: any[] }>({});
+
 	// Fetch business profile
 	async function fetchProfile(): Promise<void> {
 		try {
@@ -41,15 +45,38 @@
 		}
 	}
 
-	// Fetch reviews
 	async function fetchReviews(businessId: number): Promise<void> {
 		try {
 			const reviewsData = await getAllReviewsByBusinessId(businessId);
 			if (reviewsData) {
 				reviews.set(reviewsData);
+
+				// Initialize empty replies for each review
+				const initialReplies = reviewsData.reduce((acc: any, review: any) => {
+					acc[review.id] = [];
+					return acc;
+				}, {});
+				repliesStore.set(initialReplies);
+
+				// Fetch replies for each review
+				await Promise.all(reviewsData.map((review: any) => fetchReplies(review.id)));
 			}
 		} catch (error) {
 			console.error('Error fetching reviews:', error);
+		}
+	}
+
+	// Fetch replies for a review
+	async function fetchReplies(reviewId: number): Promise<void> {
+		try {
+			const replies = await getRepliesForReview(reviewId);
+			console.log(`Fetched replies for review ${reviewId}:`, replies);
+			repliesStore.update(current => {
+				current[reviewId] = replies;
+				return current;
+			});
+		} catch (error) {
+			console.error(`Error fetching replies for review ${reviewId}:`, error);
 		}
 	}
 
@@ -61,9 +88,9 @@
 		});
 	}
 
-    let currentPage = 1;
-    let itemsPerPage = 4;
-    let totalPages = 0;
+	let currentPage = 1;
+	let itemsPerPage = 4;
+	let totalPages = 0;
 
 	// Handle page click
 	function handlePageClick(pageNumber: number) {
@@ -98,90 +125,98 @@
 	});
 </script>
 
+
 <section class="page-header">
-	<h1>{$theProfile.org_name}</h1>
+    <h1>{$theProfile.org_name}</h1>
 </section>
 <div class="container">
-	<div class="columns is-variable is-8">
-		<!-- About Section -->
-		<div class="column is-two-thirds">
-			<div class="card">
-				<h2>About {$theProfile.org_name}</h2>
-				<p>
-					{$theProfile.about_business}
-				</p>
-			</div>
-			{#if $reviews && $reviews.length > 0}
-				<h2>Reviews</h2>
-				<div class="review-list">
-					{#each $reviews as review}
-						<div class="card review-item">
-							<div class="card-content">
-								<p><strong>Reviewer:</strong> {review.customer_name || 'Anonymous'}</p>
-								<p><strong>Feedback:</strong> {review.feedback || 'No Comment'}</p>
-								<p><strong>Rating:</strong> {review.rating || 'N/A'}</p>
-								<p><strong>Date:</strong> {new Date(review.created_at).toLocaleDateString()}</p>
-							</div>
-						</div>
-					{/each}
-				</div>
+    <div class="columns is-variable is-8">
+        <!-- About Section -->
+        <div class="column is-two-thirds">
+            <div class="card">
+                <h2>About {$theProfile.org_name}</h2>
+                <p>{$theProfile.about_business}</p>
+            </div>
+            {#if $reviews.length > 0}
+                <h2>Reviews</h2>
+                <div class="review-list">
+					{#each $reviews.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) as review}
+                        <div class="card review-item">
+                            <div class="card-content">
+                                <p><strong>Reviewer:</strong> {review.customer_name || 'Anonymous'}</p>
+                                <p><strong>Feedback:</strong> {review.feedback || 'No Comment'}</p>
+                                <p><strong>Rating:</strong> {review.rating || 'N/A'}</p>
+                                <p><strong>Date:</strong> {new Date(review.created_at).toLocaleDateString()}</p>
 
+                                <!-- Replies Section -->
+                    	<!-- Replies Section -->
+								{#if $repliesStore[review.id]?.length > 0}
+								<div class="replies-section">
+									<h4>Replies:</h4>
+									<ul class="reply-list">
+										{#each $repliesStore[review.id] as reply}
+											<div class="card">
+												<div class="reply-item">
+													<p>{reply.reply}</p>
+													<p><small>{new Date(reply.created_at).toLocaleString()}</small></p>
+												</div>
+											</div>
+										{/each}
+									</ul>
+								</div>
+							{:else}
+								<p>No replies yet.</p>
+							{/if}
+                            </div>
+                        </div>
+                    {/each}
+                </div>
 
-						<!-- Pagination -->
-		<div class="pagination-container">
-			<button class="pagination-arrow double-arrow" on:click={() => handlePageClick(1)}>&lt;&lt;</button>
-			<button class="pagination-arrow single-arrow" on:click={prevPage} disabled={currentPage === 1}>&lt;</button>
-			{#each getPageNumbers() as page}
-				<button class="pagination-link {currentPage === page ? 'is-current' : ''}" on:click={() => handlePageClick(page)}>
-					{page}
-				</button>
-			{/each}
-			<button class="pagination-arrow single-arrow" on:click={nextPage} disabled={currentPage === totalPages}>&gt;</button>
-			<button class="pagination-arrow double-arrow" on:click={() => handlePageClick(totalPages)}>&gt;&gt;</button>
-		</div>
-			{:else}
-				<p>No reviews available for this business.</p>
-			{/if}
-		</div>
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    <button class="pagination-arrow double-arrow" on:click={() => handlePageClick(1)}>&lt;&lt;</button>
+                    <button class="pagination-arrow single-arrow" on:click={prevPage} disabled={currentPage === 1}>&lt;</button>
+                    {#each getPageNumbers() as page}
+                        <button class="pagination-link {currentPage === page ? 'is-current' : ''}" on:click={() => handlePageClick(page)}>
+                            {page}
+                        </button>
+                    {/each}
+                    <button class="pagination-arrow single-arrow" on:click={nextPage} disabled={currentPage === totalPages}>&gt;</button>
+                    <button class="pagination-arrow double-arrow" on:click={() => handlePageClick(totalPages)}>&gt;&gt;</button>
+                </div>
+            {:else}
+                <p>No reviews available for this business.</p>
+            {/if}
+        </div>
 
-		<!-- Contact Information and Map Section -->
-		<div class="column is-one-third">
-			<div class="card">
-				<p class="contact-item">
-					<span class="link-container">
-						<img
-							src="/assets/internet-icon.png"
-							alt="WWW Icon"
-							class="www-icon"
-						/>
-						<a
-							href={$theProfile.business_website_url}
-							target="_blank"
-							class="website-link">Go to Website</a
-						>
-						<span class="arrow">↗</span>
-					</span>
-				</p>
-				{#if $theProfile.work_email}
-					<p class="contact-item">
-						<img src="/assets/mail.png" alt="Email Icon" class="icon" />
-						<a href="mailto:{$theProfile.work_email}">{$theProfile.work_email}</a>
-					</p>
-				{/if}
-				{#if $theProfile.logo_url}
-					<div style="margin-top: 3rem;">
-						<img
-							style="min-width: 50px; max-width: 300px;"
-							src={$theProfile.logo_url}
-							alt={$theProfile.org_name}
-							class="company-logo"
-						/>
-					</div>
-				{/if}
-			</div>
-		</div>
-	</div>
+        <!-- Contact Information and Map Section -->
+        <div class="column is-one-third">
+            <div class="card">
+                <p class="contact-item">
+                    <span class="link-container">
+                        <img src="/assets/internet-icon.png" alt="WWW Icon" class="www-icon" />
+                        <a href={$theProfile.business_website_url} target="_blank" class="website-link">Go to Website</a>
+                        <span class="arrow">↗</span>
+                    </span>
+                </p>
+                {#if $theProfile.work_email}
+                    <p class="contact-item">
+                        <img src="/assets/mail.png" alt="Email Icon" class="icon" />
+                        <a href="mailto:{$theProfile.work_email}">{$theProfile.work_email}</a>
+                    </p>
+                {/if}
+                {#if $theProfile.logo_url}
+                    <div style="margin-top: 3rem;">
+                        <img style="min-width: 50px; max-width: 300px;" src={$theProfile.logo_url} alt={$theProfile.org_name} class="company-logo" />
+                    </div>
+                {/if}
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
 <style>
 	
 	.pagination-container {
