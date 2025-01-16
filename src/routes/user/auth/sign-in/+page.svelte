@@ -30,15 +30,12 @@
 			const data = await response.json();
 
 			if (response.ok) {
-
-				login(data.token);
-				//goto('/user/settings');
+				
+				login(data);
 
 				const previousPath = localStorage.getItem('previousPath') || '/';
 				localStorage.removeItem('previousPath'); // Clean up the stored path
 				goto(previousPath);
-
-
 
 			} else {
 				errorMessage = data.message || 'Login failed. Please try again.';

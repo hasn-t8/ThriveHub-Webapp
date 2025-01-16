@@ -46,7 +46,7 @@
             const data = await response.json();
             console.log('Account created:', data);
 
-			login(data.token);
+			login(data);
 
             // Update the userEmail store
             userEmail.set(email);
