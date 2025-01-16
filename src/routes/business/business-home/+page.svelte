@@ -1,18 +1,12 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { isBusinessOwner, isAdmin } from '$lib/stores/auth';
+	// import { isBusinessOwner, isAdmin } from '$lib/stores/auth';
 	import AboutUsReviews from '../../components/reviews/about-us-reviews.svelte';
 
 	let query = '';
 	let error = '';
 	// Function to handle the search button click
 	function searchReviews() {
-		if (!isAdmin && !isBusinessOwner) {
-			error = 'Only business owners can search for reviews.';
-			console.error(error);
-			return;
-		}
-
 		// Redirect to a new page with the query as a URL parameter
 		goto(`/business/reviews?query=${encodeURIComponent(query)}`);
 	}
@@ -29,7 +23,7 @@
 			<span style="color: #118BF6;">Thrive Hub</span>
 		</h1>
 		<p>Authentic reviews from genuine customers.</p>
-		<!-- <div class="search-box">
+		<div class="search-box">
 			<span class="icon is-info">
 				<i class="fas fa-search"></i>
 			</span>
@@ -47,7 +41,7 @@
 					Create your account</span
 				>
 			</p>
-		{/if} -->
+		{/if}
 	</div>
 </div>
 

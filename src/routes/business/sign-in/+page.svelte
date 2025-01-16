@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { login } from '$lib/stores/auth';
+	import { loggedInStatus, login } from '$lib/stores/auth';
 	import { API_BASE_URL } from '$lib/config';
+	import { get } from 'svelte/store';
 	
 	let email = '';
 	let password = '';
@@ -13,42 +14,84 @@
 		isLoginDisabled = !(email.trim() && password.trim());
 	}
 
+	// async function handleLogin() {
+	// 	errorMessage = '';
+	// 	isLoading = true;
+
+	// 	try {
+	// 		const response = await fetch(`${API_BASE_URL}/auth/login`, {
+	// 			method: 'POST',
+	// 			headers: {
+	// 				Accept: 'application/json',
+	// 				'Content-Type': 'application/json'
+	// 			},
+	// 			body: JSON.stringify({ email, password })
+	// 		});
+
+	// 		const data = await response.json();
+
+	// 		if (response.ok) {
+
+	// 			login(data.token);
+	// 			//goto('/user/settings');
+
+	// 			const previousPath = localStorage.getItem('previousPath') || '/';
+	// 			localStorage.removeItem('previousPath'); // Clean up the stored path
+	// 			goto(previousPath);
+
+
+
+	// 		} else {
+	// 			errorMessage = data.message || 'Login failed. Please try again.';
+	// 		}
+	// 	} catch (error) {
+	// 		errorMessage = 'An error occurred while logging in. Please try again later.';
+	// 	} finally {
+	// 		isLoading = false;
+	// 	}
+	// }
 	async function handleLogin() {
-		errorMessage = '';
-		isLoading = true;
+        errorMessage = '';
+        isLoading = true;
 
-		try {
+        try {
 			const response = await fetch(`${API_BASE_URL}/auth/login`, {
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ email, password })
-			});
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
 
-			const data = await response.json();
+            const data = await response.json();
 
-			if (response.ok) {
+            if (response.ok) {
+                console.log('Login response:', data);
 
-				login(data.token);
-				//goto('/user/settings');
+                // Pass the full data object to login
+                login(data);
 
-				const previousPath = localStorage.getItem('previousPath') || '/';
+                // Check logged-in status
+                console.log('LoggedInStatus after login:', get(loggedInStatus));
+
+                // Navigate to the previous path or a default path
+         	const previousPath = localStorage.getItem('previousPath') || '/';
 				localStorage.removeItem('previousPath'); // Clean up the stored path
 				goto(previousPath);
 
+            } else {
+                errorMessage = data.message || 'Login failed. Please try again.';
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            errorMessage = 'An error occurred while logging in. Please try again later.';
+        } finally {
+            isLoading = false;
+        }
+    }
 
 
-			} else {
-				errorMessage = data.message || 'Login failed. Please try again.';
-			}
-		} catch (error) {
-			errorMessage = 'An error occurred while logging in. Please try again later.';
-		} finally {
-			isLoading = false;
-		}
-	}
 </script>
 
 <!-- Main Content -->
