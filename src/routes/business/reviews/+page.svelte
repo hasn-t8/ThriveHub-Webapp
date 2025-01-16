@@ -36,7 +36,6 @@
 		}
 	}
 
-
 	async function fetchOrgName(id) {
 		const businessProfile = await getProfileById(id);
 		if (businessProfile && businessProfile.org_name) {
@@ -51,6 +50,7 @@
 		fetchReviews();
 	}
 </script>
+
 <section class="page-header">
 	<h1>Search Results for "{query}"</h1>
 </section>
@@ -66,8 +66,10 @@
 				<div class="review-card">
 					<div class="content">
 						<div class="title-row">
-							<p class="title is-4">{review.org_name || 'Unknown Organization'}</p>							<p class="days-ago">
-								{Math.floor((new Date() - new Date(review.created_at)) / (1000 * 60 * 60 * 24))} days ago
+							<p class="title is-4">{review.org_name || 'Unknown Organization'}</p>
+							<p class="days-ago">
+								{Math.floor((new Date() - new Date(review.created_at)) / (1000 * 60 * 60 * 24))} days
+								ago
 							</p>
 						</div>
 
@@ -95,7 +97,7 @@
 							<span class="icon is-small">
 								<i class="fas fa-edit"></i>
 							</span>
-							Reply					
+							Reply
 						</div>
 					</footer>
 				</div>

@@ -7,7 +7,7 @@
 	let error = '';
 	// Function to handle the search button click
 	function searchReviews() {
-				// Redirect to a new page with the query as a URL parameter
+		// Redirect to a new page with the query as a URL parameter
 		goto(`/business/reviews?query=${encodeURIComponent(query)}`);
 	}
 	// Redirect to signup page
