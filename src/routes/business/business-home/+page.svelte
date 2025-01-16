@@ -4,6 +4,7 @@
 	import { getJWT } from '$lib/stores/auth';
 	// import AboutUsReviews from '../../components/reviews/about-us-reviews.svelte';
 	import { onMount } from 'svelte';
+	import AboutUsReviews from '../../components/reviews/about-us-reviews.svelte';
 
 
 	let query = '';

@@ -1,6 +1,6 @@
 import { goto } from '$app/navigation';
 import { API_BASE_URL } from '$lib/config';
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
 export const userEmail = writable('');
 type User = {
@@ -34,13 +34,45 @@ type DecodedJWT = {
 /*********** Login and Logout Function ***********/
 export const loggedInStatus = writable(false);
 
-export function login(token: string) {
-	console.log('login:', token);
+// export function login(token: string) {
+// 	console.log('login:', token);
 
-	localStorage.setItem('authToken', token);
-	loggedInStatus.set(true);
-	theUser.set({ userTypes: [] });
+// 	localStorage.setItem('authToken', token);
+// 	loggedInStatus.set(true);
+// 	theUser.set({ userTypes: [] });
+// }
+
+export function login(data: { token: string; user: { id: any; email: any; full_name: any; userTypes: any; city: any; profileImage: any; }; businessProfiles: any; }) {
+    console.log('login:', data);
+
+    // Save the token
+    localStorage.setItem('authToken', data.token);
+    loggedInStatus.set(true);
+
+    // Save the user data
+    theUser.set({
+        id: data.user.id,
+        email: data.user.email,
+        fullName: data.user.full_name,
+        userTypes: data.user.userTypes,
+        city: data.user.city,
+        profileImage: data.user.profileImage,
+		businessProfiles: data.businessProfiles,
+
+    });
+	console.log('User store after login:', get(theUser));
+
+	
+    // Save the business profile data
+// Store businessProfiles in localStorage
+localStorage.setItem('businessProfiles', JSON.stringify(data.businessProfiles));
+
+// Retrieve and log the stored businessProfiles
+const storedBusinessProfiles = JSON.parse(localStorage.getItem('businessProfiles') || '[]');
+console.log('Stored businessProfiles:', storedBusinessProfiles);
+
 }
+
 
 export function logout() {
 	localStorage.removeItem('authToken');
@@ -116,22 +148,54 @@ export function setUserAndType() {
 		}
 	}
 }
+function decodeJWT(token: string): { header: JWTHeader; payload: JWTPayload; signature: string } {
+    try {
+        const [header, payload, signature] = token.split('.');
+
+        if (!header || !payload || !signature) {
+            throw new Error('Invalid JWT structure');
+        }
+
+        // Helper function to convert Base64URL to Base64 and decode it
+        const decodeBase64Url = (base64Url: string): any => {
+            // Replace Base64URL-specific characters with Base64 equivalents
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+
+            // Add padding if necessary
+            const paddingNeeded = 4 - (base64.length % 4);
+            const paddedBase64 = base64 + '='.repeat(paddingNeeded % 4);
+
+            // Decode Base64 string and parse as JSON
+            const decoded = atob(paddedBase64);
+            return JSON.parse(decoded);
+        };
+
+        return {
+            header: decodeBase64Url(header),
+            payload: decodeBase64Url(payload),
+            signature,
+        };
+    } catch (error) {
+        console.error('Failed to decode JWT:', error);
+        throw new Error('Invalid token format');
+    }
+}
 
 /*********** JWT Helper Functions ***********/
-const decodeJWT = (token: string): DecodedJWT => {
-	const [header, payload, signature] = token.split('.');
+// const decodeJWT = (token: string): DecodedJWT => {
+// 	const [header, payload, signature] = token.split('.');
 
-	const decodeBase64Url = (str: string): { [key: string]: unknown } => {
-		const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
-		const json = atob(base64);
-		return JSON.parse(json);
-	};
+// 	const decodeBase64Url = (str: string): { [key: string]: unknown } => {
+// 		const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+// 		const json = atob(base64);
+// 		return JSON.parse(json);
+// 	};
 
-	const decodedHeader = decodeBase64Url(header) as JWTHeader;
-	const decodedPayload = decodeBase64Url(payload);
+// 	const decodedHeader = decodeBase64Url(header) as JWTHeader;
+// 	const decodedPayload = decodeBase64Url(payload);
 
-	return { header: decodedHeader, payload: decodedPayload, signature };
-};
+// 	return { header: decodedHeader, payload: decodedPayload, signature };
+// };
 const isTokenValid = (token: string): boolean => {
 	const { payload } = decodeJWT(token);
 	if (!payload) return false; // If payload decoding fails, return false
