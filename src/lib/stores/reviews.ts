@@ -9,19 +9,9 @@ import type { AnyARecord } from 'node:dns';
  * @returns {Promise<any>} The reviews data or false if unauthorized.
  */
 export async function getAllReviewsByBusinessId(businessId: any) {
-    const JWT = getJWT();
-    console.log('getJWT:', JWT);
-
-    if (!JWT) {
-        goto('/user/auth/sign-in');
-        return false;
-    }
 
     const response = await fetch(`${API_BASE_URL}/reviews/business/${businessId}`, {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${JWT}`
-        }
+        method: 'GET'
     });
 
     if (!response.ok) {
