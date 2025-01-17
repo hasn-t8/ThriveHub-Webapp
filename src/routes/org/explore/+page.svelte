@@ -4,6 +4,7 @@
 	import { writable, get, type Writable } from 'svelte/store';
 	import type { ProfileData } from '$lib/types/Profile';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	let businessProfile: Writable<ProfileData[]> = writable([]);
 	let currentPage = 1;
@@ -12,7 +13,7 @@
 	let totalResults = 0;
 
 	let categories = [
-		{ text: 'Technology', value: 'tech' },
+		{ text: 'Technology', value: 'Tech' },
 		{ text: 'E-Commerce', value: 'e-commerce' },
 		{ text: 'Wellness', value: 'wellness' },
 		{ text: 'Education', value: 'education' },
@@ -208,6 +209,14 @@
 		makeVerticalDraggable(verticalContainers);
 		setInitialScrollPositions();
 
+		let category: string | null = null;
+		category = $page.url.searchParams.get('category');
+
+		if (category) {
+			if (category === 'Tech') selectedFilters.set(['tech']);
+			else selectedFilters.set([category]);
+		}
+		
 		fetchProfiles();
 	});
 
