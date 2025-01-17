@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Footer from './components/Footer.svelte';
 
 	import Navbar from './components/Navbar.svelte';
@@ -15,6 +15,9 @@
 		if (query.trim() !== '') {
 			goto(`/org/search?query=${encodeURIComponent(query)}`);
 		}
+	}
+	function showBusinesses(category: string) {
+		goto(`/org/explore?category=${category}`);
 	}
 </script>
 
@@ -47,6 +50,11 @@
 						bind:value={query}
 						placeholder="Search"
 						style="flex: 1; margin-right: 10px;"
+						on:keydown={(event) => {
+							if (event.key === 'Enter') {
+								searchReviews();
+							}
+						}}
 					/>
 					<button
 						class="button is-info"
@@ -122,7 +130,7 @@
 	<div class="container">
 		<h2 class="title is-3 has-text-left">Category</h2>
 		<div class="columns is-multiline is-mobile">
-			<div class="column is-6-mobile">
+			<div class="column is-6-mobile"  on:click={showBusinesses('Tech')}>
 				<div class="category-card">
 					<div class="category-card-content is-flex is-align-items-center">
 						<img src="/assets/tech.png" alt="Tech Icon" class="category-icon" />
@@ -139,7 +147,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="column is-three-fifths-desktop is-6-mobile">
+			<div class="column is-three-fifths-desktop is-6-mobile" on:click={showBusinesses('wellness')}>
 				<div class="category-card">
 					<div class="category-card-content is-flex is-align-items-center">
 						<img
@@ -161,7 +169,7 @@
 				</div>
 			</div>
 
-			<div class="column is-three-fifths-desktop is-6-mobile">
+			<div class="column is-three-fifths-desktop is-6-mobile" on:click={showBusinesses('finance')}>
 				<div class="category-card">
 					<div class="category-card-content is-flex is-align-items-center">
 						<img
@@ -184,7 +192,7 @@
 			</div>
 			<div class="column is-6-mobile">
 				<div class="category-card">
-					<div class="category-card-content is-flex is-align-items-center">
+					<div class="category-card-content is-flex is-align-items-center" on:click={showBusinesses('home-electronics')}>
 						<img
 							src="/assets/electronics.png"
 							alt="Tech Icon"
