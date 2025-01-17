@@ -3,13 +3,17 @@
 	import { API_BASE_URL } from '$lib/config';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores'; // Import the page store
+	import { goto } from '$app/navigation'; // Import goto for navigation
 
 	let query = '';
 	let reviews = [];
 	let error = '';
-	// let userType = ''; // To store the user type
-	// let businessId = null; // To store the business ID
 	let orgName = 'Unknown Organization'; // Default value
+
+	// Function to redirect to the business profile page
+	function redirectToBusinessProfile(id) {
+		goto(`/business/${id}`);
+	}
 
 	// Reactively get query from URL
 	$: query = $page.url.searchParams.get('query') || '';
@@ -36,16 +40,7 @@
 		}
 	}
 
-	async function fetchOrgName(id) {
-		const businessProfile = await getProfileById(id);
-		if (businessProfile && businessProfile.org_name) {
-			orgName = businessProfile.org_name;
-		} else {
-			orgName = 'Unknown Organization';
-		}
-	}
-
-	// Reactive fetch only when both `query` and `businessId` are available
+	// Reactive fetch only when `query` is available
 	$: if (query) {
 		fetchReviews();
 	}
@@ -65,7 +60,13 @@
 			{#each reviews as review (review.id)}
 				<div class="review-card">
 					<div class="content">
-						<div class="title-row">
+						<!-- Organization name with click handler for redirection -->
+						<div 
+							class="title-row"
+							role="button"
+							tabindex="0"
+							on:click={() => redirectToBusinessProfile(review.business_id)}
+						>
 							<p class="title is-4">{review.org_name || 'Unknown Organization'}</p>
 							<p class="days-ago">
 								{Math.floor((new Date() - new Date(review.created_at)) / (1000 * 60 * 60 * 24))} days
@@ -93,18 +94,19 @@
 					</div>
 
 					<footer class="footer">
-						<div class="footer-item">
+						<!-- <div class="footer-item">
 							<span class="icon is-small">
 								<i class="fas fa-edit"></i>
 							</span>
 							Reply
-						</div>
+						</div> -->
 					</footer>
 				</div>
 			{/each}
 		</div>
 	{/if}
 </div>
+
 
 <style>
 	/* Use the same styles as the original review card */
