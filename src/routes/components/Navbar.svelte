@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { logout, loggedInStatus, setUserAndType, isAdmin  } from '$lib/stores/auth';
+	import { logout, loggedInStatus, setUserAndType, isAdmin ,storeUserType } from '$lib/stores/auth';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 
@@ -31,6 +31,23 @@
 		jwtTokenFound = false;
 		goto('/user/auth/sign-in');
 	}
+	function redirectToSettings() {
+	// Get the userType array from localStorage and parse it
+	const storedUserTypes = JSON.parse(localStorage.getItem('userType') || '[]');
+	// Assuming the first user type in the array is the primary one
+	const primaryUserType = storedUserTypes[0];
+
+	// Check the primary user type and navigate accordingly
+	if (primaryUserType === "registered-user") {
+		goto("/user/settings");
+	} else if (primaryUserType === "business-owner") {
+		goto("/business-setting/business-settings");
+	} else {
+		console.log('Invalid userType or userType not found');
+	}
+}
+
+
 </script>
 
 <!-- Navbar -->
@@ -66,7 +83,7 @@
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<!-- svelte-ignore a11y_missing_attribute -->
-					<a class="navbar-item" href="/user/settings">Settings</a>
+					<a class="navbar-item" onclick={redirectToSettings}>Settings</a>
 					<a class="navbar-item" onclick={() => logoutHandler()}>Logout</a>
 				{:else if $page.url.pathname.includes('/business')}
 					<a class="navbar-item" href="/business/sign-in">Login</a>
