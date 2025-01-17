@@ -227,7 +227,7 @@
 					Join Thrive Hub to gain trust and foster confidence through genuine
 					customer reviews.
 				</p>
-				<button class="button is-primary cta-button">Build your brand</button>
+				<button class="button is-primary cta-button" on:click={goto('/business/signup')}>Build your brand</button>
 			</div>
 
 			<!-- Right Column for Testimonials -->
