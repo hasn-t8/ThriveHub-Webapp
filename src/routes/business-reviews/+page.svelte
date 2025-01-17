@@ -337,13 +337,16 @@
 							<p class="review-text">{review.feedback || 'No feedback provided.'}</p>
 
 							<div class="status">
-								<button
-									class="custom-button reply-button"
-									on:click={() => handleReplyReview(review.id)}
-								>
-									Reply
-								</button>
+								{#if !review.replies || review.replies.length === 0}
+									<button
+										class="custom-button reply-button"
+										on:click={() => handleReplyReview(review.id)}
+									>
+										Reply
+									</button>
+								{/if}
 							</div>
+							
 						</div>
                         		<!-- Reply Form -->
 					{#if replyId === review.id}

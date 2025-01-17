@@ -42,14 +42,18 @@ export const loggedInStatus = writable(false);
 // 	theUser.set({ userTypes: [] });
 // }
 
-export function login(data: { token: string; user: { id: any; email: any; full_name: any; userTypes: any; city: any; profileImage: any; }; businessProfiles: any; }) {
-    console.log('login:', data);
+export function login(data: {
+    token: string;
+    user: { id: any; email: any; full_name: any; userTypes: any[]; city: any; profileImage: any; };
+    businessProfiles: any[];
+}) {
+    if (!data || !data.token || !data.user || !data.user.userTypes) {
+        throw new Error('Invalid login data.');
+    }
 
-    // Save the token
     localStorage.setItem('authToken', data.token);
     loggedInStatus.set(true);
 
-    // Save the user data
     theUser.set({
         id: data.user.id,
         email: data.user.email,
@@ -57,21 +61,12 @@ export function login(data: { token: string; user: { id: any; email: any; full_n
         userTypes: data.user.userTypes,
         city: data.user.city,
         profileImage: data.user.profileImage,
-		businessProfiles: data.businessProfiles,
-
     });
-	console.log('User store after login:', get(theUser));
 
-	
-    // Save the business profile data
-// Store businessProfiles in localStorage
-localStorage.setItem('businessProfiles', JSON.stringify(data.businessProfiles));
-
-// Retrieve and log the stored businessProfiles
-const storedBusinessProfiles = JSON.parse(localStorage.getItem('businessProfiles') || '[]');
-console.log('Stored businessProfiles:', storedBusinessProfiles);
-
+    localStorage.setItem('businessProfiles', JSON.stringify(data.businessProfiles || []));
+    console.log('Stored businessProfiles:', get(theUser));
 }
+
 
 
 export function logout() {

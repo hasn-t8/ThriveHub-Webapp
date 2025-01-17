@@ -3,8 +3,6 @@
   import { API_BASE_URL } from '$lib/config';
   import { Email } from '$lib/stores/business';
 
-
-
   let fullName = '';
   let companyName = '';
   let website = '';
@@ -54,24 +52,29 @@
           isError = false;
           message = data.message || 'Business account created successfully!';
 
+          // Store the email in local storage
+          localStorage.setItem('email', email);
+
+          // Update the writable store
+          Email.set(email);
+
           // Clear form fields
           fullName = '';
           companyName = '';
           website = '';
           jobTitle = '';
-          // email = '';
+          email = '';
           password = '';
-// Update the writable store
-Email.set(email);
-goto('/business/business-verify');
-          // Redirect to the business dashboard
-          // goto('/business/business-otp');
+
+          // Redirect to the business OTP page
+          goto('/business/business-otp');
       } catch (error) {
           isError = true;
           message = error instanceof Error ? error.message : 'An unexpected error occurred.';
       }
   }
 </script>
+
 
 
 <!-- Main Content -->
