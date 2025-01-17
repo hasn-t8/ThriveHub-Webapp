@@ -55,6 +55,10 @@
           // Store the email in local storage
           localStorage.setItem('email', email);
 
+          localStorage.setItem('authToken', data.token);
+
+          localStorage.setItem('businessProfileId', data.businessProfile.businessProfileId);
+
           // Update the writable store
           Email.set(email);
 

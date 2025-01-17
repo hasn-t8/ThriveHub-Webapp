@@ -2,7 +2,6 @@
   import { updateBusinessProfile } from '$lib/stores/business';
 
   let textInput = "";
-  const profileId = 123; // Replace with the actual profile ID
 
   /**
    * Handles updating the business description via the API
@@ -12,7 +11,12 @@
       alert("Please provide a valid business description.");
       return;
     }
-
+    
+    const profileId = Number(localStorage.getItem('businessProfileId'));
+		if (!profileId) {
+			alert('Profile ID not found. Please try again.');
+			return;
+		}
     try {
       const success = await updateBusinessProfile(profileId, { about_business: textInput.trim() });
       if (success) {
