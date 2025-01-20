@@ -1,10 +1,24 @@
-<script>
+<script lang="ts">
 	import Footer from './components/Footer.svelte';
 
 	import Navbar from './components/Navbar.svelte';
 
 	import Review from './components/reviews/popular-reviews.svelte';
 	import ReviewUS from './components/reviews/about-us-reviews.svelte';
+
+	import { goto } from '$app/navigation';
+
+	let query = '';
+
+	function searchReviews() {
+		// Redirect to a new page with the query as a URL parameter
+		if (query.trim() !== '') {
+			goto(`/org/search?query=${encodeURIComponent(query)}`);
+		}
+	}
+	function showBusinesses(category: string) {
+		goto(`/org/explore?category=${category}`);
+	}
 </script>
 
 <Navbar />
@@ -19,8 +33,7 @@
 			>
 				<h1 class="title is-size-1 is-size-3-mobile">
 					Trustworthy Brands at Your Fingertips with <span
-						style="color: #118BF6;">Thrive Hub</span
-					>
+						style="color: #118BF6;">Thrive Hub</span>
 				</h1>
 				<p
 					class="has-text-grey-dark is-size-5 hide-mobile"
@@ -29,18 +42,29 @@
 					Skip the guesswork! Explore top-rated companies and services, get
 					AI-driven review summaries, and enjoy exclusive discounts.
 				</p>
-				<div class="field has-addons mt-5 hide-search">
-					<div class="control has-icons-left is-expanded">
-						<input
-							class="input is-rounded"
-							type="text"
-							placeholder="Search company or category"
-						/>
-						<span class="icon is-left">
-							<i class="fas fa-search"></i>
-						</span>
-					</div>
+
+				<div class="search-box" style="display: flex; align-items: center; position: relative;">
+					<input
+						class="input is-rounded"
+						type="text"
+						bind:value={query}
+						placeholder="Search"
+						style="flex: 1; margin-right: 10px;"
+						on:keydown={(event) => {
+							if (event.key === 'Enter') {
+								searchReviews();
+							}
+						}}
+					/>
+					<button
+						class="button is-info"
+						on:click={searchReviews}
+						style="position: absolute; right: 0; top: 0; height: 100%;"
+					>
+						Search
+					</button>
 				</div>
+				
 			</div>
 
 			<!-- Right Column (Mobile Search) -->
@@ -49,20 +73,8 @@
 				style="background-color: #118cf6;"
 			>
 				<div class="image-container">
-					<!-- Mobile Search Bar -->
-					<div class="field has-addons mt-5 mobile-search">
-						<div class="control has-icons-left is-expanded">
-							<input
-								class="input is-rounded"
-								type="text"
-								placeholder="Search company or category"
-							/>
-							<span class="icon is-left">
-								<i class="fas fa-search"></i>
-							</span>
-						</div>
-					</div>
-
+					
+					
 					<!-- Main Image -->
 					<img
 						src="/assets/Hoodie.png"
@@ -112,12 +124,13 @@
 	</div>
 </section>
 
+
 <!-- Explore Section -->
 <section class="section category-section">
 	<div class="container">
 		<h2 class="title is-3 has-text-left">Category</h2>
 		<div class="columns is-multiline is-mobile">
-			<div class="column is-6-mobile">
+			<div class="column is-6-mobile"  on:click={showBusinesses('Tech')}>
 				<div class="category-card">
 					<div class="category-card-content is-flex is-align-items-center">
 						<img src="/assets/tech.png" alt="Tech Icon" class="category-icon" />
@@ -134,7 +147,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="column is-three-fifths-desktop is-6-mobile">
+			<div class="column is-three-fifths-desktop is-6-mobile" on:click={showBusinesses('wellness')}>
 				<div class="category-card">
 					<div class="category-card-content is-flex is-align-items-center">
 						<img
@@ -156,7 +169,7 @@
 				</div>
 			</div>
 
-			<div class="column is-three-fifths-desktop is-6-mobile">
+			<div class="column is-three-fifths-desktop is-6-mobile" on:click={showBusinesses('finance')}>
 				<div class="category-card">
 					<div class="category-card-content is-flex is-align-items-center">
 						<img
@@ -179,7 +192,7 @@
 			</div>
 			<div class="column is-6-mobile">
 				<div class="category-card">
-					<div class="category-card-content is-flex is-align-items-center">
+					<div class="category-card-content is-flex is-align-items-center" on:click={showBusinesses('home-electronics')}>
 						<img
 							src="/assets/electronics.png"
 							alt="Tech Icon"
@@ -214,7 +227,7 @@
 					Join Thrive Hub to gain trust and foster confidence through genuine
 					customer reviews.
 				</p>
-				<button class="button is-primary cta-button">Build your brand</button>
+				<button class="button is-primary cta-button" on:click={goto('/business/signup')}>Build your brand</button>
 			</div>
 
 			<!-- Right Column for Testimonials -->

@@ -1,156 +1,215 @@
 <script>
-	import { onMount } from 'svelte';
+    import { onMount } from 'svelte';
+    // @ts-ignore
+    // @ts-ignore
+    import { deleteReview, updateReview, getReviewById } from '$lib/stores/reviews';
+    // @ts-ignore
+    import { getProfileById } from '$lib/stores/business';
+    import { goto } from '$app/navigation';
 
-	let reviewText = 'Good service. Been looking for a similar one for a long time';
-	let rating = 4.9;
-	let likes = 23;
-	let daysAgo = 7;
+    /**
+     * @type {string | import("dns").AnyARecord | null}
+     */
+    let reviewId = null;
+    /**
+     * @type {null}
+     */
+    let businessId = null;
+    let reviewText = '';
+    /**
+     * @type {null}
+     */
+    let rating = null;
+    let likes = 0;
+    let daysAgo = 0;
+    let approvalStatus = 'Pending';
+    let orgName = 'Loading...';
 
-	onMount(() => {
-		// Fetch review data from an API if needed
-	});
+    // Function to handle review deletion
+    async function handleDelete() {
+        if (confirm('Are you sure you want to delete this review?')) {
+            const success = await deleteReview(reviewId);
+            if (success) {
+                alert('Review deleted successfully.');
+                goto(`/user/review/${businessId}`);
+            } else {
+                alert('Failed to delete review.');
+            }
+        }
+    }
+
+    // Function to handle edit and redirect to edit page with reviewId and businessId in the URL
+    function handleEdit() {
+        goto(`/user/review/${businessId}?reviewId=${reviewId}`);
+    }
+
+    // Capture the reviewId from the URL and fetch the review data
+    onMount(async () => {
+        const params = new URLSearchParams(window.location.search);
+        reviewId = params.get('reviewId');
+
+        if (reviewId) {
+            // @ts-ignore
+            const reviewData = await getReviewById(reviewId);
+            if (reviewData) {
+                reviewText = reviewData.feedback;
+                rating = reviewData.rating;
+                likes = reviewData.likes_total || 0;
+                businessId = reviewData.business_id;
+
+                // Calculate days ago from created_at
+                const createdAt = new Date(reviewData.created_at);
+                const today = new Date();
+                // @ts-ignore
+                daysAgo = Math.floor((today - createdAt) / (1000 * 60 * 60 * 24));
+
+                // Set approval status
+                approvalStatus = reviewData.approval_status === 'true' ? 'Approved' : 'Pending';
+
+                if (businessId) {
+    const businessProfile = await getProfileById(businessId);
+    console.log('Business Profile:', businessProfile); // Debug the response
+    if (businessProfile && businessProfile.org_name){
+        orgName = businessProfile.org_name;
+    } else {
+        orgName = 'Unknown Organization';
+    }
+}
+
+            }
+        }
+    });
 </script>
 
 <!-- Page Header -->
 <section class="page-header">
-	<img src="/assets/thankyou.png" alt="Review Image" class="header-image" />
-
-	<h1>Thanks for review!</h1>
+    <img src="/assets/thankyou.png" alt="Review Image" class="header-image" />
+    <h1>Thanks for the review!</h1>
 </section>
+
 <div class="review-card">
-	<header class="header">
-		<p>Your review is pending.</p>
-	</header>
+    <header class="header">
+        <p>Your review is "{approvalStatus}".</p>
+    </header>
 
-	<div class="content">
-		<div class="title-row">
-			<p class="title is-4">Bluehost</p>
-			<p class="days-ago">{daysAgo} days ago</p>
-		</div>
+    <div class="content">
+        <div class="title-row">
+            <p class="title is-4">{orgName}</p>
+            <p class="days-ago">{daysAgo} days ago</p>
+        </div>
 
-		<div class="rating-row">
-			<p>{rating}</p>
-			<span class="icon is-small">
-				<i class="fas fa-star"></i>
-			</span>
-		</div>
-		<p>{reviewText}</p>
-		<div class="actions">
-			<span class="icon">
-				<i class="fas fa-heart"></i>
-			</span>
-			<p>{likes}</p>
-			<span class="icon">
-				<i class="fas fa-share-alt"></i>
-			</span>
-		</div>
-	</div>
-	<footer class="footer">
-		<div class="footer-item">
-			<span class="icon is-small">
-				<i class="fas fa-edit"></i>
-			</span>
-			Edit
-		</div>
-		<div class="footer-item">
-			<span class="icon is-small">
-				<i class="fas fa-trash-alt"></i>
-			</span>
-			Delete
-		</div>
-	</footer>
+        {#if reviewId && reviewText && rating}
+            <div class="rating-row">
+                <p>{rating}</p>
+                <span class="icon is-small">
+                    <i class="fas fa-star"></i>
+                </span>
+            </div>
+            <p>{reviewText}</p>
+            <div class="actions">
+                <span class="icon">
+                    <i class="fas fa-heart"></i>
+                </span>
+                <p>{likes}</p>
+                <span class="icon">
+                    <i class="fas fa-share-alt"></i>
+                </span>
+            </div>
+        {:else}
+            <p>Loading...</p>
+        {/if}
+    </div>
+
+    <footer class="footer">
+        <div class="footer-item" on:click={handleEdit}>
+            <span class="icon is-small">
+                <i class="fas fa-edit"></i>
+            </span>
+            Edit
+        </div>
+        <div class="footer-item" on:click={handleDelete}>
+            <span class="icon is-small">
+                <i class="fas fa-trash-alt"></i>
+            </span>
+            Delete
+        </div>
+    </footer>
 </div>
 
-<style>
+  
+  <style>
 	.review-card {
-		width: 100%;
-		max-width: 1026px;
-		/* height: ; */
-		margin-top: 4%;
-		margin-bottom: 4%;
-		justify-self: center;
-		background-color: #ffffff;
-		border-radius: 8px;
+	  width: 100%;
+	  max-width: 1026px;
+	  margin-top: 4%;
+	  margin-bottom: 4%;
+	  justify-self: center;
+	  background-color: #ffffff;
+	  border-radius: 8px;
 	}
-
+  
 	.header {
-		height: 56px;
-		display: flex;
-		align-items: center;
-		background-color: #118bf6;
-		color: white;
-		padding-top: 16px;
-		padding-left: 20px;
-		border-radius: 8px 8px 0 0;
+	  height: 56px;
+	  display: flex;
+	  align-items: center;
+	  background-color: #118bf6;
+	  color: white;
+	  padding-top: 16px;
+	  padding-left: 20px;
+	  border-radius: 8px 8px 0 0;
 	}
-
+  
 	.content {
-		padding: 20px;
-		display: flex;
-		flex-direction: column;
-		color: #1f1f1f;
+	  padding: 20px;
+	  display: flex;
+	  flex-direction: column;
+	  color: #1f1f1f;
 	}
-
+  
 	.title-row {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		text-decoration: underline;
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  text-decoration: underline;
 	}
 	.rating-row {
-		gap: 10px;
-		display: flex; /* Align items in the same row */
+	  gap: 10px;
+	  display: flex;
 	}
 	.rating-row .icon {
-		padding-top: 6px;
-		font-size: 1em; /* Adjust icon size */
+	  padding-top: 6px;
+	  font-size: 1em;
 	}
-	.title-row {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		text-decoration: underline;
-	}
-	.title-row .days-ago {
-		color: #949494; /* Set the color for the 'days ago' text */
-		text-decoration: none !important; /* Ensure no underline is applied */
-	}
-
 	.footer {
-		display: flex;
-		justify-content: start;
-		padding: 10px 20px;
-		gap: 30px;
-		border-top: 1px solid #ddd;
-		background-color: #ffffff;
+	  display: flex;
+	  justify-content: start;
+	  padding: 10px 20px;
+	  gap: 30px;
+	  border-top: 1px solid #ddd;
+	  background-color: #ffffff;
 	}
-
+  
 	.footer-item {
-		display: flex;
-		align-items: center;
-		gap: 5px;
-		cursor: pointer;
-		color: #939393;
+	  display: flex;
+	  align-items: center;
+	  gap: 5px;
+	  cursor: pointer;
+	  color: #939393;
 	}
-
+  
 	.actions {
-		display: flex;
-		gap: 10px;
+	  display: flex;
+	  gap: 10px;
 	}
-
+  
 	.actions .icon {
-		font-size: 1.5rem;
-		color: #118bf6;
-		cursor: pointer;
+	  font-size: 1.5rem;
+	  color: #118bf6;
+	  cursor: pointer;
 	}
-
+  
 	.actions .icon:hover {
-		color: #0a6ebf;
+	  color: #0a6ebf;
 	}
-	.fa-trash-alt,
-	.fa-edit,
-	.fa-share-alt,
-	.fa-heart {
-		color: #939393;
-	}
-</style>
+  </style>
+  

@@ -21,9 +21,7 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 # Deployment
- 1. Update the deployment repo here: https://gitlab.techchaps.net/development/clientelle/thrive-hub/web_app_v2
-
-     ` git push tc main `
+1. Update the deployment repo here: https://gitlab.techchaps.net/development/clientelle/thrive-hub/web_app_v2
 2. ssh inot DO and `git pull origin main`   
 3. `docker-compose build --no-cache && docker-compose up -d`
 4. SSL is being handled by the separate caddy project  

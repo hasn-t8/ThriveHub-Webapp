@@ -1,10 +1,10 @@
 <script>
+	import { goto } from '$app/navigation';
     import { uploadBusinessLogo } from '$lib/stores/business'; // Adjust the path if necessary
 
     let fileName = '';
     // @ts-ignore
     let selectedFile = null; // To keep track of the selected file
-    const businessProfileId = 123; // Replace with the actual business profile ID
 
     function handleFileClick() {
         // @ts-ignore
@@ -51,11 +51,19 @@
             return;
         }
 
+        const businessProfileId = Number(localStorage.getItem('businessProfileId'));
+		if (!businessProfileId) {
+			alert('Profile ID not found. Please try again.');
+			return;
+		}
+
         const success = await uploadBusinessLogo(selectedFile, businessProfileId);
 
         if (success) {
             alert('Logo uploaded successfully! Redirecting...');
-            window.location.href = '/business/business-home';
+            const url = '/business/' + businessProfileId;
+            goto(url);
+
         } else {
             alert('Logo upload failed. Please try again.');
         }

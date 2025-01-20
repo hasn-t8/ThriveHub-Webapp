@@ -1,87 +1,96 @@
 <script lang="ts">
-    import { goto } from '$app/navigation';
-    import { API_BASE_URL } from '$lib/config';
-    import { userEmail } from '$lib/stores/auth'; // Assuming this is a writable store
-	import { login } from '$lib/stores/auth';
-
+	import { goto } from '$app/navigation';
+	import { loggedInStatus, login } from '$lib/stores/auth';
+	import { API_BASE_URL } from '$lib/config';
+	import { get } from 'svelte/store';
+	
 	let email = '';
-    let emailError = '';
+	let password = '';
+	let isLoginDisabled = true;
+	let errorMessage = '';
+	let isLoading = false;
 
-    function validateEmail() {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        emailError = email && !emailPattern.test(email) ? 'Please enter a valid email address.' : '';
-    }
+	function validateForm() {
+		isLoginDisabled = !(email.trim() && password.trim());
+	}
 
-    let fullName = '';
-    let password = '';
-    let isButtonDisabled = true;
-    let message = '';
-    let isError = false;
+	// async function handleLogin() {
+	// 	errorMessage = '';
+	// 	isLoading = true;
 
-    // Reactive validation for enabling/disabling the submit button
-    $: isButtonDisabled = !(fullName.trim() && email.trim() && password.trim());
+	// 	try {
+	// 		const response = await fetch(`${API_BASE_URL}/auth/login`, {
+	// 			method: 'POST',
+	// 			headers: {
+	// 				Accept: 'application/json',
+	// 				'Content-Type': 'application/json'
+	// 			},
+	// 			body: JSON.stringify({ email, password })
+	// 		});
 
-    // Handle form submission
-	async function handleSignUp(event: Event) {
-    event.preventDefault();
-    console.log('Form submitted:', { fullName, email, password });
+	// 		const data = await response.json();
 
-    const types = ['registered-user'];
+	// 		if (response.ok) {
 
-    // Validate required fields
-    if (!email || !password) {
-        isError = true;
-        message = 'Email and password are required.';
-        return;
-    }
+	// 			login(data.token);
+	// 			//goto('/user/settings');
+
+	// 			const previousPath = localStorage.getItem('previousPath') || '/';
+	// 			localStorage.removeItem('previousPath'); // Clean up the stored path
+	// 			goto(previousPath);
+
+
+
+	// 		} else {
+	// 			errorMessage = data.message || 'Login failed. Please try again.';
+	// 		}
+	// 	} catch (error) {
+	// 		errorMessage = 'An error occurred while logging in. Please try again later.';
+	// 	} finally {
+	// 		isLoading = false;
+	// 	}
+	// }
+	async function handleLogin() {
+    errorMessage = '';
+    isLoading = true;
 
     try {
-        console.log('Request payload:', { email, password, types });
-
-        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
             headers: {
-                accept: 'application/json',
+                Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password, types })
+            body: JSON.stringify({ email, password })
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to create account.');
-        }
-
         const data = await response.json();
-        console.log('Account created:', data);
+        console.log('Response:', response);
+        console.log('Data:', data);
 
-        login(data);
+        if (response.ok) {
+            login(data);
 
-        // Update the userEmail store
-        userEmail.set(email);
-
-        // Store the email in localStorage
-        localStorage.setItem('email', email);
-
-        isError = false;
-        message = data.message || 'Account created successfully!';
-
-        // Clear form fields
-        fullName = '';
-        email = '';
-        password = '';
-
-        // Redirect to the verification page
-        goto(`/user/auth/verify_account?email=${encodeURIComponent(email)}`);
+            const previousPath = localStorage.getItem('previousPath') || '/';
+            localStorage.removeItem('previousPath'); // Clean up the stored path
+            goto(previousPath);
+        } else if (response.status === 403 && data.error?.includes('User is inactive')) {
+            // Redirect to verify-account page if the user is inactive
+            console.log('Redirecting to /verify-account due to inactive user');
+            goto('/business/business-otp');
+        } else {
+            errorMessage = data.error || 'Login failed. Please try again.';
+        }
     } catch (error) {
-        isError = true;
-        message = error instanceof Error ? error.message : 'An unexpected error occurred.';
-        console.error('Error during sign-up:', error);
+        console.error('Error occurred:', error);
+        errorMessage = 'An error occurred while logging in. Please try again later.';
+    } finally {
+        isLoading = false;
     }
 }
 
-</script>
 
+</script>
 
 <!-- Main Content -->
 <div class="container">
@@ -106,20 +115,8 @@
 		<!-- Right Section -->
 		<div class="column is-full-mobile is-half-tablet is-half-desktop">
 			<div class="login-card">
-				<h3 class="title is-4">Create Account</h3>
-				<form on:submit={handleSignUp}>
-					<div class="field">
-						<label class="label has-text-weight-medium" for="username">Full Name</label>
-						<div class="control">
-							<input
-								class="input custom-input"
-								type="text"
-								placeholder="Enter your full name"
-								bind:value={fullName}
-							/>
-						</div>
-					</div>
-
+				<h3 class="title is-4">Log in to Thrive Hub</h3>
+				<form>
 					<div class="field">
 						<label class="label has-text-weight-medium" for="email">Email</label>
 						<div class="control">
@@ -129,34 +126,38 @@
 								id="email"
 								placeholder="Enter your email"
 								bind:value={email}
+								on:input={validateForm}
 							/>
 						</div>
 					</div>
-					<div class="field mb-0">
-						<label class="label has-text-weight-medium" for="password">Password</label>
+					<div class="field">
+						<!-- svelte-ignore a11y_label_has_associated_control -->
+						<label class="label">Password</label>
 						<div class="control">
 							<input
 								class="input custom-input"
 								type="password"
-								id="password"
 								placeholder="Enter your password"
 								bind:value={password}
+								on:input={validateForm}
 							/>
 						</div>
 						<p class="has-text-right mt-5 "><a href="/user/auth/forgot_password" class="has-text-weight-medium is-underlined">Forgot Password ?</a></p>
 					</div>
 					<button
-						id="login-button"
+						type="button"
 						class="button is-primary is-medium is-fullwidth"
-						disabled={isButtonDisabled}
+						on:click={handleLogin}
+						disabled={isLoginDisabled || isLoading}
 					>
-						Create Account
+						{#if isLoading}
+							Loading...
+						{/if}
+						{#if !isLoading}
+							Log in
+						{/if}
 					</button>
-					{#if message}
-						<p class="has-text-centered {isError ? 'has-text-danger' : 'has-text-success'}">
-							{message}
-						</p>
-					{/if}
+					<p class="has-text-danger p-0">{errorMessage}</p>
 
 					<!-- <div class="field has-text-centered">
 						<p>Or log in with</p>
@@ -173,9 +174,10 @@
 							Continue with Facebook
 						</button>
 					</div> -->
+
 				</form>
 				<p class="has-text-centered mt-5">
-					Already have an account? <a href="/user/auth/sign-in">Log In</a>
+					Don’t have an account? <a href="/business/signup">Create account</a>
 				</p>
 			</div>
 		</div>
@@ -197,7 +199,7 @@
 	</div>
 </div>
 
-<style> 
+<style>
 	.container {
 		max-width: 1200px;
 		margin: auto;
@@ -252,9 +254,11 @@
 	.login-card .button {
 		margin-top: 1rem;
 	}
+
 	.cards {
-		margin-top: -185px;
+		margin-top: 1rem;
 	}
+
 	.info-text {
 		padding-left: 15px;
 	}
@@ -277,15 +281,22 @@
 	.button.is-grayed {
 		background-color: #EEEEEE;
 		border-color: transparent;
-		color: gray;
-		border-radius: 11px;
+		color: #707070;
+		border-radius: 17px;
+		height: 3.7rem!important;
+		font-weight: 500;
 	}
-	button.button.is-fullwidth {
-		font-weight: 600;
-		padding: 22px;
-		margin-bottom: 20px;
+
+	.button.is-outlined {
+		background-color: #FFFFFF;
+		border-color: #118BF6;
+		color: #118BF6;
+		border-radius: 17px;
+		height: 3.7rem!important;
+		font-weight: 500;
 	}
-	.button.is-primary :hover {
+
+	.button.is-primary:hover {
 		background-color: rgb(0, 110, 184);
 	}
 
