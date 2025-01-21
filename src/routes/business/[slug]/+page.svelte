@@ -6,7 +6,7 @@
 	import { getAllReviewsByBusinessId } from '$lib/stores/reviews';
 	import type { ProfileData } from '$lib/types/Profile';
 	import { getRepliesForReview } from '$lib/stores/reply-reviews';
-    import { getKeyPoints } from '$lib/stores/key-point';
+	import { getKeyPoints } from '$lib/stores/key-point';
 
 	// Profile store
 	let theProfile = writable<ProfileData>({
@@ -26,7 +26,7 @@
 		total_reviews: 0
 	});
 	let keyFeatures: string | any[] = [];
-    let whyChoosePoints: string | any[] = [];
+	let whyChoosePoints: string | any[] = [];
 	// Reviews store
 	let reviews = writable<any[]>([]);
 
@@ -130,29 +130,28 @@
 		if (currentPage > 1) currentPage--;
 		scrollToTop();
 	}
-    const slug = Number($page.params.slug);
-
+	const slug = Number($page.params.slug);
 
 	onMount(async () => {
 		fetchProfile();
-        try {
-            // Fetch key points by business profile ID
-            const keyPoints = await getKeyPoints(slug);
+		try {
+			// Fetch key points by business profile ID
+			const keyPoints = await getKeyPoints(slug);
 
-            if (keyPoints) {
-                // Filter key points by type
-                keyFeatures = keyPoints.filter(
-                    (point: { key_point_type: string }) => point.key_point_type === 'feature'
-                );
+			if (keyPoints) {
+				// Filter key points by type
+				keyFeatures = keyPoints.filter(
+					(point: { key_point_type: string }) => point.key_point_type === 'feature'
+				);
 
-                whyChoosePoints = keyPoints.filter(
-                    (point: { key_point_type: string }) => point.key_point_type === 'why-us'
-                );
-            }
-        } catch (error) {
-            console.error('Error fetching key points:', error);
-        }
-    });
+				whyChoosePoints = keyPoints.filter(
+					(point: { key_point_type: string }) => point.key_point_type === 'why-us'
+				);
+			}
+		} catch (error) {
+			console.error('Error fetching key points:', error);
+		}
+	});
 </script>
 
 <section class="page-header">
@@ -166,40 +165,37 @@
 				<!-- About Section -->
 				<h2>About {$theProfile.org_name}</h2>
 				<p>{$theProfile.about_business}</p>
-				<hr />
-		
-				<!-- Why Us Section -->
-				<h2>Why {$theProfile.org_name}?</h2>
-{#if whyChoosePoints.length > 0}
-    <ul style="list-style-type: disc; padding-left: 20px;">
-        {#each whyChoosePoints as point}
-            <li>
-                <strong>{point.key_point_name}:</strong> {point.text || 'No description available'}
-            </li>
-        {/each}
-    </ul>
-{:else}
-    <p>No key points available for "Why Us".</p>
-{/if}
 
-				<hr />
-		
-				<!-- Key Features Section -->
-				<h2>Key Features:</h2>
-				{#if keyFeatures.length > 0}
-				<ul style="list-style-type: disc; padding-left: 20px;">
-					{#each keyFeatures as feature}
+				<!-- Why Us Section -->
+				{#if whyChoosePoints.length > 0}
+					<hr />
+
+					<h2>Why {$theProfile.org_name}?</h2>
+					<ul style="list-style-type: disc; padding-left: 20px;">
+						{#each whyChoosePoints as point}
 							<li>
-								<strong>{feature.key_point_name}:</strong> {feature.text || 'No description available'}
+								<strong>{point.key_point_name}:</strong>
+								{point.text || 'No description available'}
 							</li>
 						{/each}
 					</ul>
-				{:else}
-					<p>No key features available.</p>
+				{/if}
+
+				<!-- Key Features Section -->
+				{#if keyFeatures.length > 0}
+					<hr />
+					<h2>Key Features:</h2>
+					<ul style="list-style-type: disc; padding-left: 20px;">
+						{#each keyFeatures as feature}
+							<li>
+								<strong>{feature.key_point_name}:</strong>
+								{feature.text || 'No description available'}
+							</li>
+						{/each}
+					</ul>
 				{/if}
 			</div>
-		<!-- </div> -->
-		
+			<!-- </div> -->
 
 			{#if $reviews.length > 0}
 				<div class="card review-item">
@@ -254,13 +250,10 @@
 																	(1000 * 60 * 60 * 24)
 															)} days ago
 														</small>
-														</div>
+													</div>
 													<p>
 														{reply.reply}
 													</p>
-													
-												
-											
 												</div>
 											</div>
 										{/each}
