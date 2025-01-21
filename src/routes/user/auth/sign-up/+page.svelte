@@ -44,7 +44,7 @@
                 accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password, types })
+            body: JSON.stringify({ email, password, types, full_name: fullName })
         });
 
         if (!response.ok) {
