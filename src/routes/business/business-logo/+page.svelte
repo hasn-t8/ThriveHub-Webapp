@@ -1,6 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
     import { uploadBusinessLogo } from '$lib/stores/business'; // Adjust the path if necessary
+	import { addToast } from '$lib/stores/toasts';
 
     let fileName = '';
     // @ts-ignore
@@ -17,7 +18,8 @@
         if (file) {
             fileName = `File "${file.name}" selected.`;
             selectedFile = file;
-            alert(fileName);
+            // alert(fileName);
+            addToast('File selected successfully.', 'success');
         }
     }
 
@@ -60,7 +62,8 @@
         const success = await uploadBusinessLogo(selectedFile, businessProfileId);
 
         if (success) {
-            alert('Logo uploaded successfully! Redirecting...');
+            // alert('Logo uploaded successfully! Redirecting...');
+            addToast('Logo uploaded successfully!', 'success');
             const url = '/business/' + businessProfileId;
             goto(url);
 

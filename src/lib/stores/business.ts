@@ -1,6 +1,8 @@
 import { goto } from '$app/navigation';
 import { API_BASE_URL } from '$lib/config';
 import { getJWT, logout } from '$lib/stores/auth';
+import { addToast } from '$lib/stores/toasts';
+
 import type { ProfileData } from '$lib/types/Profile';
 import { writable } from 'svelte/store';
 
@@ -41,11 +43,13 @@ export async function uploadBusinessLogo(file: File, businessProfileId: number):
 
 		const result = await response.json();
 		console.log('Logo uploaded successfully:', result);
+		addToast('Logo uploaded successfully!', 'is-primary');
 		// alert('Logo uploaded successfully!');
 		return true;
 	} catch (error) {
 		console.error('Error uploading logo:', error);
-		alert('Failed to upload logo. Please try again.');
+		// alert('Failed to upload logo. Please try again.');
+		addToast('Failed to upload logo. Please try again.', 'is-danger');
 		return false;
 	}
 }
@@ -254,7 +258,7 @@ export async function updateBusinessProfile(
 
 		const result = await response.json();
 		console.log('Business profile updated successfully:', result);
-		alert('Business profile updated successfully!');
+		// addToast('Business profile updated successfully!', 'is-primary');
 		return true;
 	} catch (error) {
 		console.error(error);
