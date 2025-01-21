@@ -174,8 +174,7 @@
     <ul style="list-style-type: disc; padding-left: 20px;">
         {#each whyChoosePoints as point}
             <li>
-                <strong>{point.key_point_name}:</strong>
-                <p style="margin: 5px 0 10px 20px;">{point.text || 'No description available'}</p>
+                <strong>{point.key_point_name}:</strong> {point.text || 'No description available'}
             </li>
         {/each}
     </ul>
