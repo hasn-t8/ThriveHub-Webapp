@@ -3,6 +3,7 @@
 	import { updateBusinessProfile } from '$lib/stores/business';
 	import { writable } from 'svelte/store';
 	import type { ProfileData } from '$lib/types/Profile';
+	import { addToast } from '$lib/stores/toasts';
 
 	/**
 	 * @type {string | null}
@@ -42,6 +43,7 @@
 			const success = await updateBusinessProfile(profileId, $theProfile);
 			if (success) {
 				// alert(`Category updated to "${category}" successfully!`);
+				addToast('Category updated successfully!', 'success');
 				goto('/business/business-about');
 			} else {
 				alert('Failed to update category. Please try again.');

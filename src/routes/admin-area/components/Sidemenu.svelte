@@ -53,7 +53,7 @@
 		{/if}
 
 		{#if userType === 'business-owner'}
-			<a href="/business-setting/business-settings"
+			<a href="/business-setting/settings"
 			 class="menu-item">
 				<i class="icon fas fa-cog"></i> Settings
 			</a>

@@ -54,6 +54,8 @@
 		try {
 			const profiles = await getProfiles();
 
+			console.log('profiles:', profiles);
+			
 			// Look for the 'personal' profile in the array
 			const personalProfile = profiles.find((/** @type {{ profile_type: string; }} */ profile) => profile.profile_type === 'personal');
 

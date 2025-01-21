@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import { API_BASE_URL } from '$lib/config';
+	import { addToast } from '$lib/stores/toasts';
 
   let timer = '00:59';
   let timeLeft = 59;
@@ -72,11 +73,13 @@
           }
 
           const data = await response.json();
-          alert('Account verified successfully!');
+        //   alert('Account verified successfully!');
+		addToast('Account verified successfully!', 'is-success');
           goto('/business/business-category');
       } catch (error) {
           console.error('Error verifying account:', error);
-          alert('Verification failed. Please try again.');
+        //   alert('Verification failed. Please try again.');
+		addToast('Verification failed. Please try again.', 'is-danger');
       }
   };
 
