@@ -365,7 +365,19 @@
 					class="column is-three-fifths is-flex is-flex-direction-column is-justify-content-center"
 					style="padding-left: 7%!important;"
 				>
-					<p
+				<p
+					style="margin-bottom:2%; margin-top: 3%;     width: 70%;color:white; font-weight: 500!important;"
+				>
+				Join Thrive Hub to gain trust and foster confidence through genuine
+				customer reviews.
+			</p>
+
+				<h2 class="title is-3" style="color:white; padding-right: 15%;">
+					<!-- Ready to Elevate your business? -->
+
+					Comming Soon: Our App will be available for download
+				</h2>
+					<!-- <p
 						style="margin-bottom:2%; margin-top: 3%; color:white; font-weight: 500!important; font-size:1.1rem;"
 					>
 						Join thousands of users discovering trusted reviews!
@@ -375,7 +387,7 @@
 						style="color:white; max-width: 500px;font-weight:700;"
 					>
 						Download the app and sign up today!
-					</h2>
+					</h2> -->
 
 					<div class="columns is-vcentered app-box-1">
 						<!-- First Image -->
