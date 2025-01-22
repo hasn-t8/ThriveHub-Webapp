@@ -41,7 +41,7 @@
 	if (primaryUserType === "registered-user") {
 		goto("/user/settings");
 	} else if (primaryUserType === "business-owner") {
-		goto("/business-setting/business-settings");
+		goto("/business-setting/settings");
 	} else {
 		console.log('Invalid userType or userType not found');
 	}
