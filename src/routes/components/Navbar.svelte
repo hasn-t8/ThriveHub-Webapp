@@ -59,8 +59,8 @@
 		<div id="navbarMenu" class="navbar-menu">
 			<div class="navbar-end">
 				<a class="navbar-item" href="/org/explore">Explore</a>
-				<!-- <a class="navbar-item" href="#blog">Blog</a>
-				<a class="navbar-item" href="#help">Help</a> -->
+				<a class="navbar-item" href="/user/blog">Blog</a>
+				<!-- <a class="navbar-item" href="#help">Help</a> -->
 				<a class="navbar-item" href="/user/settings">Settings</a>
 				{#if $isAdmin}
 					<a class="navbar-item" href="/admin-area/business-list">Dashboard</a>

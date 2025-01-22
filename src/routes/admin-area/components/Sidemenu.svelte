@@ -39,6 +39,16 @@
 			><i class="icon fas fa-briefcase"></i>Add business</a
 		>
 		<hr />
+		<a href="/admin-area/blog-list" class="menu-item">
+			<i class="icon fas fa-blog"></i> Blog List
+		</a>
+		<a href="/admin-area/blog-categories" class="menu-item">
+			<i class="icon fas fa-clipboard"></i>Blog Categories</a
+		>
+		<a href="/admin-area/add-blog" class="menu-item">
+			<i class="icon fas fa-plus"></i>Add Blog</a
+		>
+		<hr />
 		<!-- <a href="/business/business-setting/setting" class="menu-item">
 			<i class="icon fas fa-cog"></i> Settings
 		</a> -->
