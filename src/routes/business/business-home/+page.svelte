@@ -120,8 +120,7 @@
 				<p
 					style="margin-bottom:2%; margin-top: 3%;     width: 70%;color:white; font-weight: 500!important;"
 				>
-					Download the Thrive Hub app today and unlock the power of genuine reviews!
-				</p>
+				Comming Soon: Our App will be available for download !				</p>
 				<p
 					style="margin-bottom:2%; margin-top: 3%;     width: 70%;color:white; font-weight: 500!important;"
 				>
