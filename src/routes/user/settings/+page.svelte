@@ -92,6 +92,7 @@
 
 		try {
 			const currentProfile = $profile;
+			// @ts-ignore
 			const result = await saveProfile(currentProfile);
 			console.log('Profile saved successfully:', result);
 		} catch (error) {
@@ -101,6 +102,9 @@
 	}
 
 	// Utility to format date to "yyyy-MM-dd"
+	/**
+	 * @param {string | number | Date} dateString
+	 */
 	function formatDateToYMD(dateString) {
 		if (!dateString) return ''; // Handle null or undefined dates
 		const date = new Date(dateString);

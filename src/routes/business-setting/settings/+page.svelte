@@ -1,16 +1,11 @@
 <script>
-// @ts-nocheck
-
+	// @ts-nocheck
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import Sidemenu from '../../admin-area/components/Sidemenu.svelte';
-	import { getProfiles } from '$lib/stores/business';
-	import { saveProfile } from '$lib/stores/profile';
-	// import Sidemenu from './admin-area/components/Sidemenu.svelte
-	// @ts-ignore
-	let searchQuery = '';
-	// import { getProfiles, saveProfile } from '$lib/stores/profile';
+	import { getProfiles, saveProfile } from '$lib/stores/profile';
 
+	// Writable store for user profile
 	let profile = writable({
 		fullName: '',
 		email: '',
@@ -23,45 +18,40 @@
 		profileImage: ''
 	});
 
-	// Fetch profile data
-	// async function fetchProfile() {
-	// 	try {
-	// 		const profiles = await getProfiles();
+	// Utility function to format date to "yyyy-MM-dd"
+	/**
+	 * @param {string | number | Date} dateString
+	 */
+	function formatDateToYMD(dateString) {
+		if (!dateString) return ''; // Handle null or undefined dates
+		const date = new Date(dateString);
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
 
-	// 		if (profiles.length > 0) {
-	// 			const data = profiles[0];
-
-	// 			profile.set({
-	// 				fullName: data.full_name || '',
-	// 				email: data.email || '',
-	// 				dob: data.date_of_birth || '',
-	// 				phone: data.phone_number || '',
-	// 				location: data.address_line_1 || '',
-	// 				address: data.address_line_2 || '',
-	// 				city: data.address_city || '',
-	// 				postalCode: data.address_zip_code || '',
-	// 				profileImage: data.img_profile_url || ''
-	// 			});
-	// 		}
-	// 	} catch (error) {
-	// 		console.log('An error occurred while fetching profile data:'); // TODO: send to analytics and monitoring tool
-	// 		console.log(error);
-	// 	}
-	// }
-
-	// Fetch profile data
+	// Fetch profile from backend
 	async function fetchProfile() {
 		try {
-			const profiles = await getProfiles();
+			// Fetch the profiles for the logged-in user
+			const response = await getProfiles();
+			console.log('Fetched profiles:', response);
 
-			console.log('profiles:', profiles);
-			
-			// Look for the 'personal' profile in the array
-			const personalProfile = profiles.find((/** @type {{ profile_type: string; }} */ profile) => profile.profile_type === 'personal');
+			// Handle cases where the response might have different formats
+			const profiles = Array.isArray(response) ? response : response?.profiles || response?.data;
 
-			// If no 'personal' profile exists, handle it (e.g., set defaults or log an error)
+			if (!profiles || !Array.isArray(profiles)) {
+				throw new Error('Invalid profiles data structure');
+			}
+
+			// Find the personal profile (if necessary)
+			const personalProfile = profiles.find((profile) => profile.profile_type === 'personal');
+			console.log('Personal profile:', personalProfile);
+
 			if (!personalProfile) {
-				console.log('No personal profile found.');
+				console.warn('No personal profile found for the current user.');
+				// Set empty default values if no profile is found
 				profile.set({
 					fullName: '',
 					email: '',
@@ -76,8 +66,8 @@
 				return;
 			}
 
-			// Use the personal profile data
-			profile.set({
+			// Update the writable store with the fetched profile data
+			const updatedProfile = {
 				fullName: personalProfile.full_name || '',
 				email: personalProfile.email || '',
 				dob: formatDateToYMD(personalProfile.date_of_birth),
@@ -87,58 +77,56 @@
 				city: personalProfile.address_city || '',
 				postalCode: personalProfile.address_zip_code || '',
 				profileImage: personalProfile.img_profile_url || ''
-			});
+			};
+
+			// Save to localStorage
+			localStorage.setItem('profile', JSON.stringify(updatedProfile));
+			profile.set(updatedProfile);
+
+			console.log('Updated profile store:', updatedProfile);
 		} catch (error) {
-			console.log('An error occurred while fetching profile data:'); // TODO: send to analytics and monitoring tool
-			console.log(error);
+			console.error('Error fetching profile data:', error);
 		}
 	}
 
-	// Save profile data
+	// Save the user's profile information
 	async function handleSaveProfile() {
-		console.log('Saving profile:', $profile);
-
 		try {
 			const currentProfile = $profile;
-			// @ts-ignore
+			console.log('Saving profile:', currentProfile);
+
+			// Save profile to backend
 			const result = await saveProfile(currentProfile);
 			console.log('Profile saved successfully:', result);
+
+			// Save the updated profile in localStorage
+			localStorage.setItem('profile', JSON.stringify(currentProfile));
+			alert('Profile saved successfully!');
 		} catch (error) {
-			console.error('An error occurred while saving the profile:', error); // TODO: send to analytics and monitoring tool
-			console.log(error);
+			console.error('Error saving profile:', error);
+			alert('Failed to save profile. Please try again.');
 		}
 	}
 
-	// Utility to format date to "yyyy-MM-dd"
-	/**
-	 * @param {string | number | Date} dateString
-	 */
-	function formatDateToYMD(dateString) {
-		if (!dateString) return ''; // Handle null or undefined dates
-		const date = new Date(dateString);
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-		const day = String(date.getDate()).padStart(2, '0');
-		return `${year}-${month}-${day}`;
-	}
-
-	// Fetch profile on component mount
+	// Load profile from localStorage on component mount
 	onMount(() => {
-		fetchProfile();
+		const savedProfile = localStorage.getItem('profile');
+		if (savedProfile) {
+			console.log('Loaded profile from localStorage:', savedProfile);
+			profile.set(JSON.parse(savedProfile));
+		} else {
+			// Fetch from backend if no cached data exists
+			fetchProfile();
+		}
 	});
-
-	function redirectToNewPage() {
-		// Redirect to the new page on button click
-		window.location.href = '/business-setting/team'; // Update with your target URL
-	}
 </script>
 
 <div class="main-content">
-	<Sidemenu/>
+	<Sidemenu />
 	<!-- Analytics Header -->
 	<div class="analytics-header">
 		<div class="header-top">
-			<h1>Hi, Alex</h1>
+			<h1>Hi {$profile.fullName}</h1> <!-- Correctly displays the full name -->
 		</div>
 		<!-- Divider -->
 		<hr class="divider" />
@@ -168,7 +156,6 @@
 						id="email"
 						bind:value={$profile.email}
 						placeholder="Enter your email address"
-						disabled
 					/>
 				</div>
 			</div>
@@ -200,83 +187,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="field">
-				<label class="label" for="password">Password</label>
-				<div class="control">
-					<input class="input" type="password" id="password" placeholder="Enter your Password" />
-				</div>
-			</div>
-
-			<br />
-
-			<h1 class="title">Company details</h1>
-			<div class="field">
-				<label class="label" for="company_name">Company name</label>
-				<div class="control">
-					<input
-						class="input"
-						type="text"
-						id="company_name"
-						bind:value={$profile.company_name}
-						placeholder="BlueHost"
-					/>
-				</div>
-			</div>
-			<div class="field">
-				<label class="label" for="category">Business category</label>
-				<div class="control">
-					<div class="dropdown">
-						<input
-							type="text"
-							id="category"
-							bind:value={$profile.category}
-							placeholder="Category"
-							readonly
-						/>
-						<div class="dropdown-icon"></div>
-						<div class="dropdown-options">
-							<div class="dropdown-option">Option 1</div>
-							<div class="dropdown-option">Option 2</div>
-							<div class="dropdown-option">Option 3</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="field">
-				<label class="label" for="logo">Company Logo</label>
-				<div class="control">
-					<div
-						class="logo-container"
-						style="min-height: 90px; max-width: 250px; display: flex; align-items: center; background-color: #EDF1F3;"
-					>
-						<!-- Display the logo if available -->
-						<span class="logo-preview" style="margin-right: 10px;">
-							<img
-								src={$profile.logo}
-								alt="Logo"
-								style="padding:20px; width: 88px; height: 77px; object-fit: contain;"
-							/>
-						</span>
-						<!-- Button to change the logo -->
-						<button class="custom-button">Change Logo</button>
-					</div>
-				</div>
-			</div>
-
-			<div class="field">
-				<label class="label" for="description">A short description</label>
-				<div class="control">
-					<textarea
-						class="textarea"
-						id="description"
-						bind:value={$profile.description}
-						placeholder="Enter a short description"
-						style="height: 99px;"
-					></textarea>
-				</div>
-			</div>
-
 			<div class="field is-horizontal">
 				<div class="field-body">
 					<div class="field">
@@ -287,68 +197,21 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="container">
-			<h2 class="title">Team</h2>
-			<p>You haven't added colleagues to your team yet</p>
-			<!-- New container below the text -->
-			<div class="team-container">
-				<img src="/assets/profile.png" alt="Avatar" class="team-image" />
-				<div class="team-content">
-					<h3 class="team-title">Anna Gator</h3>
-					<p class="team-description">CEO</p>
-				</div>
-				<div class="team-actions">
-					<div class="dots">
-						<span>.</span>
-						<span>.</span>
-						<span>.</span>
-					</div>
-				</div>
-			</div>
-			<!-- New container below the text -->
-			<div class="team-container">
-				<img src="/assets/profile.png" alt="Avatar" class="team-image" />
-				<div class="team-content">
-					<h3 class="team-title">Anna Gator</h3>
-					<p class="team-description">CEO</p>
-				</div>
-				<div class="team-actions">
-					<div class="dots">
-						<span>.</span>
-						<span>.</span>
-						<span>.</span>
-					</div>
-				</div>
-			</div>
-			<div class="buttons">
-				<button class="button" on:click={redirectToNewPage}>+ Add team member</button>
-			</div>
+		
+	<div class="container">
+		<h1 class="title">Security</h1>
+		<div class="field">
+			<span class="label">Password: <a href="/user/auth/change_my_pass">Change Password</a></span>
+			<!-- <label class="label" for="password">Password</label>
+			<div class="control">
+				<input class="input" type="password" id="password" placeholder="Enter your password" />
+			</div> -->
 		</div>
-
-		<!-- <div class="container">
-			<h2 class="title">Log out everywhere</h2>
-			<p>
-				Log out wherever you have your Thrive Hub account open (this includes desktop, mobile, and
-				any other devices).
-			</p>
-			<div class="buttons">
-				<button class="button">Log out</button>
-			</div>
-		</div> -->
-
-		<div class="container">
-			<h2 class="title">Delete user</h2>
-			<p>
-				When you delete your Business profile, your reviews are deleted as well and can not be
-				restored
-			</p>
-			<div class="buttons">
-				<button class="button">Delete my profile</button>
-			</div>
-		</div>
+	</div>
 	</section>
 </div>
+
+
 
 <style>
 	.main-content {

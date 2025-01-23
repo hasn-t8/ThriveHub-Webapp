@@ -306,7 +306,7 @@
 		);
 		if (!confirmDelete) return;
 
-		try {
+		try { 
 			const isDeleted = await deleteKeyPointById(id);
 			if (isDeleted) {
 				// Update the UI based on the target
