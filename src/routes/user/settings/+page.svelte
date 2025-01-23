@@ -92,7 +92,6 @@
 
 		try {
 			const currentProfile = $profile;
-			// @ts-ignore
 			const result = await saveProfile(currentProfile);
 			console.log('Profile saved successfully:', result);
 		} catch (error) {

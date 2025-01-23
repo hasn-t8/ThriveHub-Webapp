@@ -32,7 +32,7 @@
 		feedback: string;
 		created_at: string;
 		updated_at: string;
-		customer_name:  string;
+		customer_name: string;
 		approval_status: string;
 		business_name?: string;
 		replies?: Array<{
