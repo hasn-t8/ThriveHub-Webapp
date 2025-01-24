@@ -216,7 +216,7 @@ export async function getUserReviews(): Promise<any> {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/reviews`, {
+        const response = await fetch(`${API_BASE_URL}/myreviews`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${JWT}`,
