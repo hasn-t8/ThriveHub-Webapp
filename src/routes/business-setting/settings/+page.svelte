@@ -19,105 +19,90 @@
 	});
 
 	// Utility function to format date to "yyyy-MM-dd"
-	/**
-	 * @param {string | number | Date} dateString
-	 */
 	function formatDateToYMD(dateString) {
-		if (!dateString) return ''; // Handle null or undefined dates
+		if (!dateString) return '';
 		const date = new Date(dateString);
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-		const day = String(date.getDate()).padStart(2, '0');
-		return `${year}-${month}-${day}`;
+		return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 	}
 
-	// Fetch profile from backend
 	async function fetchProfile() {
-		try {
-			// Fetch the profiles for the logged-in user
-			const response = await getProfiles();
-			console.log('Fetched profiles:', response);
+	try {
+		// Fetch the profile data
+		const profileResponse = await getProfiles();
+		console.log('Fetched profiles:', profileResponse);
 
-			// Handle cases where the response might have different formats
-			const profiles = Array.isArray(response) ? response : response?.profiles || response?.data;
-
-			if (!profiles || !Array.isArray(profiles)) {
-				throw new Error('Invalid profiles data structure');
-			}
-
-			// Find the personal profile (if necessary)
-			const personalProfile = profiles.find((profile) => profile.profile_type === 'personal');
-			console.log('Personal profile:', personalProfile);
-
-			if (!personalProfile) {
-				console.warn('No personal profile found for the current user.');
-				// Set empty default values if no profile is found
-				profile.set({
-					fullName: '',
-					email: '',
-					dob: '',
-					phone: '',
-					location: '',
-					address: '',
-					city: '',
-					postalCode: '',
-					profileImage: ''
-				});
-				return;
-			}
-
-			// Update the writable store with the fetched profile data
-			const updatedProfile = {
-				fullName: personalProfile.full_name || '',
-				email: personalProfile.email || '',
-				dob: formatDateToYMD(personalProfile.date_of_birth),
-				phone: personalProfile.phone_number || '',
-				location: personalProfile.address_line_1 || '',
-				address: personalProfile.address_line_2 || '',
-				city: personalProfile.address_city || '',
-				postalCode: personalProfile.address_zip_code || '',
-				profileImage: personalProfile.img_profile_url || ''
-			};
-
-			// Save to localStorage
-			localStorage.setItem('profile', JSON.stringify(updatedProfile));
-			profile.set(updatedProfile);
-
-			console.log('Updated profile store:', updatedProfile);
-		} catch (error) {
-			console.error('Error fetching profile data:', error);
+		// Check if the response is an object (not an array)
+		if (!profileResponse || typeof profileResponse !== 'object') {
+			console.warn('No valid profile data found.');
+			profile.set({
+				fullName: '',
+				email: '',
+				dob: '',
+				phone: '',
+				location: '',
+				address: '',
+				city: '',
+				postalCode: '',
+				profileImage: ''
+			});
+			return;
 		}
+
+		// Extract profile details
+		const personalProfile = profileResponse;
+
+		// Validate required fields
+		if (!personalProfile.full_name) {
+			throw new Error('Profile is missing required fields.');
+		}
+
+		// Map API response to writable store
+		const updatedProfile = {
+			fullName: personalProfile.full_name || '',
+			email: personalProfile.email || '',
+			dob: formatDateToYMD(personalProfile.date_of_birth),
+			phone: personalProfile.phone_number || '',
+			location: personalProfile.address_line_1 || '',
+			address: personalProfile.address_line_2 || '',
+			city: personalProfile.address_city || '',
+			postalCode: personalProfile.address_zip_code || '',
+			profileImage: personalProfile.img_profile_url || ''
+		};
+
+		profile.set(updatedProfile);
+		console.log('Updated profile store:', updatedProfile);
+	} catch (error) {
+		console.error('Error fetching profile data:', error);
 	}
+}
+
 
 	// Save the user's profile information
 	async function handleSaveProfile() {
-		try {
-			const currentProfile = $profile;
-			console.log('Saving profile:', currentProfile);
+	try {
+		const currentProfile = $profile;
+		console.log('Saving profile:', currentProfile);
 
-			// Save profile to backend
-			const result = await saveProfile(currentProfile);
-			console.log('Profile saved successfully:', result);
+		// Save profile to backend
+		const result = await saveProfile(currentProfile);
+		console.log('Profile saved successfully:', result);
 
-			// Save the updated profile in localStorage
-			localStorage.setItem('profile', JSON.stringify(currentProfile));
-			alert('Profile saved successfully!');
-		} catch (error) {
-			console.error('Error saving profile:', error);
-			alert('Failed to save profile. Please try again.');
-		}
+		// Fetch the updated profile to reflect changes
+		await fetchProfile();
+
+		alert('Profile saved successfully!');
+	} catch (error) {
+		console.error('Error saving profile:', error);
+		alert('Failed to save profile. Please try again.');
 	}
+}
+
 
 	// Load profile from localStorage on component mount
 	onMount(() => {
-		const savedProfile = localStorage.getItem('profile');
-		if (savedProfile) {
-			console.log('Loaded profile from localStorage:', savedProfile);
-			profile.set(JSON.parse(savedProfile));
-		} else {
-			// Fetch from backend if no cached data exists
+	
 			fetchProfile();
-		}
+		
 	});
 </script>
 
