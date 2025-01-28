@@ -1,36 +1,55 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { updateBusinessProfile } from '$lib/stores/business';
+	import { writable } from 'svelte/store';
+	import type { ProfileData } from '$lib/types/Profile';
+	import { addToast } from '$lib/stores/toasts';
 
 	/**
 	 * @type {string | null}
 	 */
-	let selectedCategory: string | null = null;
+	// let selectedCategory: string | null = null;
+	let selectedCategory = writable<string | null>(null);
 
 	/**
 	 * Mocked profile ID for demonstration purposes
 	 */
-	const profileId = 123; // Replace with actual profile ID
+	let profileId;
+
+	let theProfile = writable<ProfileData>({
+		category: '',
+		profile_type: 'business'
+	});
 
 	/**
 	 * Selects a category and updates the profile
 	 * @param {string} category
 	 */
 	async function selectCategory(category: string) {
-		selectedCategory = category;
+		// console.log('Selected category:', category);
+
+		$selectedCategory = category;
+		profileId = Number(localStorage.getItem('businessProfileId'));
+		if (!profileId) {
+			alert('Profile ID not found. Please try again.');
+			return;
+		}
 
 		try {
 			// Update the business profile with the selected category
-			const success = await updateBusinessProfile(profileId, { category });
+			$theProfile.category = category;
+			$theProfile.profile_type = 'business';
+
+			const success = await updateBusinessProfile(profileId, $theProfile);
 			if (success) {
 				// alert(`Category updated to "${category}" successfully!`);
+				addToast('Category updated successfully!', 'success');
 				goto('/business/business-about');
-
 			} else {
 				alert('Failed to update category. Please try again.');
 			}
 		} catch (error) {
-			console.error('Error updating category:', error);
+			console.error('Error updating category: --------- ', error);
 			alert('An error occurred while updating the category.');
 		}
 	}
@@ -43,9 +62,9 @@
 		<div class="has-text-centered mb-5">
 			<h2 class="title is-4">Choose your Category</h2>
 			<p class="subtitle is-6">
-				Get discovered by your ideal customers. Choose the category that best
-				describes your business. Selecting the right category will increase your
-				visibility and attract more potential customers.
+				Get discovered by your ideal customers. Choose the category that best describes your
+				business. Selecting the right category will increase your visibility and attract more
+				potential customers.
 			</p>
 		</div>
 
@@ -55,7 +74,7 @@
 				<div
 					class="category-card"
 					on:click={() => selectCategory('Tech')}
-					class:selected={selectedCategory === 'Tech'}
+					class:selected={$selectedCategory === 'Tech'}
 				>
 					<div class="card-content">
 						<img src="/assets/tech.png" alt="Tech Icon" class="category-icon" />
@@ -67,14 +86,10 @@
 				<div
 					class="category-card"
 					on:click={() => selectCategory('Wellness')}
-					class:selected={selectedCategory === 'Wellness'}
+					class:selected={$selectedCategory === 'Wellness'}
 				>
 					<div class="card-content">
-						<img
-							src="/assets/wellness.png"
-							alt="Wellness Icon"
-							class="category-icon"
-						/>
+						<img src="/assets/wellness.png" alt="Wellness Icon" class="category-icon" />
 						<h4 class="category-title">Wellness</h4>
 					</div>
 				</div>
@@ -86,14 +101,10 @@
 				<div
 					class="category-card"
 					on:click={() => selectCategory('Finance')}
-					class:selected={selectedCategory === 'Finance'}
+					class:selected={$selectedCategory === 'Finance'}
 				>
 					<div class="card-content">
-						<img
-							src="/assets/finance.png"
-							alt="Finance Icon"
-							class="category-icon"
-						/>
+						<img src="/assets/finance.png" alt="Finance Icon" class="category-icon" />
 						<h4 class="category-title">Finance</h4>
 					</div>
 				</div>
@@ -102,7 +113,7 @@
 				<div
 					class="category-card"
 					on:click={() => selectCategory('Home Electronics')}
-					class:selected={selectedCategory === 'Home Electronics'}
+					class:selected={$selectedCategory === 'Home Electronics'}
 				>
 					<div class="card-content">
 						<img

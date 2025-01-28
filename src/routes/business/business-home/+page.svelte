@@ -1,7 +1,21 @@
 <script>
-	import AboutUsReviews from "../../components/reviews/about-us-reviews.svelte";
+	import { goto } from '$app/navigation';
+	// import { isBusinessOwner, isAdmin } from '$lib/stores/auth';
+	import AboutUsReviews from '../../components/reviews/about-us-reviews.svelte';
 
+	let query = '';
+	let error = '';
+	// Function to handle the search button click
+	function searchReviews() {
+		// Redirect to a new page with the query as a URL parameter
+		goto(`/business/reviews?query=${encodeURIComponent(query)}`);
+	}
+	// Redirect to signup page
+	function redirectToSignup() {
+		goto('/business/signup');
+	}
 </script>
+
 <div class="hero-section">
 	<div class="text-content">
 		<h1>
@@ -13,8 +27,21 @@
 			<span class="icon is-info">
 				<i class="fas fa-search"></i>
 			</span>
-			<input type="text" placeholder="Find reviews about your company" />
+			<input type="text" bind:value={query} placeholder="Search reviews..." />
+			<button on:click={searchReviews}>Search</button>
 		</div>
+
+		{#if error}
+			<p style="color: blue;">
+				<span>{error}</span>
+				<span
+					style="color: blue; cursor: pointer; text-decoration: underline;"
+					on:click={() => redirectToSignup()}
+				>
+					Create your account</span
+				>
+			</p>
+		{/if}
 	</div>
 </div>
 
@@ -71,9 +98,7 @@
 				</div>
 				<div class="info-text">
 					<h4 class="title is-6">Stay Ahead of the Competition</h4>
-					<p>
-						Make data-driven decisions to stay ahead of the curve.
-					</p>
+					<p>Make data-driven decisions to stay ahead of the curve.</p>
 				</div>
 			</div>
 		</div>
@@ -81,50 +106,59 @@
 </div>
 
 <!-- App Section -->
-	<div class="container">
-		<div class="app-box">
-			<div class="columns is-vcentered is-align-items-stretch is-gapless app-columns">
-				<!-- Left Column for Text -->
-				<div
-					class="column is-three-fifths is-flex is-flex-direction-column is-justify-content-center"
-					style="padding-left: 7%!important;"
+<div class="container">
+	<div class="app-box">
+		<div class="columns is-vcentered is-align-items-stretch is-gapless app-columns">
+			<!-- Left Column for Text -->
+			<div
+				class="column is-three-fifths is-flex is-flex-direction-column is-justify-content-center"
+				style="padding-left: 7%!important;"
+			>
+				<h2 class="title is-3" style="color:white; padding-right: 15%;">
+					Ready to Elevate your business?
+				</h2>
+				<p
+					style="margin-bottom:2%; margin-top: 3%;     width: 70%;color:white; font-weight: 500!important;"
 				>
-					<h2 class="title is-3" style="color:white; padding-right: 15%;">
-						Ready to Elevate your business?					</h2>
-						<p style="margin-bottom:2%; margin-top: 3%;     width: 70%;color:white; font-weight: 500!important;">
-							Download the Thrive Hub app today and unlock the power of genuine reviews!</p>
-						<p style="margin-bottom:2%; margin-top: 3%;     width: 70%;color:white; font-weight: 500!important;">
-							Join thousands of businesses transforming their customer experience. Don't miss out—get
-							started now!
-						</p>
-					<div class="columns is-vcentered app-box-1">
-						<!-- First Image -->
-						<div class="column">
-							<figure class="image app-figure">
-								<img src="/assets/appstore.png" alt="Apple Store" />
-							</figure>
-						</div>
+				Comming Soon: Our App will be available for download !				</p>
+				<p
+					style="margin-bottom:2%; margin-top: 3%;     width: 70%;color:white; font-weight: 500!important;"
+				>
+					Join thousands of businesses transforming their customer experience. Don't miss out—get
+					started now!
+				</p>
+				<div class="columns is-vcentered app-box-1">
+					<!-- First Image -->
+					<div class="column">
+						<figure class="image app-figure">
+							<img src="/assets/appstore.png" alt="Apple Store" />
+						</figure>
+					</div>
 
-						<!-- Second Image -->
-						<div class="column">
-							<figure class="image app-figure">
-								<img src="/assets/googleplay.png" alt="Google Playstore" />
-							</figure>
-						</div>
+					<!-- Second Image -->
+					<div class="column">
+						<figure class="image app-figure">
+							<img src="/assets/googleplay.png" alt="Google Playstore" />
+						</figure>
 					</div>
 				</div>
+			</div>
 
-				<div class="column is-flex">
-					<figure
-						class="image-download is-flex is-align-items-center is-justify-content-center is-align-self-flex-end"
-					>
-						<img src="/assets/Hand with Phone.png" alt="Illustration" />
-					</figure>
-				</div>
+			<div class="column is-flex">
+				<figure
+					class="image-download is-flex is-align-items-center is-justify-content-center is-align-self-flex-end"
+				>
+					<img src="/assets/Hand with Phone.png" alt="Illustration" />
+				</figure>
 			</div>
 		</div>
 	</div>
-<AboutUsReviews/>
+</div>
+
+<div>
+	<AboutUsReviews />
+</div>
+
 <!-- About Us -->
 <section class="section about-section">
 	<div class="container">
@@ -199,7 +233,6 @@
 		</div>
 	</div>
 </section>
-
 
 <div class="container">
 	<div class="mb-5">
@@ -310,7 +343,6 @@
 		background-repeat: no-repeat; /* Prevents the image from repeating */
 	}
 	.columns.is-variable > .column {
-	
 		width: 50%;
 	}
 
@@ -370,23 +402,24 @@
 
 	.container {
 		max-width: 1340px;
-				margin: 0 auto;
+		margin: 0 auto;
 		padding: 30px;
 	}
 
 	.container-info {
-    max-width: 80%;
-    margin: 0 auto;
-    /* padding: 30px; */
-    padding-top: 64px;
-}
+		max-width: 80%;
+		margin: 0 auto;
+		/* padding: 30px; */
+		padding-top: 64px;
+	}
 
 	.has-text-centered {
 		text-align: center;
 	}
 
 	.title.is-4 {
-		font-size: 36px;    text-align: justify;
+		font-size: 36px;
+		text-align: justify;
 		font-weight: bold;
 		color: #333;
 		margin-bottom: 30px;
@@ -411,13 +444,11 @@
 		background-color: transparent;
 		box-shadow: none;
 	}
-	
-
 
 	/* ========================================
   About Section Page Styling Starts Here
 ======================================== */
-.about1 {
+	.about1 {
 		margin-right: 1% !important;
 	}
 
@@ -531,17 +562,15 @@
 
 	/* About Section Page Styling End */
 
-
 	/* ========================================
   App Download Section Page Styling Starts Here
 ======================================== */
 
-
-	.app-box {    background-color: #469dec;
-    /* border-radius: 30px; */
-    padding: 23px;
-    padding-top: 70px;
-
+	.app-box {
+		background-color: #469dec;
+		/* border-radius: 30px; */
+		padding: 23px;
+		padding-top: 70px;
 	}
 
 	.app-figure {
@@ -576,7 +605,6 @@
 			width: 100%;
 		}
 
-	
 		.app-figure {
 			width: 85% !important;
 			margin-bottom: 0% !important;
@@ -590,5 +618,4 @@
 	}
 
 	/* App Download Section Page Styling End */
-
 </style>

@@ -5,7 +5,7 @@
 	let { children }: { children: any } = $props();
 
 </script>
-
+ 
 <Navbar /> 
 
 <main>

@@ -14,41 +14,44 @@
 	}
 
 	async function handleLogin() {
-		errorMessage = '';
-		isLoading = true;
+    errorMessage = '';
+    isLoading = true;
 
-		try {
-			const response = await fetch(`${API_BASE_URL}/auth/login`, {
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ email, password })
-			});
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
 
-			const data = await response.json();
+        const data = await response.json();
+        console.log('Response:', response);
+        console.log('Data:', data);
 
-			if (response.ok) {
+        if (response.ok) {
+            login(data);
 
-				login(data.token);
-				//goto('/user/settings');
+            const previousPath = localStorage.getItem('previousPath') || '/';
+            localStorage.removeItem('previousPath'); // Clean up the stored path
+            goto(previousPath);
+        } else if (response.status === 403 && data.error?.includes('User is inactive')) {
+            // Redirect to verify-account page if the user is inactive
+            console.log('Redirecting to /verify-account due to inactive user');
+            goto('/user/auth/verify_account');
+        } else {
+            errorMessage = data.error || 'Login failed. Please try again.';
+        }
+    } catch (error) {
+        console.error('Error occurred:', error);
+        errorMessage = 'An error occurred while logging in. Please try again later.';
+    } finally {
+        isLoading = false;
+    }
+}
 
-				const previousPath = localStorage.getItem('previousPath') || '/';
-				localStorage.removeItem('previousPath'); // Clean up the stored path
-				goto(previousPath);
-
-
-
-			} else {
-				errorMessage = data.message || 'Login failed. Please try again.';
-			}
-		} catch (error) {
-			errorMessage = 'An error occurred while logging in. Please try again later.';
-		} finally {
-			isLoading = false;
-		}
-	}
 </script>
 
 <!-- Main Content -->

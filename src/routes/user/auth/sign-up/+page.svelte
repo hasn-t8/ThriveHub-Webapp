@@ -2,6 +2,7 @@
     import { goto } from '$app/navigation';
     import { API_BASE_URL } from '$lib/config';
     import { userEmail } from '$lib/stores/auth'; // Assuming this is a writable store
+	import { login } from '$lib/stores/auth';
 
 	let email = '';
     let emailError = '';
@@ -21,51 +22,64 @@
     $: isButtonDisabled = !(fullName.trim() && email.trim() && password.trim());
 
     // Handle form submission
-    async function handleSignUp(event: Event) {
-        event.preventDefault();
-        console.log('Form submitted:', { fullName, email, password });
+	async function handleSignUp(event: Event) {
+    event.preventDefault();
+    console.log('Form submitted:', { fullName, email, password });
 
-        const types = ['registered-user'];
+    const types = ['registered-user'];
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/auth/register`, {
-                method: 'POST',
-                headers: {
-                    accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password, types })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to create account.');
-            }
-
-            const data = await response.json();
-            console.log('Account created:', data);
-
-            // Update the userEmail store
-            userEmail.set(email);
-
-            // Store the email in localStorage
-            localStorage.setItem('email', email);
-
-            isError = false;
-            message = data.message || 'Account created successfully!';
-
-            // Clear form fields
-            fullName = '';
-            email = '';
-            password = '';
-
-            // Redirect to the verification page, passing email as a query parameter
-            goto(`/user/auth/verify_account?email=${encodeURIComponent(email)}`);
-        } catch (error) {
-            isError = true;
-            message = error instanceof Error ? error.message : 'An unexpected error occurred.';
-        }
+    // Validate required fields
+    if (!email || !password) {
+        isError = true;
+        message = 'Email and password are required.';
+        return;
     }
+
+    try {
+        console.log('Request payload:', { email, password, types });
+
+        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+            method: 'POST',
+            headers: {
+                accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password, types, full_name: fullName })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to create account.');
+        }
+
+        const data = await response.json();
+        console.log('Account created:', data);
+
+        login(data);
+
+        // Update the userEmail store
+        userEmail.set(email);
+
+        // Store the email in localStorage
+        localStorage.setItem('email', email);
+
+        isError = false;
+        message = data.message || 'Account created successfully!';
+
+        // Clear form fields
+        fullName = '';
+        email = '';
+        password = '';
+
+        // Redirect to the verification page
+        goto(`/user/auth/verify_account?email=${encodeURIComponent(email)}`);
+    } catch (error) {
+        isError = true;
+        message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+        console.error('Error during sign-up:', error);
+    }
+}
+
 </script>
 
 
