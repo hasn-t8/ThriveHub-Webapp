@@ -101,6 +101,9 @@
 	}
 
 	// Utility to format date to "yyyy-MM-dd"
+	/**
+	 * @param {string | number | Date} dateString
+	 */
 	function formatDateToYMD(dateString) {
 		if (!dateString) return ''; // Handle null or undefined dates
 		const date = new Date(dateString);

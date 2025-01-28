@@ -3,6 +3,7 @@
 	
 	import { goto } from "$app/navigation";
 	import { logout } from "$lib/stores/auth";
+	import { redirect } from "@sveltejs/kit";
 	import { onMount } from 'svelte';
 
 	let isDropdownOpen = false;
@@ -17,6 +18,38 @@
 		goto('/admin-area/pricing');
 	}
 
+	function redirectToSettings() {
+
+
+		goto(`/admin-area/edit-business/${businessId}`);
+
+}
+let storedBusinessProfiles = [];
+let businessId= null; // Initialize to store the business ID
+
+// Retrieve and log businessProfiles data from localStorage only in the browser
+if (typeof window !== 'undefined') {
+    storedBusinessProfiles = JSON.parse(localStorage.getItem('businessProfiles') || '[]');
+    console.log('Stored businessProfiles:', storedBusinessProfiles);
+
+    // Assuming there is a business profile to fetch
+    if (storedBusinessProfiles.length > 0) {
+        // Look for the first business profile or filter for a specific one
+        const businessProfile = storedBusinessProfiles.find(
+            (profile) => profile.profile_type === 'business' // Adjust the type if needed
+        );
+
+        if (businessProfile) {
+            businessId = businessProfile.id; // Extract the business ID
+            console.log('Business ID:', businessId);
+        } else {
+            console.log('No business profile found in localStorage.');
+        }
+    } else {
+        console.log('No profiles stored in localStorage.');
+    }
+}
+
 	// Fetch the user type from localStorage when the component mounts
 	onMount(() => {
 		const storedUserType = localStorage.getItem('userType');
@@ -29,6 +62,7 @@
 		}
 		console.log('User Type:', userType); // Print the user type to the console
 	});
+	
 </script>
 
 <div class="side-menu" style="min-height:100vh">
@@ -53,12 +87,15 @@
 		{/if}
 
 		{#if userType === 'business-owner'}
-			<a href="/business-setting/settings"
-			 class="menu-item">
+		<!-- svelte-ignore a11y_invalid_attribute -->
+		<a href="#" class="menu-item" onclick={redirectToSettings}>
 				<i class="icon fas fa-cog"></i> Settings
 			</a>
 			<a href="/business-reviews" class="menu-item">
 				<i class="icon fas fa-star"></i> Business Reviews
+			</a>
+			<a href="/business-setting/settings" class="menu-item">
+				<i class="icon fas fa-star"></i> Personal Information
 			</a>
 		{/if}
 

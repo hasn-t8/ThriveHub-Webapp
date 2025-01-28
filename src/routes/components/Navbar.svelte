@@ -41,10 +41,35 @@
 	if (primaryUserType === "registered-user") {
 		goto("/user/settings");
 	} else if (primaryUserType === "business-owner") {
-		goto("/business-setting/settings");
+		goto(`/admin-area/edit-business/${businessId}`);
 	} else {
 		console.log('Invalid userType or userType not found');
 	}
+}
+let storedBusinessProfiles = [];
+let businessId: null = null; // Initialize to store the business ID
+
+// Retrieve and log businessProfiles data from localStorage only in the browser
+if (typeof window !== 'undefined') {
+    storedBusinessProfiles = JSON.parse(localStorage.getItem('businessProfiles') || '[]');
+    console.log('Stored businessProfiles:', storedBusinessProfiles);
+
+    // Assuming there is a business profile to fetch
+    if (storedBusinessProfiles.length > 0) {
+        // Look for the first business profile or filter for a specific one
+        const businessProfile = storedBusinessProfiles.find(
+            (profile: { profile_type: string; }) => profile.profile_type === 'business' // Adjust the type if needed
+        );
+
+        if (businessProfile) {
+            businessId = businessProfile.id; // Extract the business ID
+            console.log('Business ID:', businessId);
+        } else {
+            console.log('No business profile found in localStorage.');
+        }
+    } else {
+        console.log('No profiles stored in localStorage.');
+    }
 }
 
 
