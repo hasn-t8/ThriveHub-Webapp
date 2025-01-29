@@ -36,7 +36,7 @@
 	async function fetchBlogs() {
 		isLoading.set(true);
 		try {
-			const response = await fetch(`${API_BASE_URL}/api/posts`);
+			const response = await fetch(`${API_BASE_URL}/posts`);
 			const data = await response.json();
 			blogs.set(data);
 		} catch (error) {
