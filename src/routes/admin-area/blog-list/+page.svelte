@@ -3,6 +3,8 @@
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
+	import { API_BASE_URL } from '$lib/config';
+	
 	let blogs: Writable<any[]> = writable([]);
 	let isLoading = writable(false);
 
@@ -19,7 +21,7 @@
 	async function fetchBlogs() {
 		isLoading.set(true);
 		try {
-			const response = await fetch('https://api.app.thrivehub.ai/api/posts');
+			const response = await fetch(`${API_BASE_URL}/posts`);
 			const data = await response.json();
 			blogs.set(data);
 			isLoading.set(false);

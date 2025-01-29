@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import { writable, type Writable } from 'svelte/store';
 	import type { ProfileData } from '$lib/types/Profile';
+	import { API_BASE_URL } from '$lib/config';
 
 	const slug = Number($page.params.slug);
 	const blogs: Writable<any[]> = writable([]);
@@ -25,7 +26,7 @@
 
 	async function fetchBlogPost() {
 		try {
-			const response = await fetch(`https://api.app.thrivehub.ai/api/posts/${slug}`);
+			const response = await fetch(`${API_BASE_URL}/posts/${slug}`);
 			if (!response.ok) {
 				throw new Error('Failed to fetch blog post');
 			}
@@ -43,7 +44,7 @@
 	// Fetch blogs from the API
 	async function fetchBlogs() {
 		try {
-			const response = await fetch('https://api.app.thrivehub.ai/api/posts');
+			const response = await fetch(`${API_BASE_URL}/posts`);
 			const data = await response.json();
 			blogs.set(data);
 		} catch (error) {

@@ -4,6 +4,7 @@
 	import { writable, get, type Writable, derived } from 'svelte/store';
 	import type { ProfileData } from '$lib/types/Profile';
 	import { goto } from '$app/navigation';
+	import { API_BASE_URL } from '$lib/config';
 
 	// Stores
 	let blogs = writable([]);
@@ -35,7 +36,7 @@
 	async function fetchBlogs() {
 		isLoading.set(true);
 		try {
-			const response = await fetch('https://api.app.thrivehub.ai/api/posts');
+			const response = await fetch(`${API_BASE_URL}/api/posts`);
 			const data = await response.json();
 			blogs.set(data);
 		} catch (error) {

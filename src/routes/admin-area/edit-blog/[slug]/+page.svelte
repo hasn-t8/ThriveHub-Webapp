@@ -4,7 +4,8 @@
 	import { writable, type Writable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
-	import { loggedInStatus, setUserAndType } from '$lib/stores/auth';
+	import { loggedInStatus, setUserAndType, getJWT } from '$lib/stores/auth';
+	import { API_BASE_URL } from '$lib/config';
 
     import 'quill/dist/quill.snow.css';
     import type Quill from 'quill';
@@ -63,7 +64,7 @@
 	async function fetchCategories() {
 		isLoading.set(true);
 		try {
-			const response = await fetch('https://api.app.thrivehub.ai/api/categories');
+			const response = await fetch(`${API_BASE_URL}/categories`);
 			if (!response.ok) {
 				throw new Error('Failed to fetch categories');
 			}
@@ -80,7 +81,7 @@
 	async function fetchBlogPost() {
 		isLoading.set(true);
 		try {
-			const response = await fetch(`https://api.app.thrivehub.ai/api/posts/${slug}`);
+			const response = await fetch(`${API_BASE_URL}/posts/${slug}`);
 			if (!response.ok) {
 				throw new Error('Failed to fetch blog post');
 			}
@@ -124,6 +125,9 @@
 	async function updateBlogPost(category_id: number, title: string, content: string, is_published: boolean, image_cover: File | null, image_thumbnail: File | null) {
 		isLoading.set(true);
 		isSuccess.set(false);
+		const JWT = getJWT();
+console.log('JWT Token-££$$$$$$$:', JWT);
+
 		try {
 			const formData = new FormData();
 			formData.append('category_id', category_id.toString());
@@ -137,10 +141,10 @@
 				formData.append('image_thumbnail', image_thumbnail);
 			}
 
-			const response = await fetch(`https://api.app.thrivehub.ai/api/posts/${slug}`, {
+			const response = await fetch(`${API_BASE_URL}/posts/${slug}`, {
 				method: 'PUT',
 				headers: {
-					'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+					'Authorization': `Bearer ${JWT}`
 				},
 				body: formData
 			});

@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
+	import { API_BASE_URL } from '$lib/config';
 
 
 	const categories: Writable<{ id: number; name: string }[]> = writable([]);
@@ -14,7 +15,7 @@
 	async function fetchCategories() {
 		isLoading.set(true);
 		try {
-			const response = await fetch('https://api.app.thrivehub.ai/api/categories');
+			const response = await fetch(`${API_BASE_URL}/categories`);
 			if (!response.ok) {
 				throw new Error('Failed to fetch categories');
 			}
@@ -30,7 +31,7 @@
 	async function addCategory(name: string) {
 		isLoading.set(true);
 		try {
-			const response = await fetch('https://api.app.thrivehub.ai/api/categories', {
+			const response = await fetch(`${API_BASE_URL}/categories`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -56,7 +57,7 @@
 	async function updateCategory(id: number, name: string) {
 		isLoading.set(true);
 		try {
-			const response = await fetch(`https://api.app.thrivehub.ai/api/categories/${id}`, {
+			const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
@@ -122,7 +123,7 @@
 	async function deleteCategory(id: number) {
 		isLoading.set(true);
 		try {
-			const response = await fetch(`https://api.app.thrivehub.ai/api/categories/${id}`, {
+			const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
 				method: 'DELETE'
 			});
 			if (!response.ok) {

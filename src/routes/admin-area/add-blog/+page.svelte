@@ -4,6 +4,7 @@
 	import { writable, type Writable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
 	import { loggedInStatus, setUserAndType } from '$lib/stores/auth';
+	import { API_BASE_URL } from '$lib/config';
 
     import 'quill/dist/quill.snow.css';
     import type Quill from 'quill';
@@ -61,7 +62,7 @@
 	async function fetchCategories() {
 		isLoading.set(true);
 		try {
-			const response = await fetch('https://api.app.thrivehub.ai/api/categories');
+			const response = await fetch(`${API_BASE_URL}/categories`);
 			if (!response.ok) {
 				throw new Error('Failed to fetch categories');
 			}
@@ -91,7 +92,7 @@
 				formData.append('image_thumbnail', image_thumbnail);
 			}
 
-			const response = await fetch('https://api.app.thrivehub.ai/api/posts', {
+			const response = await fetch(`${API_BASE_URL}/posts`, {
 				method: 'POST',
 				headers: {
 					'Authorization': `Bearer ${localStorage.getItem('authToken')}`
