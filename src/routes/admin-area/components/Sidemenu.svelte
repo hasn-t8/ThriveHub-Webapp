@@ -100,6 +100,19 @@ if (typeof window !== 'undefined') {
 		{/if}
 
 		<hr />
+		<a href="/admin-area/blog-list" class="menu-item">
+			<i class="icon fas fa-blog"></i> Blog List
+		</a>
+		<a href="/admin-area/blog-categories" class="menu-item">
+			<i class="icon fas fa-clipboard"></i>Blog Categories</a
+		>
+		<a href="/admin-area/add-blog" class="menu-item">
+			<i class="icon fas fa-plus"></i>Add Blog</a
+		>
+		<hr />
+		<!-- <a href="/business/business-setting/setting" class="menu-item">
+			<i class="icon fas fa-cog"></i> Settings
+		</a> -->
 		<!-- svelte-ignore a11y_invalid_attribute -->
 		<a href="#" class="menu-item" onclick={logoutHandler}>
 			<i class="icon fa fa-door-open"></i> Logout
