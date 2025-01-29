@@ -18,7 +18,7 @@
 		{ text: 'Wellness', value: 'wellness' },
 		{ text: 'Education', value: 'education' },
 		{ text: 'Finance', value: 'finance' },
-		{ text: 'Home Electronics', value: 'home-electronics' }
+		{ text: 'Home Electronics', value: 'home electronics' }
 	];
 
 	// Store to keep track of selected categories
@@ -74,11 +74,12 @@
 			const profiles: ProfileData[] = await getProfilesPublic();
 
 			// Apply category filter
-			const filters = get(selectedFilters);
-			const filteredByCategory =
-				filters.length > 0
-					? profiles.filter((profile) => filters.includes((profile.category ?? '').toLowerCase()))
-					: profiles;
+			const filters = get(selectedFilters).map((f) => f.toLowerCase()); // Normalize filter values
+const filteredByCategory =
+	filters.length > 0
+		? profiles.filter((profile) => filters.includes((profile.category ?? '').toLowerCase()))
+		: profiles;
+
 
 			// Apply rating filter
 			const ratings = get(selectedRatings);
@@ -211,11 +212,12 @@
 
 		let category: string | null = null;
 		category = $page.url.searchParams.get('category');
+		const urlCategory = $page.url.searchParams.get('category');
 
-		if (category) {
-			if (category === 'Tech') selectedFilters.set(['tech']);
-			else selectedFilters.set([category]);
-		}
+if (urlCategory) {
+	selectedFilters.set([urlCategory.toLowerCase()]); // Ensure lowercase
+}
+	
 		
 		fetchProfiles();
 	});
