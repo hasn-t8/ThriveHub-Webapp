@@ -1,6 +1,8 @@
 import { goto } from '$app/navigation';
 import { API_BASE_URL } from '$lib/config';
 import { getJWT, logout } from '$lib/stores/auth';
+import { addToast } from '$lib/stores/toasts';
+
 import type { ProfileData } from '$lib/types/Profile';
 import { writable } from 'svelte/store';
 
@@ -41,11 +43,13 @@ export async function uploadBusinessLogo(file: File, businessProfileId: number):
 
 		const result = await response.json();
 		console.log('Logo uploaded successfully:', result);
+		addToast('Logo uploaded successfully!', 'is-primary');
 		// alert('Logo uploaded successfully!');
 		return true;
 	} catch (error) {
 		console.error('Error uploading logo:', error);
-		alert('Failed to upload logo. Please try again.');
+		// alert('Failed to upload logo. Please try again.');
+		addToast('Failed to upload logo. Please try again.', 'is-danger');
 		return false;
 	}
 }
@@ -94,7 +98,7 @@ export async function getProfiles() {
 	return await response.json();
 }
 
-export async function getProfilesPublic(): Promise<any> {
+export async function getProfilesPublic(): Promise<ProfileData | { error: string }> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/businessprofiles`, {
             method: 'GET'
@@ -110,9 +114,9 @@ export async function getProfilesPublic(): Promise<any> {
         const profilesData = await response.json();
         console.log('Profiles fetched:', profilesData.data);
         return profilesData.data;
-    } catch (error) {
+	} catch (error) {
         console.error('Error fetching profiles:', error);
-        return { error: 'An unexpected error occurred.' };
+		return { error: 'An unexpected error occurred.' };
     }
 }
 
@@ -254,124 +258,10 @@ export async function updateBusinessProfile(
 
 		const result = await response.json();
 		console.log('Business profile updated successfully:', result);
-		alert('Business profile updated successfully!');
+		// addToast('Business profile updated successfully!', 'is-primary');
 		return true;
 	} catch (error) {
 		console.error(error);
 		throw error;
 	}
-}
-
-
-/**
- * Register a new user
- */
-export async function registerUser(
-	userData: {
-		email: string;
-		password: string;
-		types: string[];
-		full_name: string;
-		org_name: string;
-		job_title: string;
-		business_website_url: string;
-	}
-): Promise<boolean> {
-	const JWT = getJWT();
-
-	if (!JWT) {
-		goto('/user/auth/sign-in');
-		return false;
-	}
-
-	const apiRequestBody = {
-		userData: {
-			email: userData.email,
-			password: userData.password,
-			types: userData.types,
-			full_name: userData.full_name,
-			org_name: userData.org_name,
-			job_title: userData.job_title,
-			business_website_url: userData.business_website_url,
-		}
-	};
-
-	console.log('apiRequestBody for registerUser:', apiRequestBody);
-
-	try {
-		const response = await fetch(`${API_BASE_URL}/auth/register`, {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${JWT}`,
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(apiRequestBody)
-		});
-
-		if (!response.ok) {
-			if (response.status === 400) {
-				const errorData = await response.json();
-				throw new Error(
-					errorData.errors?.map((err: { msg: string }) => err.msg).join(', ') || 'Validation error'
-				);
-			} else if (response.status === 409) {
-				const errorData = await response.json();
-				throw new Error(errorData.error || 'Conflict: Email already exists');
-			} else {
-				throw new Error(`Failed to register user: ${response.statusText}`);
-			}
-		}
-
-		const result = await response.json();
-		console.log('User registered successfully:', result);
-		alert('User registered successfully!');
-		return true;
-	} catch (error) {
-		console.error(error);
-		throw error;
-	}
-}
-
-
-export async function getVerificationCode(email: string): Promise<number> {
-    try {
-        const response = await fetch(`${API_BASE_URL}/auth/activate-account/get-code`, {
-            method: 'POST',
-            headers: {
-                accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-
-            // Handle specific status codes
-            if (response.status === 400) {
-                const validationErrors = errorData.errors.map((err: { msg: string }) => err.msg).join(', ');
-                throw new Error(`Validation error: ${validationErrors}`);
-            }
-            if (response.status === 404) {
-                throw new Error(errorData.error || 'User not found or code not found.');
-            }
-            if (response.status === 500) {
-                throw new Error(errorData.error || 'Internal Server Error.');
-            }
-
-            throw new Error('An unexpected error occurred.');
-        }
-
-        const data = await response.json();
-        console.log('Verification code retrieved successfully:', data);
-        return data.verificationCode;
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error('Error in getVerificationCode:', error.message);
-            throw error;
-        } else {
-            console.error('Unexpected error:', error);
-            throw new Error('An unexpected error occurred.');
-        }
-    }
 }

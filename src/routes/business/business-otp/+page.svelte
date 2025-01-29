@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import { API_BASE_URL } from '$lib/config';
+	import { addToast } from '$lib/stores/toasts';
 
   let timer = '00:59';
   let timeLeft = 59;
@@ -15,9 +16,11 @@
   onMount(() => {
       // Retrieve the email from localStorage
       email = localStorage.getItem('email') || '';
-      if (!email) {
-          alert('Email is not set. Please return to the previous step.');
-      }
+	  console.log('email', email);
+	  
+    //   if (!email) {
+    //       alert('Email is not set. Please return to the previous step.');
+    //   }
       startTimer();
   });
 
@@ -70,11 +73,13 @@
           }
 
           const data = await response.json();
-          alert('Account verified successfully!');
+        //   alert('Account verified successfully!');
+		addToast('Account verified successfully!', 'is-success');
           goto('/business/business-category');
       } catch (error) {
           console.error('Error verifying account:', error);
-          alert('Verification failed. Please try again.');
+        //   alert('Verification failed. Please try again.');
+		addToast('Verification failed. Please try again.', 'is-danger');
       }
   };
 

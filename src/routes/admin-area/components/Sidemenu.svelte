@@ -1,43 +1,104 @@
 <script>
+	// @ts-nocheck
+	
 	import { goto } from "$app/navigation";
-
-	// import { goto } from "$app/navigation";
 	import { logout } from "$lib/stores/auth";
+	import { redirect } from "@sveltejs/kit";
+	import { onMount } from 'svelte';
 
 	let isDropdownOpen = false;
+	let userType = ''; // Initialize userType variable
 
 	function logoutHandler() {
 		logout();
 		goto('/');
 	}
+
+	function handleUpgrade() {
+		goto('/admin-area/pricing');
+	}
+
+	function redirectToSettings() {
+
+
+		goto(`/admin-area/edit-business/${businessId}`);
+
+}
+let storedBusinessProfiles = [];
+let businessId= null; // Initialize to store the business ID
+
+// Retrieve and log businessProfiles data from localStorage only in the browser
+if (typeof window !== 'undefined') {
+    storedBusinessProfiles = JSON.parse(localStorage.getItem('businessProfiles') || '[]');
+    console.log('Stored businessProfiles:', storedBusinessProfiles);
+
+    // Assuming there is a business profile to fetch
+    if (storedBusinessProfiles.length > 0) {
+        // Look for the first business profile or filter for a specific one
+        const businessProfile = storedBusinessProfiles.find(
+            (profile) => profile.profile_type === 'business' // Adjust the type if needed
+        );
+
+        if (businessProfile) {
+            businessId = businessProfile.id; // Extract the business ID
+            console.log('Business ID:', businessId);
+        } else {
+            console.log('No business profile found in localStorage.');
+        }
+    } else {
+        console.log('No profiles stored in localStorage.');
+    }
+}
+
+	// Fetch the user type from localStorage when the component mounts
+	onMount(() => {
+		const storedUserType = localStorage.getItem('userType');
+		// Parse userType if it's a JSON string (e.g., ["admin"])
+		try {
+			const parsedUserType = JSON.parse(storedUserType);
+			userType = Array.isArray(parsedUserType) ? parsedUserType[0] : parsedUserType; // Extract first value if it's an array
+		} catch (error) {
+			userType = storedUserType || ''; // Use raw value if parsing fails
+		}
+		console.log('User Type:', userType); // Print the user type to the console
+	});
+	
 </script>
 
 <div class="side-menu" style="min-height:100vh">
-
 	<!-- Menu Items -->
 	<ul class="menu-list" style="margin-top: 100px;">
 		<a href="/" class="menu-item">
 			<i class="icon fas fa-home"></i> Home
 		</a>
-		<!-- <a href="#reviews" class="menu-item">
-			<i class="icon fas fa-star"></i> Reviews
-		</a>
-		<a href="/admin-area/analytics" class="menu-item">
-			<i class="icon fas fa-chart-bar"></i> Analytics
-		</a>
-		<a href="#notifications" class="menu-item">
-			<i class="icon fas fa-bell"></i> Notifications
-		</a>
-		<a href="#support" class="menu-item">
-			<i class="icon fas fa-life-ring"></i> Support Center
-		</a>
-		<hr /> -->
-		<a href="/admin-area/business-list" class="menu-item">
-			<i class="icon fas fa-briefcase"></i> Business List
-		</a>
-		<a href="/admin-area/add-company" class="menu-item"
-			><i class="icon fas fa-briefcase"></i>Add business</a
-		>
+
+		<!-- Conditionally render menu items based on userType -->
+		{#if userType === 'admin'}
+			<a href="/admin-area/business-list" class="menu-item">
+				<i class="icon fas fa-list"></i> Business List
+			</a>
+			<a href="/admin-area/add-company" class="menu-item">
+				<i class="icon fas fa-briefcase"></i> Add Business
+			</a>
+			<hr />
+			<a href="/admin-area/reviews-list" class="menu-item">
+				<i class="icon fa fa-list"></i> Reviews List
+			</a>
+		{/if}
+
+		{#if userType === 'business-owner'}
+		<!-- svelte-ignore a11y_invalid_attribute -->
+		<a href="#" class="menu-item" onclick={redirectToSettings}>
+				<i class="icon fas fa-cog"></i> Settings
+			</a>
+			<a href="/business-reviews" class="menu-item">
+				<i class="icon fas fa-star"></i> Business Reviews
+			</a>
+			<a href="/business-setting/settings" class="menu-item">
+				<i class="icon fas fa-star"></i> Personal Information
+			</a>
+		{/if}
+
 		<hr />
 		<a href="/admin-area/blog-list" class="menu-item">
 			<i class="icon fas fa-blog"></i> Blog List
@@ -52,6 +113,7 @@
 		<!-- <a href="/business/business-setting/setting" class="menu-item">
 			<i class="icon fas fa-cog"></i> Settings
 		</a> -->
+		<!-- svelte-ignore a11y_invalid_attribute -->
 		<a href="#" class="menu-item" onclick={logoutHandler}>
 			<i class="icon fa fa-door-open"></i> Logout
 		</a>
@@ -60,13 +122,14 @@
 	<!-- Footer -->
 	<div class="side-menu-footer">
 		<p>Your plan: <strong>Free</strong></p>
-		<button class="upgrade-button">Upgrade now</button>
+		<button class="upgrade-button" onclick={handleUpgrade}>Upgrade now</button>
 		<div class="logo">
 			<img src="/assets/thrivehub-logo.png" alt="Thrive Hub Logo" />
 		</div>
 	</div>
 </div>
 
+	
 <div class="main-content"></div>
 
 <style>
