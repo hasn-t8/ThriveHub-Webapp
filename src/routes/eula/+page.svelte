@@ -45,8 +45,8 @@
             <p class="class content">
 
                 his License Agreement may not provide for usage rules for the Licensed
-                Application that are in conflict with the latest <a href="#apple-media-services-terms-and-conditions">Apple Media Services Terms and Conditions</a>
-                and <a href="google-play-terms-of-services">Google Play Terms of Service</a> <strong>("Usage Rules").</strong>  Thrive
+                Application that are in conflict with the latest <a href="https://www.apple.com/legal/internet-services/itunes/">Apple Media Services Terms and Conditions</a>
+                and <a href="https://play.google.com/intl/en-US_us/about/play-terms/index.html">Google Play Terms of Service</a> <strong>("Usage Rules").</strong>  Thrive
                 Hub AI acknowledges that it had the opportunity to review the Usage Rules
                 and this License Agreement is not conflicting with them.
             </p>
@@ -60,7 +60,7 @@
             </p>
 
             <h1 class="headings">TABLE OF CONTENTS</h1>
-            <div class="class table-of-content">
+            <div class="table-of-content">
                 <a href="#our-application">1. THE APPLICATION</a><br />
 				<a href="#scope-of-license">2. SCOPE OF LICENSE</a><br />
 				<a href="#technical-requirements">3. TECHNICAL REQUIREMENTS</a><br />

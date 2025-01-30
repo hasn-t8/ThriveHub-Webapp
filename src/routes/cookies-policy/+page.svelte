@@ -88,22 +88,22 @@
             </p>
             <ul>
                 <li>
-                    <a href="#chrome">Chrome</a>
+                    <a href="https://www.google.com/chrome/">Chrome</a>
                 </li>
                 <li>
-                    <a href="#internet explorer">Internet Explorer</a>
+                    <a href="https://www.microsoft.com/edge">Internet Explorer</a>
                 </li>
                 <li>
-                    <a href="#firefox">Firefox</a>
+                    <a href=" https://www.mozilla.org/firefox/">Firefox</a>
                 </li>
                 <li>
-                    <a href="#safari">Safari</a>
+                    <a href="https://www.apple.com/safari/">Safari</a>
                 </li>
                 <li>
-                    <a href="#edge">Edge</a>
+                    <a href=" [https://www.microsoft.com/edge](https://www.microsoft.com">Edge</a>
                 </li>
                 <li>
-                    <a href="#opera">Opera</a>
+                    <a href="https://www.opera.com/">Opera</a>
                 </li>
 
             </ul>
@@ -115,15 +115,15 @@
 
             <ul>
                 <li>
-                    <a href="#digital-advertising-alliance">Digital Advertising Alliance</a>
+                    <a href="https://digitaladvertisingalliance.org/">Digital Advertising Alliance</a>
                 </li>
 
                 <li>
-                    <a href="#digital-advertising-alliance-of-canada">Digital Advertising Alliance of Canada</a>
+                    <a href="https://youradchoices.ca/">Digital Advertising Alliance of Canada</a>
                 </li>
 
                 <li>
-                    <a href="#european-interactive-digital-advertising-alliance">European Interactive Digital Advertising Alliance</a>
+                    <a href="https://edaa.eu/">European Interactive Digital Advertising Alliance</a>
                 </li>
             </ul>
 
@@ -155,8 +155,8 @@
             <p class="content">
                 If you do not want Flash Cookies stored on your computer, you can adjust the
                 settings of your Flash player to block Flash Cookies storage using the tools
-                contained in the <a href="#website-storage-settings-panel">Website Storage Settings Panel</a>. You can also control Flash
-                Cookies by going to the <a href="#global-storage-settings-panel">Global Storage Settings Panel</a> and following the
+                contained in the <a href="https://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager07.html">Website Storage Settings Panel</a>. You can also control Flash
+                Cookies by going to the <a href="https://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager03.html">Global Storage Settings Panel</a> and following the
                 instructions (which may include instructions that explain, for example, how to
                 delete existing Flash Cookies (referred to "information" on the Macromedia
                 site), how to prevent Flash LSOs from being placed on your computer without
